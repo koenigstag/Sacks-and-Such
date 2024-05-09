@@ -1,7 +1,13 @@
 package mod.traister101.sacks.client;
 
+import mod.traister101.sacks.client.screen.SackScreen;
+import mod.traister101.sacks.common.menu.SNSMenus;
+
+import net.minecraft.client.gui.screens.MenuScreens;
+
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import lombok.experimental.UtilityClass;
@@ -12,7 +18,14 @@ public final class ClientEventHandler {
 	public static void init() {
 		final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+		modEventBus.addListener(ClientEventHandler::onClientSetup);
 		modEventBus.addListener(ClientEventHandler::registerKeyBindings);
+	}
+
+	private static void onClientSetup(final FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
+			MenuScreens.register(SNSMenus.SACK_MENU.get(), SackScreen::new);
+		});
 	}
 
 	private static void registerKeyBindings(final RegisterKeyMappingsEvent event) {
