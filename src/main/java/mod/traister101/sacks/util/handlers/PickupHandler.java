@@ -8,10 +8,10 @@ import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.NBTHelper;
 import mod.traister101.sacks.util.SackType;
 
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundTakeItemEntityPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -60,7 +60,7 @@ public final class PickupHandler {
 		// Picked up more than 0
 		if (0 < pickupCount) {
 			final var packet = new ClientboundTakeItemEntityPacket(itemEntity.getId(), player.getId(), pickupCount);
-			((LocalPlayer) player).connection.send(packet);
+			((ServerPlayer) player).connection.send(packet);
 		}
 
 		event.setCanceled(itemResult.isEmpty());
