@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+	"FFF",
+	"FSF",
+	"FFF"
+  ],
+  "key": {
+	"F": {
+	  "item": "sns:reinforced_fabric"
+	},
+	"S": {
+	  "tag": "forge:sheets/steel"
+	}
+  },
+  "result": {
+	"item": "sns:steel_reinforced_fabric"
+  }
+}

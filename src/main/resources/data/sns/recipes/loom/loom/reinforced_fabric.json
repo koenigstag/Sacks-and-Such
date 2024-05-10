@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:loom",
+  "ingredient": {
+	"ingredient": {
+	  "item": "sns:reinforced_fiber"
+	},
+	"count": 16
+  },
+  "result": {
+	"item": "sns:reinforced_fabric"
+  },
+  "steps_required": 16,
+  "in_progress_texture": "sns:loom/reinforced_fabric"
+}
