@@ -5,6 +5,7 @@ import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 
 import mod.traister101.sacks.SacksNSuch;
+import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
 import mod.traister101.sacks.common.capability.SackHandler;
 import mod.traister101.sacks.common.menu.SackMenu;
 import mod.traister101.sacks.config.SNSConfig;
@@ -104,7 +105,8 @@ public class SackItem extends Item implements IItemSize {
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(final ItemStack itemStack, @Nullable CompoundTag nbt) {
-		return new SackHandler(nbt, type);
+		// Must be lazy as stacks can be created before server config is initalized
+		return new LazySerializedCapabilityProvider<>(ForgeCapabilities.ITEM_HANDLER, () -> new SackHandler(nbt, type));
 	}
 
 	@Override

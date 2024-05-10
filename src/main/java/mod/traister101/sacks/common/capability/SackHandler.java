@@ -11,21 +11,13 @@ import mod.traister101.sacks.common.items.DefaultSacks;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.SackType;
 
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-
 // TODO needs more touch up
-public class SackHandler extends ExtendedSlotCapacityHandler implements ICapabilityProvider {
+public class SackHandler extends ExtendedSlotCapacityHandler {
 
 	private final SackType type;
-	private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> this);
 
 	public SackHandler(@Nullable final CompoundTag nbt, final SackType type) {
 		super(type.getSlotCount(), type.getSlotCapacity());
@@ -62,10 +54,5 @@ public class SackHandler extends ExtendedSlotCapacityHandler implements ICapabil
 	// TODO rethink if this is needed
 	public boolean hasItems() {
 		return stacks.stream().anyMatch(itemStack -> !itemStack.isEmpty());
-	}
-
-	@Override
-	public <T> LazyOptional<T> getCapability(final Capability<T> capability, @Nullable final Direction direction) {
-		return ForgeCapabilities.ITEM_HANDLER.orEmpty(capability, this.holder);
 	}
 }
