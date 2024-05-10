@@ -3,33 +3,33 @@ package mod.traister101.sacks.common.capability;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import mod.traister101.sacks.common.SNSTags;
+import mod.traister101.sacks.common.SNSTags.Items;
 import mod.traister101.sacks.common.items.DefaultSacks;
-import mod.traister101.sacks.common.items.SackItem;
+import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.SackType;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 
 // TODO needs more touch up
 public class SackHandler extends ExtendedSlotCapacityHandler implements ICapabilityProvider {
 
 	private final SackType type;
-	private final LazyOptional<SackHandler> capability;
+	private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> this);
 
 	public SackHandler(@Nullable final CompoundTag nbt, final SackType type) {
 		super(type.getSlotCount(), type.getSlotCapacity());
 		this.type = type;
-		this.capability = LazyOptional.of(() -> this);
 		if (nbt != null) {
 			deserializeNBT(nbt);
 		}
@@ -41,35 +41,17 @@ public class SackHandler extends ExtendedSlotCapacityHandler implements ICapabil
 		return super.getStackLimit(slotIndex, itemStack);
 	}
 
-	// TODO more ore config
 	@Override
 	public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
-		final Item item = itemStack.getItem();
+		if (itemStack.is(SNSTags.Items.PREVENTED_IN_SACKS)) return false;
 
-		// Stack is a sack, no sack-ception
-		if (item instanceof SackItem) return false;
+		if (type == DefaultSacks.FARMER_SACK && !itemStack.is(Items.ALLOWED_IN_FARMER_SACK)) return false;
 
-//		if (type == SackTypes.FARMER_SACK) {
-		// TODO Allow other than seeds
-//			if (!ConfigSNS.SACK.FARMER_SACK.allowNonSeed) {
-//				if (!(item instanceof ItemSeedsTFC)) return false;
-//			}
-//		}
+		if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(Items.TFC_FOODS)) return false;
 
-		// TODO Food in every sack
-//		if (!ConfigSNS.GLOBAL.allAllowFood) if (item instanceof ItemFoodTFC) return false;
+		if (type == DefaultSacks.MINER_SACK && itemStack.is(Items.TFC_ORE)) return true;
 
-//		if (type == SackTypes.MINER_SACK) {
-		// TODO Allow other than ore
-//			if (!ConfigSNS.SACK.MINER_SACK.allowNonOre) {
-//				// TODO If item is a TFC ore
-//				if (!(item instanceof ItemOreTFC || item instanceof ItemSmallOre)) return false;
-//			}
-//		}
-
-		// TODO Ore for all sacks
-//		if (!ConfigSNS.GLOBAL.allAllowOre)
-//			if (type != SackTypes.MINER_SACK) if (item instanceof ItemOreTFC || item instanceof ItemSmallOre) return false;
+		if (!SNSConfig.SERVER.allAllowOre.get() && type != DefaultSacks.MINER_SACK && itemStack.is(Items.TFC_ORE)) return false;
 
 		final IItemSize stackSize = ItemSizeManager.get(itemStack);
 		final Size size = stackSize.getSize(itemStack);
@@ -83,10 +65,7 @@ public class SackHandler extends ExtendedSlotCapacityHandler implements ICapabil
 	}
 
 	@Override
-	public @NotNull <T> LazyOptional<T> getCapability(@NotNull final Capability<T> capability, @Nullable final Direction direction) {
-		if (capability == ForgeCapabilities.ITEM_HANDLER) {
-			return this.capability.cast();
-		}
-		return LazyOptional.empty();
+	public <T> LazyOptional<T> getCapability(final Capability<T> capability, @Nullable final Direction direction) {
+		return ForgeCapabilities.ITEM_HANDLER.orEmpty(capability, this.holder);
 	}
 }
