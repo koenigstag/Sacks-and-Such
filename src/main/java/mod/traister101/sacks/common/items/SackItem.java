@@ -16,10 +16,14 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -80,6 +84,86 @@ public class SackItem extends Item implements IItemSize {
 			player.displayClientMessage(status, true);
 		}
 		return InteractionResultHolder.consume(heldStack);
+	}
+
+	@Override
+	public boolean overrideStackedOnOther(final ItemStack itemStack, final Slot slot, final ClickAction clickAction, final Player player) {
+		if (player.isCreative()) return false;
+		if (clickAction != ClickAction.SECONDARY) return false;
+		if (!SNSConfig.SERVER.enableSackInventoryInteraction.get()) return false;
+
+		return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).map(handler -> {
+			for (int slotIndex = handler.getSlots() - 1; slotIndex >= 0; slotIndex--) {
+				final ItemStack simulate = handler.extractItem(slotIndex, Container.LARGE_MAX_STACK_SIZE, true);
+				if (simulate.isEmpty()) continue;
+
+				final ItemStack extracted = handler.extractItem(slotIndex, Container.LARGE_MAX_STACK_SIZE, false);
+				final ItemStack leftover = slot.safeInsert(extracted);
+
+				if (leftover.isEmpty()) continue;
+
+				handler.insertItem(slotIndex, leftover, false);
+
+				player.containerMenu.slotsChanged(slot.container);
+				return true;
+			}
+
+			return false;
+		}).orElse(false);
+	}
+
+	@Override
+	public boolean overrideOtherStackedOnMe(final ItemStack itemStack, final ItemStack carriedStack, final Slot slot, final ClickAction clickAction,
+			final Player player, final SlotAccess carriedSlot) {
+		if (player.isCreative()) return false;
+		if (clickAction != ClickAction.SECONDARY) return false;
+		if (!SNSConfig.SERVER.enableSackInventoryInteraction.get()) return false;
+
+		return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).map(handler -> {
+
+			if (carriedStack.isEmpty()) {
+				for (int slotIndex = handler.getSlots() - 1; slotIndex >= 0; slotIndex--) {
+					final ItemStack current = handler.getStackInSlot(slotIndex);
+					if (current.isEmpty()) continue;
+
+					carriedSlot.set(handler.extractItem(slotIndex, Container.LARGE_MAX_STACK_SIZE, false));
+
+					player.containerMenu.slotsChanged(slot.container);
+					return true;
+				}
+				return false;
+			}
+
+			boolean slotsChanged = false;
+			final int initalCount = carriedStack.getCount();
+
+			{
+				ItemStack remainder = handler.insertItem(0, carriedStack, false);
+
+				if (remainder.getCount() != initalCount) {
+					slotsChanged = true;
+					carriedSlot.set(remainder);
+				}
+
+				for (int slotIndex = 1; slotIndex < handler.getSlots(); slotIndex++) {
+
+					remainder = handler.insertItem(slotIndex, remainder, false);
+
+					if (remainder.getCount() != initalCount || slotsChanged) {
+						slotsChanged = true;
+						carriedSlot.set(remainder);
+					}
+
+					if (remainder.isEmpty()) break;
+				}
+			}
+
+			if (!slotsChanged) return false;
+
+			player.containerMenu.slotsChanged(slot.container);
+			return true;
+
+		}).orElse(false);
 	}
 
 	@Override

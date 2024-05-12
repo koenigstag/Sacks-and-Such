@@ -22,6 +22,7 @@ public final class ServerConfig {
 	public final BooleanValue allPickBlock;
 	public final BooleanValue allAllowOre;
 	public final BooleanValue allAllowFood;
+	public final BooleanValue enableSackInventoryInteraction;
 
 	ServerConfig(final ForgeConfigSpec.Builder builder) {
 
@@ -46,6 +47,9 @@ public final class ServerConfig {
 		allPickBlock = builder.comment("This allows other containers such as vessels to support the pick block search").define("allPickBlock", false);
 		allAllowOre = builder.comment("This makes all sack types capable of holding ore").define("allAllowOre", false);
 		allAllowFood = builder.comment("This makes all sacks capable of holding food although they won't preserve it!").define("allAllowFood", false);
+		enableSackInventoryInteraction = builder.comment(
+						"This allows sacks to have items inserted and extracted from them from the inventory like vanilla Bundles")
+				.define("enableSackInventoryInteraction", true);
 	}
 
 	private SackConfig buildSackConfig(final Builder builder, final String sackName, final boolean doPickup, final boolean doVoiding,
