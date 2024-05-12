@@ -26,5 +26,17 @@ public final class SNSPacketHandler {
 				.decoder(ServerBoundPickBlockPacket::new)
 				.consumerMainThread(ServerBoundPickBlockPacket::handle)
 				.add();
+
+		CHANNEL.messageBuilder(ClientBoundExtendedSlotSyncPacket.class, id++)
+				.encoder(ClientBoundExtendedSlotSyncPacket::encode)
+				.decoder(ClientBoundExtendedSlotSyncPacket::new)
+				.consumerMainThread((clientBoundExtendedSlotSyncPacket, contextSupplier) -> clientBoundExtendedSlotSyncPacket.handle())
+				.add();
+
+		CHANNEL.messageBuilder(ClientBoundExtendedSlotInitialDataPacket.class, id++)
+				.encoder(ClientBoundExtendedSlotInitialDataPacket::encode)
+				.decoder(ClientBoundExtendedSlotInitialDataPacket::new)
+				.consumerMainThread((clientBoundExtendedSlotInitialDataPacket, contextSupplier) -> clientBoundExtendedSlotInitialDataPacket.handle())
+				.add();
 	}
 }

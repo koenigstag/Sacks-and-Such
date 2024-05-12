@@ -3,6 +3,7 @@ package mod.traister101.sacks.common.menu;
 import mod.traister101.sacks.common.capability.ExtendedSlotCapacityHandler;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -51,6 +52,10 @@ public class SackMenu extends AbstractContainerMenu {
 			this.itemIndex = containerSlots + heldItemIndex + 27;
 		} else {
 			this.itemIndex = -100;
+		}
+
+		if (!this.player.level().isClientSide) {
+			this.setSynchronizer(new ExtendedSlotCapacitySynchronizer((ServerPlayer) player));
 		}
 
 		this.addContainerSlots();
