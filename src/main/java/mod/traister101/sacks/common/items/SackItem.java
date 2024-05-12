@@ -35,6 +35,7 @@ import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
 import lombok.Getter;
@@ -53,8 +54,9 @@ public class SackItem extends Item implements IItemSize {
 	}
 
 	private static SimpleMenuProvider createMenuProvider(final Player player, final InteractionHand hand, final ItemStack heldStack) {
-		return new SimpleMenuProvider((windowId, inventory, unused) -> new SackMenu(windowId, inventory,
-				heldStack.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().get(), hand,
+		//noinspection OptionalGetWithoutIsPresent our Sack should always have this capability
+		final IItemHandler itemHandler = heldStack.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().get();
+		return new SimpleMenuProvider((windowId, inventory, unused) -> new SackMenu(windowId, inventory, itemHandler, hand,
 				hand == InteractionHand.OFF_HAND ? -1 : player.getInventory().selected), heldStack.getHoverName());
 	}
 
