@@ -38,5 +38,11 @@ public final class SNSPacketHandler {
 				.decoder(ClientBoundExtendedSlotInitialDataPacket::new)
 				.consumerMainThread((clientBoundExtendedSlotInitialDataPacket, contextSupplier) -> clientBoundExtendedSlotInitialDataPacket.handle())
 				.add();
+
+		CHANNEL.messageBuilder(ServerBoundTogglePacket.class, id++)
+				.encoder(ServerBoundTogglePacket::encode)
+				.decoder(ServerBoundTogglePacket::new)
+				.consumerMainThread(ServerBoundTogglePacket::handle)
+				.add();
 	}
 }

@@ -3,25 +3,42 @@ package mod.traister101.sacks.util;
 import mod.traister101.sacks.common.items.SackItem;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 
 import lombok.experimental.UtilityClass;
-import javax.annotation.Nonnull;
 
 @UtilityClass
 public final class NBTHelper {
 
-	public static boolean isAutoVoid(@Nonnull ItemStack stack) {
-		return stack.getItem() instanceof SackItem && stack.getOrCreateTag().getBoolean(ToggleType.VOID.key);
+	public static void toggle(final ItemStack heldStack, final ToggleType toggleType, final boolean toggle) {
+		heldStack.getOrCreateTag().putBoolean(toggleType.tag, toggle);
 	}
 
-	public static boolean isAutoPickup(@Nonnull ItemStack stack) {
-		if (stack.getItem() instanceof SackItem) {
-			if (!stack.getOrCreateTag().contains(ToggleType.PICKUP.key)) {
-//				SacksNSuch.getNetwork().sendToServer(new TogglePacket(true, ToggleType.PICKUP));
-				return true;
-			}
+	public static boolean isAutoVoid(final ItemStack itemStack) {
+		if (!(itemStack.getItem() instanceof SackItem)) {
+			return false;
 		}
-		return stack.getOrCreateTag().getBoolean(ToggleType.PICKUP.key);
+
+		final CompoundTag compoundTag = itemStack.getTag();
+		if (compoundTag == null) return false;
+
+		if (compoundTag.contains(ToggleType.VOID.tag, Tag.TAG_BYTE)) return compoundTag.getBoolean(ToggleType.VOID.tag);
+
+		return false;
+	}
+
+	public static boolean isAutoPickup(final ItemStack itemStack) {
+		if (!(itemStack.getItem() instanceof SackItem)) {
+			return false;
+		}
+
+		final CompoundTag compoundTag = itemStack.getTag();
+		if (compoundTag == null) return false;
+
+		if (compoundTag.contains(ToggleType.PICKUP.tag, Tag.TAG_BYTE)) return compoundTag.getBoolean(ToggleType.PICKUP.tag);
+
+		return false;
 	}
 }

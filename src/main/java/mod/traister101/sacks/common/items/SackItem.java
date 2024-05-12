@@ -11,6 +11,8 @@ import mod.traister101.sacks.common.capability.SackHandler;
 import mod.traister101.sacks.common.menu.SackMenu;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.NBTHelper;
+import mod.traister101.sacks.util.SNSUtils;
+import mod.traister101.sacks.util.SNSUtils.ToggleType;
 import mod.traister101.sacks.util.SackType;
 
 import net.minecraft.client.gui.screens.Screen;
@@ -59,7 +61,33 @@ public class SackItem extends Item implements IItemSize {
 	@Override
 	public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
 		final ItemStack heldStack = player.getItemInHand(hand);
-		if (level.isClientSide) return InteractionResultHolder.success(heldStack);
+
+		if (level.isClientSide) {
+			if (!player.isShiftKeyDown()) return InteractionResultHolder.success(heldStack);
+
+			if (SNSConfig.CLIENT.shiftClickTogglesVoid.get()) {
+				if (type.doesVoiding()) {
+					final boolean flag = !NBTHelper.isAutoVoid(heldStack);
+					SNSUtils.sendTogglePacket(ToggleType.VOID, flag);
+					player.displayClientMessage(ToggleType.VOID.getComponent(flag), true);
+				} else {
+					final Component status = Component.translatable(SacksNSuch.MODID + ".sack.no_void");
+					player.displayClientMessage(status, true);
+				}
+				return InteractionResultHolder.consume(heldStack);
+			}
+
+			if (type.doesAutoPickup()) {
+				final boolean flag = !NBTHelper.isAutoPickup(heldStack);
+				SNSUtils.sendTogglePacket(ToggleType.PICKUP, flag);
+				player.displayClientMessage(ToggleType.PICKUP.getComponent(flag), true);
+			} else {
+				final Component status = Component.translatable(SacksNSuch.MODID + ".sack.no_pickup");
+				player.displayClientMessage(status, true);
+			}
+
+			return InteractionResultHolder.success(heldStack);
+		}
 
 		if (!player.isShiftKeyDown()) {
 			NetworkHooks.openScreen(((ServerPlayer) player), createMenuProvider(player, hand, heldStack), byteBuf -> {
@@ -70,22 +98,6 @@ public class SackItem extends Item implements IItemSize {
 			return InteractionResultHolder.consume(heldStack);
 		}
 
-		if (SNSConfig.CLIENT.shiftClickTogglesVoid.get()) {
-			if (type.doesVoiding()) {
-//				SNSUtils.sendPacketAndStatus(!NBTHelper.isAutoVoid(heldStack), ToggleType.VOID);
-			} else {
-				final Component status = Component.translatable(SacksNSuch.MODID + ".sack.no_void");
-				player.displayClientMessage(status, true);
-			}
-			return InteractionResultHolder.consume(heldStack);
-		}
-
-		if (type.doesAutoPickup()) {
-//			SNSUtils.sendPacketAndStatus(!NBTHelper.isAutoPickup(heldStack), ToggleType.PICKUP);
-		} else {
-			final Component status = Component.translatable(SacksNSuch.MODID + ".sack.no_pickup");
-			player.displayClientMessage(status, true);
-		}
 		return InteractionResultHolder.consume(heldStack);
 	}
 

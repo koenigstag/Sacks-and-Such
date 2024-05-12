@@ -1,6 +1,9 @@
 package mod.traister101.sacks.client;
 
 import mod.traister101.sacks.config.SNSConfig;
+import mod.traister101.sacks.util.NBTHelper;
+import mod.traister101.sacks.util.SNSUtils;
+import mod.traister101.sacks.util.SNSUtils.ToggleType;
 import mod.traister101.sacks.util.handlers.PickBlockHandler;
 
 import net.minecraft.client.Minecraft;
@@ -27,12 +30,16 @@ public final class ClientForgeEventHandler {
 
 		if (SNSKeybinds.TOGGLE_VOID.isDown()) {
 			final ItemStack heldStack = MC.player.getMainHandItem();
-//			SNSUtils.sendPacketAndStatus(!NBTHelper.isAutoVoid(heldStack), SNSUtils.ToggleType.VOID);
+			final boolean flag = !NBTHelper.isAutoVoid(heldStack);
+			SNSUtils.sendTogglePacket(ToggleType.VOID, flag);
+			MC.player.displayClientMessage(ToggleType.VOID.getComponent(flag), true);
 		}
 
 		if (SNSKeybinds.TOGGLE_PICKUP.isDown()) {
 			final ItemStack heldStack = MC.player.getMainHandItem();
-//			SNSUtils.sendPacketAndStatus(!NBTHelper.isAutoPickup(heldStack), SNSUtils.ToggleType.PICKUP);
+			final boolean flag = !NBTHelper.isAutoPickup(heldStack);
+			SNSUtils.sendTogglePacket(ToggleType.PICKUP, flag);
+			MC.player.displayClientMessage(ToggleType.PICKUP.getComponent(flag), true);
 		}
 	}
 
