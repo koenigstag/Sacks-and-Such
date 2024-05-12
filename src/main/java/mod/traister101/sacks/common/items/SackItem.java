@@ -3,6 +3,7 @@ package mod.traister101.sacks.common.items;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.util.Helpers;
 
 import mod.traister101.sacks.SacksNSuch;
 import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -36,6 +38,7 @@ import net.minecraftforge.network.NetworkHooks;
 import lombok.Getter;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public class SackItem extends Item implements IItemSize {
@@ -179,6 +182,34 @@ public class SackItem extends Item implements IItemSize {
 			text += ".shift";
 		}
 		tooltip.add(Component.translatable((text)));
+	}
+
+	@Override
+	public Optional<TooltipComponent> getTooltipImage(final ItemStack itemStack) {
+		if (!SNSConfig.CLIENT.displayItemContentsAsImages.get()) return super.getTooltipImage(itemStack);
+
+		return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).map(handler -> {
+			final int width, hight;
+			final int slotCount = handler.getSlots();
+			switch (slotCount) {
+				case 1 -> width = hight = 1;
+				case 4 -> width = hight = 2;
+				case 8 -> {
+					width = 4;
+					hight = 2;
+				}
+				case 18 -> {
+					width = 9;
+					hight = 2;
+				}
+				default -> {
+					// We want to round up, integer math rounds down
+					width = (int) Math.ceil((double) slotCount / 9);
+					hight = slotCount / width;
+				}
+			}
+			return Helpers.getTooltipImage(handler, width, hight, 0, slotCount - 1);
+		}).orElse(super.getTooltipImage(itemStack));
 	}
 
 	@Override
