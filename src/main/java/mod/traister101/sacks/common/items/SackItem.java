@@ -35,6 +35,7 @@ import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -46,6 +47,7 @@ import java.util.Optional;
 @Getter
 public class SackItem extends Item implements IItemSize {
 
+	public static final String CONTENTS_TAG = "contents";
 	private final SackType type;
 
 	public SackItem(final Properties properties, final SackType type) {
@@ -229,6 +231,37 @@ public class SackItem extends Item implements IItemSize {
 	@Override
 	public boolean isFoil(final ItemStack itemStack) {
 		return SNSConfig.CLIENT.voidGlint.get() ? NBTHelper.isAutoVoid(itemStack) : NBTHelper.isAutoPickup(itemStack);
+	}
+
+	@Nullable
+	@Override
+	public CompoundTag getShareTag(final ItemStack itemStack) {
+		final CompoundTag shareTag = super.getShareTag(itemStack);
+		final CompoundTag compoundTag = shareTag == null ? new CompoundTag() : shareTag;
+
+		// Serialize our contents
+		itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+			if (handler instanceof INBTSerializable<?> serializable) {
+				compoundTag.put(CONTENTS_TAG, serializable.serializeNBT());
+			}
+		});
+
+		return compoundTag;
+	}
+
+	@Override
+	public void readShareTag(final ItemStack itemStack, @Nullable final CompoundTag compoundTag) {
+		super.readShareTag(itemStack, compoundTag);
+
+		if (compoundTag == null) return;
+
+		// Deserlialize our contents
+		itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+			if (handler instanceof INBTSerializable<?> serializable) {
+				//noinspection unchecked
+				((INBTSerializable<CompoundTag>) serializable).deserializeNBT(compoundTag.getCompound(CONTENTS_TAG));
+			}
+		});
 	}
 
 	@Nullable
