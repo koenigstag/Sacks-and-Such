@@ -3,7 +3,6 @@ package mod.traister101.sacks.common.capability;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
-import org.jetbrains.annotations.Nullable;
 
 import mod.traister101.sacks.common.SNSTags;
 import mod.traister101.sacks.common.SNSTags.Items;
@@ -11,7 +10,6 @@ import mod.traister101.sacks.common.items.DefaultSacks;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.SackType;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 // TODO needs more touch up
@@ -19,12 +17,9 @@ public class SackHandler extends ExtendedSlotCapacityHandler {
 
 	private final SackType type;
 
-	public SackHandler(@Nullable final CompoundTag nbt, final SackType type) {
+	public SackHandler(final SackType type) {
 		super(type.getSlotCount(), type.getSlotCapacity());
 		this.type = type;
-		if (nbt != null) {
-			deserializeNBT(nbt);
-		}
 	}
 
 	@Override
