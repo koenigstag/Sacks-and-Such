@@ -15,7 +15,6 @@ import mod.traister101.sacks.util.SackType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-// TODO needs more touch up
 public class SackHandler extends ExtendedSlotCapacityHandler {
 
 	private final SackType type;
@@ -70,11 +69,6 @@ public class SackHandler extends ExtendedSlotCapacityHandler {
 		// Invalidate our cached weight when any contents change
 		this.cachedWeight = null;
 		super.onContentsChanged(slotIndex);
-	}
-
-	// TODO rethink if this is needed
-	public boolean hasItems() {
-		return stacks.stream().anyMatch(itemStack -> !itemStack.isEmpty());
 	}
 
 	/**

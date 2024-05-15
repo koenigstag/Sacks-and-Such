@@ -2,7 +2,6 @@ package mod.traister101.sacks.util.handlers;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 
-import mod.traister101.sacks.common.capability.SackHandler;
 import mod.traister101.sacks.common.items.SackItem;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.NBTHelper;
@@ -144,10 +143,6 @@ public final class PickupHandler {
 
 					if (0 < numPickedUp) {
 						player.containerMenu.broadcastChanges();
-						if (handler instanceof SackHandler sackHandler) {
-							final boolean toggleFlag = sackHandler.hasItems();
-//							SNSUtils.toggle(itemContainer, SNSUtils.ToggleType.ITEMS, toggleFlag);
-						}
 					}
 
 					if (pickupResult.isEmpty()) {
