@@ -27,7 +27,7 @@ public final class SNSItems {
 	 * All our sacks
 	 */
 	public static final EnumMap<DefaultSacks, RegistryObject<SackItem>> SACKS = Helpers.mapOfKeys(DefaultSacks.class,
-			sackType -> register(sackType.getSerializedName(), () -> new SackItem(new Properties(), sackType)));
+			sackType -> register(sackType.getSerializedName(), () -> new SackItem(new Properties().stacksTo(1), sackType)));
 
 	private static RegistryObject<Item> registerSimple(final String name) {
 		return register(name, () -> new Item(new Properties()));

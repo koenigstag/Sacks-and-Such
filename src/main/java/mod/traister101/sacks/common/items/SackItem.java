@@ -35,7 +35,6 @@ import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -241,8 +240,8 @@ public class SackItem extends Item implements IItemSize {
 
 		// Serialize our contents
 		itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-			if (handler instanceof INBTSerializable<?> serializable) {
-				compoundTag.put(CONTENTS_TAG, serializable.serializeNBT());
+			if (handler instanceof final SackHandler sackHandler) {
+				compoundTag.put(CONTENTS_TAG, sackHandler.serializeNBT());
 			}
 		});
 
@@ -257,9 +256,8 @@ public class SackItem extends Item implements IItemSize {
 
 		// Deserlialize our contents
 		itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-			if (handler instanceof INBTSerializable<?> serializable) {
-				//noinspection unchecked
-				((INBTSerializable<CompoundTag>) serializable).deserializeNBT(compoundTag.getCompound(CONTENTS_TAG));
+			if (handler instanceof final SackHandler sackHandler) {
+				sackHandler.deserializeNBT(compoundTag.getCompound(CONTENTS_TAG));
 			}
 		});
 	}
@@ -278,6 +276,13 @@ public class SackItem extends Item implements IItemSize {
 
 	@Override
 	public Weight getWeight(final ItemStack itemStack) {
-		return Weight.VERY_HEAVY;
+		return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+				.map(handler -> handler instanceof final SackHandler sackHandler ? sackHandler.getWeight() : Weight.VERY_HEAVY)
+				.orElse(Weight.VERY_HEAVY);
+	}
+
+	@Override
+	public int getDefaultStackSize(final ItemStack itemStack) {
+		return 1;
 	}
 }
