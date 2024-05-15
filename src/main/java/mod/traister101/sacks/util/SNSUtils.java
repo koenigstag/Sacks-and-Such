@@ -2,13 +2,11 @@ package mod.traister101.sacks.util;
 
 import mod.traister101.sacks.SacksNSuch;
 import mod.traister101.sacks.network.SNSPacketHandler;
-import mod.traister101.sacks.network.ServerBoundTogglePacket;
+import mod.traister101.sacks.network.ServerboundTogglePacket;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.ByIdMap;
-
-import net.minecraftforge.network.PacketDistributor;
 
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -18,7 +16,7 @@ import java.util.function.IntFunction;
 public final class SNSUtils {
 
 	public static void sendTogglePacket(final ToggleType toggleType, final boolean flag) {
-		SNSPacketHandler.send(PacketDistributor.SERVER.noArg(), new ServerBoundTogglePacket(flag, toggleType));
+		SNSPacketHandler.sendToServer(new ServerboundTogglePacket(flag, toggleType));
 	}
 
 	/**

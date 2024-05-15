@@ -1,7 +1,7 @@
 package mod.traister101.sacks.common.menu;
 
-import mod.traister101.sacks.network.ClientBoundExtendedSlotInitialDataPacket;
-import mod.traister101.sacks.network.ClientBoundExtendedSlotSyncPacket;
+import mod.traister101.sacks.network.ClientboundExtendedSlotInitialDataPacket;
+import mod.traister101.sacks.network.ClientboundExtendedSlotSyncPacket;
 import mod.traister101.sacks.network.SNSPacketHandler;
 
 import net.minecraft.core.NonNullList;
@@ -29,7 +29,7 @@ public class ExtendedSlotCapacitySynchronizer implements ContainerSynchronizer {
 	public void sendInitialData(final AbstractContainerMenu containerMenu, final NonNullList<ItemStack> itemStacks, final ItemStack carriedStack,
 			final int[] dataSlotsValues) {
 		SNSPacketHandler.send(PacketDistributor.PLAYER.with(() -> player),
-				new ClientBoundExtendedSlotInitialDataPacket(containerMenu.incrementStateId(), containerMenu.containerId, itemStacks, carriedStack));
+				new ClientboundExtendedSlotInitialDataPacket(containerMenu.incrementStateId(), containerMenu.containerId, itemStacks, carriedStack));
 
 		for (int index = 0; index < dataSlotsValues.length; ++index) {
 			broadcastDataValue(containerMenu, index, dataSlotsValues[index]);
@@ -39,7 +39,7 @@ public class ExtendedSlotCapacitySynchronizer implements ContainerSynchronizer {
 	@Override
 	public void sendSlotChange(final AbstractContainerMenu containerMenu, final int slotIndex, final ItemStack itemStack) {
 		SNSPacketHandler.send(PacketDistributor.PLAYER.with(() -> player),
-				new ClientBoundExtendedSlotSyncPacket(containerMenu.containerId, slotIndex, itemStack));
+				new ClientboundExtendedSlotSyncPacket(containerMenu.containerId, slotIndex, itemStack));
 	}
 
 	@Override

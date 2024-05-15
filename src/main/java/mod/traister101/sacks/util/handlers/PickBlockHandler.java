@@ -3,7 +3,7 @@ package mod.traister101.sacks.util.handlers;
 import mod.traister101.sacks.common.items.SackItem;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.network.SNSPacketHandler;
-import mod.traister101.sacks.network.ServerBoundPickBlockPacket;
+import mod.traister101.sacks.network.ServerboundPickBlockPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
@@ -21,7 +21,6 @@ import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.PacketDistributor;
 
 import lombok.experimental.UtilityClass;
 import java.util.Optional;
@@ -53,7 +52,7 @@ public final class PickBlockHandler {
 		// Nothing to select
 		if (stackToSelect.isEmpty()) return false;
 
-		SNSPacketHandler.send(PacketDistributor.SERVER.noArg(), new ServerBoundPickBlockPacket(stackToSelect));
+		SNSPacketHandler.sendToServer(new ServerboundPickBlockPacket(stackToSelect));
 		return true;
 	}
 

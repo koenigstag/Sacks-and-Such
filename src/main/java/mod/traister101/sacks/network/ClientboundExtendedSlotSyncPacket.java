@@ -9,31 +9,31 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public final class ClientBoundExtendedSlotSyncPacket {
+public final class ClientboundExtendedSlotSyncPacket {
 
 	final int windowId;
 	final int slotIndex;
 	final ItemStack itemStack;
 
-	public ClientBoundExtendedSlotSyncPacket(final int windowId, final int slotIndex, final ItemStack itemStack) {
+	public ClientboundExtendedSlotSyncPacket(final int windowId, final int slotIndex, final ItemStack itemStack) {
 		this.windowId = windowId;
 		this.slotIndex = slotIndex;
 		this.itemStack = itemStack;
 	}
 
-	ClientBoundExtendedSlotSyncPacket(final FriendlyByteBuf friendlyByteBuf) {
+	ClientboundExtendedSlotSyncPacket(final FriendlyByteBuf friendlyByteBuf) {
 		windowId = friendlyByteBuf.readInt();
 		slotIndex = friendlyByteBuf.readInt();
 		itemStack = ByteBufUtils.readExtendedItemStack(friendlyByteBuf);
 	}
 
-	public void encode(final FriendlyByteBuf friendlyByteBuf) {
+	void encode(final FriendlyByteBuf friendlyByteBuf) {
 		friendlyByteBuf.writeInt(windowId);
 		friendlyByteBuf.writeInt(slotIndex);
 		ByteBufUtils.writeExtendedItemStack(friendlyByteBuf, itemStack);
 	}
 
-	public void handle() {
+	void handle() {
 		final Player player = ClientHelpers.getPlayer();
 		if (player != null && player.containerMenu instanceof SackMenu && windowId == player.containerMenu.containerId) {
 			player.containerMenu.slots.get(slotIndex).set(itemStack);
