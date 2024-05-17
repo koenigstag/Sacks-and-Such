@@ -116,18 +116,17 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion")
 }
 
-// TODO fix this fucker
-//jar {
-//    manifest {
-//        attributes(["Specification-Title"     : modName,
-//                    "Specification-Vendor"    : "traister101",
-//                    "Specification-Version"   : 1,
-//                    "Implementation-Title"    : project.name,
-//                    "Implementation-Version"  : project.jar.ararchiveVersion,
-//                    "Implementation-Vendor"   : "traister101",
-//                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd" T "HH:mm:ssZ")])
-//    }
-//}
+jar {
+    manifest {
+        attributes(["Specification-Title"     : modName,
+                    "Specification-Vendor"    : "traister101",
+                    "Specification-Version"   : project.jar.archiveVersion,
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : project.jar.archiveVersion,
+                    "Implementation-Vendor"   : "traister101",
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
+    }
+}
 
 idea {
     module {
