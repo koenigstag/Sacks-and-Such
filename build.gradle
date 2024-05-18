@@ -87,6 +87,11 @@ repositories {
     }
     maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
     maven { url = "https://modmaven.k-4u.nl" } // Mirror for JEI
+    maven {
+        // Curios
+        name = "Illusive Soulworks maven"
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 dependencies {
@@ -114,6 +119,10 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge-api:$jeiVersion")
     compileOnly fg.deobf("mezz.jei:jei-$minecraftVersion-common-api:$jeiVersion")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion")
+
+    // Curios
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:$curiosVersion+$minecraftVersion:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:$curiosVersion+$minecraftVersion")
 }
 
 jar {
