@@ -2,11 +2,13 @@ package mod.traister101.sacks.client;
 
 import mod.traister101.sacks.client.screen.SackScreen;
 import mod.traister101.sacks.common.menu.SNSMenus;
+import mod.traister101.sacks.compat.curios.CuriosCompat;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -26,6 +28,10 @@ public final class ClientEventHandler {
 		event.enqueueWork(() -> {
 			MenuScreens.register(SNSMenus.SACK_MENU.get(), SackScreen::new);
 		});
+
+		if (ModList.get().isLoaded("curios")) {
+			CuriosCompat.clientSetup();
+		}
 	}
 
 	private static void registerKeyBindings(final RegisterKeyMappingsEvent event) {
