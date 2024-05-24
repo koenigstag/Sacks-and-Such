@@ -140,9 +140,10 @@ jar {
 idea {
     module {
         downloadJavadoc = true
+        downloadSources = true
 
         // Add directory exlusions
-        ["run", ".gradle", "build"].forEach { excludeDirs.add(file(it)) }
+        ["run", ".gradle", "build", ".idea", "gradle", "resources/venv", "resources/.idea"].forEach { excludeDirs.add(file(it)) }
     }
 }
 
