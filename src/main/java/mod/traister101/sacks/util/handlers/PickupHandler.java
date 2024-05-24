@@ -6,7 +6,7 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import mod.traister101.sacks.common.items.SackItem;
 import mod.traister101.sacks.config.SNSConfig;
-import mod.traister101.sacks.util.NBTHelper;
+import mod.traister101.sacks.util.SackType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundTakeItemEntityPacket;
@@ -132,12 +132,7 @@ public final class PickupHandler {
 				for (int slotIndex = 0; slotIndex < equippedCurios.getSlots(); slotIndex++) {
 					final ItemStack itemContainer = equippedCurios.getStackInSlot(slotIndex);
 
-					if (itemContainer.getItem() instanceof SackItem sackItem) {
-						// Config pickup disabled for sack type
-						if (!sackItem.getType().doesAutoPickup()) continue;
-						// This sack in particular has auto pickup disabled
-						if (!NBTHelper.isAutoPickup(itemContainer)) continue;
-					}
+					if (!SackType.canDoItemPickup(itemContainer)) continue;
 
 					final Optional<IItemHandler> containerInv = itemContainer.getCapability(ForgeCapabilities.ITEM_HANDLER)
 							.resolve()
@@ -148,7 +143,7 @@ public final class PickupHandler {
 					remainder = insertStack(player, remainder, containerInv.get());
 
 					if (remainder.isEmpty()) continue;
-					if (!canItemVoid(itemContainer)) continue;
+					if (SNSConfig.SERVER.doVoiding.get() && !SackType.canDoItemVoiding(itemContainer)) continue;
 
 					if (!voidedItem(remainder, containerInv.get())) continue;
 
@@ -160,12 +155,7 @@ public final class PickupHandler {
 		for (int slotIndex = 0; slotIndex < playerInventory.getContainerSize(); slotIndex++) {
 			final ItemStack itemContainer = playerInventory.getItem(slotIndex);
 
-			if (itemContainer.getItem() instanceof SackItem sackItem) {
-				// Config pickup disabled for sack type
-				if (!sackItem.getType().doesAutoPickup()) continue;
-				// This sack in particular has auto pickup disabled
-				if (!NBTHelper.isAutoPickup(itemContainer)) continue;
-			}
+			if (!SackType.canDoItemPickup(itemContainer)) continue;
 
 			final Optional<IItemHandler> containerInv = itemContainer.getCapability(ForgeCapabilities.ITEM_HANDLER)
 					.resolve()
@@ -176,7 +166,7 @@ public final class PickupHandler {
 			remainder = insertStack(player, remainder, containerInv.get());
 
 			if (remainder.isEmpty()) continue;
-			if (!canItemVoid(itemContainer)) continue;
+			if (SNSConfig.SERVER.doVoiding.get() && !SackType.canDoItemVoiding(itemContainer)) continue;
 
 			if (!voidedItem(remainder, containerInv.get())) continue;
 
@@ -228,17 +218,6 @@ public final class PickupHandler {
 			return true;
 		}
 		return false;
-	}
-
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	private static boolean canItemVoid(final ItemStack itemContainer) {
-		if (!SNSConfig.SERVER.doVoiding.get()) return false;
-		// Not a sack
-		if (!(itemContainer.getItem() instanceof SackItem)) return false;
-		// Type can't void items
-		if (!((SackItem) itemContainer.getItem()).getType().doesVoiding()) return false;
-		// Returns if this particular sack item has voiding enabled
-		return NBTHelper.isAutoVoid(itemContainer);
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")

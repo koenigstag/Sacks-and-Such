@@ -10,6 +10,30 @@ import net.minecraft.world.item.ItemStack;
 public interface SackType extends StringRepresentable {
 
 	/**
+	 * @return If the passed {@link ItemStack} supports auto pickup
+	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+	static boolean canDoItemPickup(final ItemStack itemStack) {
+		if (!(itemStack.getItem() instanceof SackItem sackItem)) return false;
+
+		if (!sackItem.getType().doesAutoPickup()) return false;
+
+		return NBTHelper.isAutoPickup(itemStack);
+	}
+
+	/**
+	 * @return If the passed {@link ItemStack} supports voiding
+	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+	static boolean canDoItemVoiding(final ItemStack itemStack) {
+		if (!(itemStack.getItem() instanceof SackItem sackItem)) return false;
+
+		if (!sackItem.getType().doesVoiding()) return false;
+
+		return NBTHelper.isAutoVoid(itemStack);
+	}
+
+	/**
 	 * @return The amount of slots this sack has TODO mention and link to menu and screen
 	 */
 	int getSlotCount();
