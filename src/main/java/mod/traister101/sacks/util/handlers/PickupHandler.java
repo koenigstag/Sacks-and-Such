@@ -60,6 +60,7 @@ public final class PickupHandler {
 
 		// Picked up more than 0
 		if (0 < pickupCount) {
+			player.containerMenu.broadcastChanges();
 			final var packet = new ClientboundTakeItemEntityPacket(itemEntity.getId(), player.getId(), pickupCount);
 			((ServerPlayer) player).connection.send(packet);
 		}
@@ -140,7 +141,7 @@ public final class PickupHandler {
 
 					if (containerInv.isEmpty()) continue;
 
-					remainder = insertStack(player, remainder, containerInv.get());
+					remainder = insertStack(remainder, containerInv.get());
 
 					if (remainder.isEmpty()) continue;
 					if (SNSConfig.SERVER.doVoiding.get() && !SackType.canDoItemVoiding(itemContainer)) continue;
@@ -163,7 +164,7 @@ public final class PickupHandler {
 
 			if (containerInv.isEmpty()) continue;
 
-			remainder = insertStack(player, remainder, containerInv.get());
+			remainder = insertStack(remainder, containerInv.get());
 
 			if (remainder.isEmpty()) continue;
 			if (SNSConfig.SERVER.doVoiding.get() && !SackType.canDoItemVoiding(itemContainer)) continue;
@@ -182,18 +183,12 @@ public final class PickupHandler {
 	 *
 	 * @return The remaining items that didn't fit
 	 */
-	private static ItemStack insertStack(final Player player, final ItemStack fillStack, final IItemHandler itemHandler) {
+	private static ItemStack insertStack(final ItemStack fillStack, final IItemHandler itemHandler) {
 		ItemStack pickupResult = fillStack.copy();
 		for (int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
 			if (itemHandler.getStackInSlot(slotIndex).getCount() >= itemHandler.getSlotLimit(slotIndex)) continue;
 
 			pickupResult = itemHandler.insertItem(slotIndex, pickupResult, false);
-			final int numPickedUp = fillStack.getCount() - pickupResult.getCount();
-
-			if (0 < numPickedUp) {
-				// TODO this probably spams the network :|
-				player.containerMenu.broadcastChanges();
-			}
 
 			if (pickupResult.isEmpty()) {
 				return ItemStack.EMPTY;
