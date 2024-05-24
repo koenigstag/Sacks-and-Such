@@ -39,6 +39,6 @@ public final class NBTHelper {
 
 		if (compoundTag.contains(ToggleType.PICKUP.tag, Tag.TAG_BYTE)) return compoundTag.getBoolean(ToggleType.PICKUP.tag);
 
-		return false;
+		return true;
 	}
 }
