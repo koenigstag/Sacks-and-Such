@@ -1,11 +1,12 @@
 package mod.traister101.sacks.util.handlers;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import mod.traister101.sacks.common.items.SackItem;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.NBTHelper;
-import mod.traister101.sacks.util.SackType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundTakeItemEntityPacket;
@@ -26,10 +27,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.Optional;
@@ -92,6 +94,10 @@ public final class PickupHandler {
 				} else {
 					playPickupSound(serverLevel, player.position());
 				}
+
+				if (itemResult.getCount() != itemStack.getCount()) {
+					player.containerMenu.broadcastChanges();
+				}
 			}
 			level.removeBlock(blockPos, false);
 
@@ -111,59 +117,117 @@ public final class PickupHandler {
 	 * @return Empty {@link ItemStack} or the remainer.
 	 */
 	private static ItemStack pickupItemStack(final Player player, final ItemStack itemPickup) {
+		ItemStack remainder = itemPickup.copy();
 
 		final Inventory playerInventory = player.getInventory();
-		if (topOffPlayerInventory(playerInventory, itemPickup)) return ItemStack.EMPTY;
+		if (topOffPlayerInventory(playerInventory, remainder)) return ItemStack.EMPTY;
 
-		for (int i = 0; i < playerInventory.getContainerSize(); i++) {
-			final ItemStack itemContainer = playerInventory.getItem(i);
+		if (ModList.get().isLoaded(CuriosApi.MODID)) {
+			final Optional<ICuriosItemHandler> optionalCuriosItemHandler = CuriosApi.getCuriosInventory(player).resolve();
 
-			final LazyOptional<IItemHandler> containerInv = itemContainer.getCapability(ForgeCapabilities.ITEM_HANDLER);
-			if (!containerInv.isPresent()) continue;
+			if (optionalCuriosItemHandler.isPresent()) {
+				final ICuriosItemHandler curiosItemHandler = optionalCuriosItemHandler.get();
+				final IItemHandlerModifiable equippedCurios = curiosItemHandler.getEquippedCurios();
 
-			if (itemContainer.getItem() instanceof SackItem) {
-				final SackType type = ((SackItem) itemContainer.getItem()).getType();
-				// Config pickup disabled for sack type
-				if (!type.doesAutoPickup()) continue;
-				// This sack in particular has auto pickup disabled
-				if (!NBTHelper.isAutoPickup(itemContainer)) continue;
-			}
+				for (int slotIndex = 0; slotIndex < equippedCurios.getSlots(); slotIndex++) {
+					final ItemStack itemContainer = equippedCurios.getStackInSlot(slotIndex);
 
-			final Optional<IItemHandler> filtered = containerInv.filter(handler -> isValidForContainer(handler, itemPickup));
-
-			if (filtered.isEmpty()) continue;
-
-			final IItemHandler handler = filtered.get();
-
-			// Goes through the sack slots to see if the picked up item can be added
-			for (int j = 0; j < handler.getSlots(); j++) {
-				if (handler.getStackInSlot(j).getCount() < handler.getSlotLimit(j)) {
-					final ItemStack pickupResult = handler.insertItem(j, itemPickup, false);
-					final int numPickedUp = itemPickup.getCount() - pickupResult.getCount();
-
-					if (0 < numPickedUp) {
-						player.containerMenu.broadcastChanges();
+					if (itemContainer.getItem() instanceof SackItem sackItem) {
+						// Config pickup disabled for sack type
+						if (!sackItem.getType().doesAutoPickup()) continue;
+						// This sack in particular has auto pickup disabled
+						if (!NBTHelper.isAutoPickup(itemContainer)) continue;
 					}
 
-					if (pickupResult.isEmpty()) {
-						return ItemStack.EMPTY;
-					} else {
-						itemPickup.setCount(pickupResult.getCount());
-					}
-				}
-			}
-			// Can't void
-			if (!canItemVoid(itemContainer)) continue;
-			// Make sure there's a slot with the same type of item before voiding the pickup
-			for (int j = 0; j < handler.getSlots(); j++) {
-				final ItemStack slotStack = handler.getStackInSlot(j);
-				if (ItemStack.isSameItem(slotStack, itemPickup)) {
-					itemPickup.setCount(0);
+					final Optional<IItemHandler> containerInv = itemContainer.getCapability(ForgeCapabilities.ITEM_HANDLER)
+							.resolve()
+							.filter(h -> isValidForContainer(h, itemPickup));
+
+					if (containerInv.isEmpty()) continue;
+
+					remainder = insertStack(player, remainder, containerInv.get());
+
+					if (remainder.isEmpty()) continue;
+					if (!canItemVoid(itemContainer)) continue;
+
+					if (!voidedItem(remainder, containerInv.get())) continue;
+
 					return ItemStack.EMPTY;
 				}
 			}
 		}
-		return itemPickup;
+
+		for (int slotIndex = 0; slotIndex < playerInventory.getContainerSize(); slotIndex++) {
+			final ItemStack itemContainer = playerInventory.getItem(slotIndex);
+
+			if (itemContainer.getItem() instanceof SackItem sackItem) {
+				// Config pickup disabled for sack type
+				if (!sackItem.getType().doesAutoPickup()) continue;
+				// This sack in particular has auto pickup disabled
+				if (!NBTHelper.isAutoPickup(itemContainer)) continue;
+			}
+
+			final Optional<IItemHandler> containerInv = itemContainer.getCapability(ForgeCapabilities.ITEM_HANDLER)
+					.resolve()
+					.filter(h -> isValidForContainer(h, itemPickup));
+
+			if (containerInv.isEmpty()) continue;
+
+			remainder = insertStack(player, remainder, containerInv.get());
+
+			if (remainder.isEmpty()) continue;
+			if (!canItemVoid(itemContainer)) continue;
+
+			if (!voidedItem(remainder, containerInv.get())) continue;
+
+			return ItemStack.EMPTY;
+		}
+		return remainder;
+	}
+
+	/**
+	 * Tries to fill the provided handler until it runs out of capacity or the fillStack runs out.
+	 *
+	 * @param fillStack The stack to put into the {@link IItemHandler}. May be mutated
+	 *
+	 * @return The remaining items that didn't fit
+	 */
+	private static ItemStack insertStack(final Player player, final ItemStack fillStack, final IItemHandler itemHandler) {
+		ItemStack pickupResult = fillStack.copy();
+		for (int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
+			if (itemHandler.getStackInSlot(slotIndex).getCount() >= itemHandler.getSlotLimit(slotIndex)) continue;
+
+			pickupResult = itemHandler.insertItem(slotIndex, pickupResult, false);
+			final int numPickedUp = fillStack.getCount() - pickupResult.getCount();
+
+			if (0 < numPickedUp) {
+				// TODO this probably spams the network :|
+				player.containerMenu.broadcastChanges();
+			}
+
+			if (pickupResult.isEmpty()) {
+				return ItemStack.EMPTY;
+			}
+		}
+		return pickupResult;
+	}
+
+	/**
+	 * @param itemStack The Item Stack to try and void. Will be modified if successful
+	 *
+	 * @return If the item was voided.
+	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+	private static boolean voidedItem(final ItemStack itemStack, final IItemHandler itemHandler) {
+		// Make sure there's a slot with the same type of item before voiding the pickup
+		for (int slotIndex = 0; slotIndex < itemHandler.getSlots(); slotIndex++) {
+			final ItemStack slotStack = itemHandler.getStackInSlot(slotIndex);
+			if (!ItemStack.isSameItem(slotStack, itemStack)) continue;
+
+			itemStack.setCount(0);
+			return true;
+		}
+		return false;
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -179,8 +243,8 @@ public final class PickupHandler {
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private static boolean isValidForContainer(final IItemHandler containerInv, final ItemStack itemPickup) {
-		for (int i = 0; i < containerInv.getSlots(); i++) {
-			if (containerInv.isItemValid(i, itemPickup)) return true;
+		for (int slotIndex = 0; slotIndex < containerInv.getSlots(); slotIndex++) {
+			if (containerInv.isItemValid(slotIndex, itemPickup)) return true;
 		}
 		return false;
 	}
