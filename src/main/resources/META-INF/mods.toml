@@ -1,33 +1,36 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "[47,)"
 license = "MIT"
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 [[mods]]
 modId = "sns"
 version = "${file.jarVersion}"
 displayName = "Sacks 'N Such"
-logoFile = "sns.png"
+logoFile = "icon.png"
 authors = "Traister101"
-description = '''
-An addon for TFC.
-'''
+description = '''An addon for TFC.'''
+
 [[dependencies.sns]]
 modId = "tfc"
 mandatory = true
-versionRange = "[0,)"
+versionRange = "[3.1,9,)"
 ordering = "AFTER"
 side = "BOTH"
-[dependencies.sns.mc-publish]
-ignore = false
-modrinth = "terrafirmacraft"
-curseforge = "terrafirmacraft"
 
 [[dependencies.sns]]
 modId = "forge"
 mandatory = true
-versionRange = "[40,)"
+versionRange = "[47,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.sns]]
+modId = "curios"
+mandatory = false
+versionRange = "[5.4.5,)"
+ordering = "NONE"
+side = "BOTH"
+
 [[dependencies.sns]]
 modId = "minecraft"
 mandatory = true
