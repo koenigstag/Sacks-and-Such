@@ -1,10 +1,14 @@
 package mod.traister101.sacks.common.menu;
 
+import org.jetbrains.annotations.Contract;
+
 import mod.traister101.sacks.common.capability.ExtendedSlotCapacityHandler;
 
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 
@@ -45,16 +49,16 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 			if (slotIndex != SLOT_CLICKED_OUTSIDE) return;
 			if (clickType != ClickType.PICKUP && clickType != ClickType.QUICK_MOVE) return;
 			if (mouseButtom != 0 && mouseButtom != 1) return;
-			if (this.getCarried().isEmpty()) return;
+			if (getCarried().isEmpty()) return;
 
 			final ClickAction clickAction = mouseButtom == 0 ? ClickAction.PRIMARY : ClickAction.SECONDARY;
 			if (clickAction != ClickAction.PRIMARY) {
-				player.drop(this.getCarried().split(1), true);
+				player.drop(getCarried().split(1), true);
 				return;
 			}
 
-			player.drop(this.getCarried(), true);
-			this.setCarried(ItemStack.EMPTY);
+			player.drop(getCarried(), true);
+			setCarried(ItemStack.EMPTY);
 			return;
 		}
 
@@ -69,17 +73,17 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 			return;
 		}
 
-		if (clickType == ClickType.CLONE && player.getAbilities().instabuild && this.getCarried().isEmpty()) {
-			final Slot slot = this.slots.get(slotIndex);
+		if (clickType == ClickType.CLONE && player.getAbilities().instabuild && getCarried().isEmpty()) {
+			final Slot slot = slots.get(slotIndex);
 			if (slot.hasItem()) {
 				final ItemStack slotStack = slot.getItem();
-				this.setCarried(slotStack.copyWithCount(slotStack.getMaxStackSize()));
+				setCarried(slotStack.copyWithCount(slotStack.getMaxStackSize()));
 			}
 			return;
 		}
 
-		if (clickType == ClickType.THROW && this.getCarried().isEmpty()) {
-			final Slot slot = this.slots.get(slotIndex);
+		if (clickType == ClickType.THROW && getCarried().isEmpty()) {
+			final Slot slot = slots.get(slotIndex);
 			final int stackCount = mouseButtom == 0 ? 1 : slot.getItem().getMaxStackSize();
 			final ItemStack dropStack = slot.safeTake(stackCount, Integer.MAX_VALUE, player);
 			player.drop(dropStack, true);
@@ -87,15 +91,15 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 		}
 
 		if (clickType == ClickType.PICKUP_ALL) {
-			final Slot slot = this.slots.get(slotIndex);
-			final ItemStack carriedStack = this.getCarried();
+			final Slot slot = slots.get(slotIndex);
+			final ItemStack carriedStack = getCarried();
 			if (!carriedStack.isEmpty() && (!slot.hasItem() || !slot.mayPickup(player))) {
-				final int l1 = mouseButtom == 0 ? 0 : this.slots.size() - 1;
+				final int l1 = mouseButtom == 0 ? 0 : slots.size() - 1;
 				final int k2 = mouseButtom == 0 ? 1 : -1;
 
 				for (int l2 = 0; l2 < 2; ++l2) {
-					for (int l3 = l1; l3 >= 0 && l3 < this.slots.size() && carriedStack.getCount() < carriedStack.getMaxStackSize(); l3 += k2) {
-						final Slot loopSlot = this.slots.get(l3);
+					for (int l3 = l1; l3 >= 0 && l3 < slots.size() && carriedStack.getCount() < carriedStack.getMaxStackSize(); l3 += k2) {
+						final Slot loopSlot = slots.get(l3);
 
 						if (!loopSlot.hasItem()) continue;
 						if (!canItemQuickReplace(loopSlot, carriedStack, true)) continue;
@@ -128,7 +132,7 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 					if (slotIndex < startIndex) break;
 				} else if (slotIndex >= endIndex) break;
 
-				final Slot slot = this.slots.get(slotIndex);
+				final Slot slot = slots.get(slotIndex);
 				final ItemStack slotStack = slot.getItem();
 
 				// Can't merge these stacks
@@ -179,7 +183,7 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 					if (slotIndex < startIndex) break;
 				} else if (slotIndex >= endIndex) break;
 
-				final Slot slot = this.slots.get(slotIndex);
+				final Slot slot = slots.get(slotIndex);
 
 				// Continue early if we can't put anything in this slot
 				if (slot.hasItem() || !slot.mayPlace(movedStack)) {
@@ -219,22 +223,22 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 		final ClickAction clickAction = mouseButtom == 0 ? ClickAction.PRIMARY : ClickAction.SECONDARY;
 		if (clickType == ClickType.QUICK_MOVE) {
 
-			final Slot slot = this.slots.get(slotIndex);
+			final Slot slot = slots.get(slotIndex);
 			if (!slot.mayPickup(player)) {
 				return;
 			}
 
-			ItemStack moveStack = this.quickMoveStack(player, slotIndex);
+			ItemStack moveStack = quickMoveStack(player, slotIndex);
 			while (!moveStack.isEmpty() && ItemStack.isSameItem(slot.getItem(), moveStack)) {
-				moveStack = this.quickMoveStack(player, slotIndex);
+				moveStack = quickMoveStack(player, slotIndex);
 			}
 			return;
 		}
 
-		final Slot slot = this.slots.get(slotIndex);
+		final Slot slot = slots.get(slotIndex);
 		final ItemStack slotStack = slot.getItem();
-		final ItemStack carriedStack = this.getCarried();
-		player.updateTutorialInventoryAction(carriedStack, slot.getItem(), clickAction);
+		final ItemStack carriedStack = getCarried();
+		player.updateTutorialInventoryAction(carriedStack, slotStack, clickAction);
 		if (tryItemClickBehaviourOverride(player, clickAction, slot, slotStack, carriedStack)) return;
 
 		if (ForgeHooks.onItemStackedOn(slotStack, carriedStack, slot, clickAction, player, createCarriedSlotAccess())) return;
@@ -243,7 +247,7 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 			if (carriedStack.isEmpty()) return;
 
 			final int insertCount = clickAction == ClickAction.PRIMARY ? carriedStack.getCount() : 1;
-			this.setCarried(slot.safeInsert(carriedStack, insertCount));
+			setCarried(slot.safeInsert(carriedStack, insertCount));
 			slot.setChanged();
 			return;
 		}
@@ -260,7 +264,7 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 				extractAmount = (Math.min(slotStack.getCount(), slotStack.getMaxStackSize()) + 1) / 2;
 			}
 			slot.tryRemove(extractAmount, Integer.MAX_VALUE, player).ifPresent((stack) -> {
-				this.setCarried(stack);
+				setCarried(stack);
 				slot.onTake(player, stack);
 			});
 			slot.setChanged();
@@ -270,13 +274,13 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 		if (slot.mayPlace(carriedStack)) {
 			if (ItemStack.isSameItemSameTags(slotStack, carriedStack)) {
 				final int insertAmount = clickAction == ClickAction.PRIMARY ? carriedStack.getCount() : 1;
-				this.setCarried(slot.safeInsert(carriedStack, insertAmount));
+				setCarried(slot.safeInsert(carriedStack, insertAmount));
 				slot.setChanged();
 				return;
 			}
 
 			if (carriedStack.getCount() <= slot.getMaxStackSize(carriedStack)) {
-				this.setCarried(slotStack);
+				setCarried(slotStack);
 				slot.setByPlayer(carriedStack);
 				slot.setChanged();
 				return;
@@ -284,16 +288,16 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 		}
 
 		if (ItemStack.isSameItemSameTags(slotStack, carriedStack)) {
-			slot.tryRemove(slotStack.getCount(), carriedStack.getMaxStackSize() - carriedStack.getCount(), player).ifPresent((p_150428_) -> {
-				carriedStack.grow(p_150428_.getCount());
-				slot.onTake(player, p_150428_);
+			slot.tryRemove(slotStack.getCount(), carriedStack.getMaxStackSize() - carriedStack.getCount(), player).ifPresent((removedStack) -> {
+				carriedStack.grow(removedStack.getCount());
+				slot.onTake(player, removedStack);
 			});
 		}
 		slot.setChanged();
 	}
 
 	protected void clickSwap(final int slotIndex, final int mouseButtom, final Player player, final Inventory inventory) {
-		final Slot slot = this.slots.get(slotIndex);
+		final Slot slot = slots.get(slotIndex);
 		final ItemStack itemStack = inventory.getItem(mouseButtom);
 		final ItemStack slotStack = slot.getItem();
 		if (itemStack.isEmpty() && slotStack.isEmpty()) return;
@@ -357,6 +361,29 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 		}
 	}
 
+	protected final boolean tryItemClickBehaviourOverride(final Player player, final ClickAction clickAction, final Slot slot,
+			final ItemStack clickedStack, final ItemStack carriedStack) {
+		final FeatureFlagSet featureflagset = player.level().enabledFeatures();
+		if (carriedStack.isItemEnabled(featureflagset) && carriedStack.overrideStackedOnOther(slot, clickAction, player)) return true;
+
+		return clickedStack.isItemEnabled(featureflagset) && clickedStack.overrideOtherStackedOnMe(carriedStack, slot, clickAction, player,
+				createCarriedSlotAccess());
+	}
+
+	@Contract(value = "-> new", pure = true)
+	protected final SlotAccess createCarriedSlotAccess() {
+		return new SlotAccess() {
+			public ItemStack get() {
+				return ExtendedSlotCapacityMenu.this.getCarried();
+			}
+
+			public boolean set(final ItemStack itemStack) {
+				ExtendedSlotCapacityMenu.this.setCarried(itemStack);
+				return true;
+			}
+		};
+	}
+
 	/**
 	 * Same as Forges {@link SlotItemHandler} but with an overriden {@link Slot#getMaxStackSize(ItemStack)} which respects the extended slot count
 	 */
@@ -371,7 +398,7 @@ public abstract class ExtendedSlotCapacityMenu extends AbstractContainerMenu {
 			final int maxInput = getMaxStackSize();
 			final ItemStack maxAdd = itemStack.copyWithCount(maxInput);
 
-			final IItemHandler handler = this.getItemHandler();
+			final IItemHandler handler = getItemHandler();
 			final int slotIndex = getSlotIndex();
 			final ItemStack currentStack = handler.getStackInSlot(slotIndex);
 
