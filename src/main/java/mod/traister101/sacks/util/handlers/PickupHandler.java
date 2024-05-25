@@ -1,6 +1,8 @@
 package mod.traister101.sacks.util.handlers;
 
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import net.dries007.tfc.common.blocks.rock.LooseRockBlock;
+import net.dries007.tfc.common.blocks.wood.FallenLeavesBlock;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
@@ -14,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,7 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -77,17 +77,29 @@ public final class PickupHandler {
 		final BlockPos blockPos = event.getPos();
 		final Level level = event.getLevel();
 		final BlockState blockState = level.getBlockState(blockPos);
+		final Block block = blockState.getBlock();
 
-		// TFC flat item block
-		if (blockState.getBlock() instanceof GroundcoverBlock) {
-			final BlockEntity blockEntity = level.getBlockEntity(blockPos);
+		if (!(block instanceof GroundcoverBlock)) return;
 
-			if (!(level instanceof ServerLevel serverLevel)) {
+		final Player player = event.getEntity();
+
+		if (block instanceof LooseRockBlock) {
+			if (player.getMainHandItem().getItem() == block.asItem()) {
 				return;
 			}
+		}
 
-			final Player player = event.getEntity();
-			for (final ItemStack itemStack : Block.getDrops(blockState, serverLevel, blockPos, blockEntity, player, ItemStack.EMPTY)) {
+		if (block instanceof FallenLeavesBlock) {
+			if (player.getMainHandItem().getItem() == block.asItem()) {
+				return;
+			}
+			if (blockState.getValue(FallenLeavesBlock.LAYERS) > 0) {
+				return;
+			}
+		}
+
+		if (level instanceof ServerLevel serverLevel) {
+			Block.getDrops(blockState, serverLevel, blockPos, level.getBlockEntity(blockPos), player, ItemStack.EMPTY).forEach(itemStack -> {
 				final ItemStack itemResult = pickupItemStack(player, itemStack);
 
 				if (!itemResult.isEmpty()) {
@@ -96,16 +108,13 @@ public final class PickupHandler {
 					playPickupSound(serverLevel, player.position());
 				}
 
-				if (itemResult.getCount() != itemStack.getCount()) {
-					player.containerMenu.broadcastChanges();
-				}
-			}
-			level.removeBlock(blockPos, false);
-
-			player.swing(InteractionHand.MAIN_HAND);
-			event.setCancellationResult(InteractionResult.SUCCESS);
-			event.setCanceled(true);
+				if (itemResult.getCount() != itemStack.getCount()) player.containerMenu.broadcastChanges();
+			});
 		}
+		level.removeBlock(blockPos, false);
+
+		event.setCancellationResult(InteractionResult.SUCCESS);
+		event.setCanceled(true);
 	}
 
 	/**
