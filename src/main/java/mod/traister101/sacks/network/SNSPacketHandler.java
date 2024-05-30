@@ -36,18 +36,13 @@ public final class SNSPacketHandler {
 	}
 
 	public static void init() {
-		// Server -> Client
-		register(ClientboundExtendedSlotInitialDataPacket.class, ClientboundExtendedSlotInitialDataPacket::encode,
-				ClientboundExtendedSlotInitialDataPacket::new, ClientboundExtendedSlotInitialDataPacket::handle);
-		register(ClientboundExtendedSlotSyncPacket.class, ClientboundExtendedSlotSyncPacket::encode, ClientboundExtendedSlotSyncPacket::new,
-				ClientboundExtendedSlotSyncPacket::handle);
-
 		// Client -> Server
 		register(ServerboundPickBlockPacket.class, ServerboundPickBlockPacket::encode, ServerboundPickBlockPacket::new,
 				ServerboundPickBlockPacket::handle);
 		register(ServerboundTogglePacket.class, ServerboundTogglePacket::encode, ServerboundTogglePacket::new, ServerboundTogglePacket::handle);
 	}
 
+	@SuppressWarnings("unused")
 	private static <T> void register(final Class<T> clazz, final BiConsumer<T, FriendlyByteBuf> encoder, final Function<FriendlyByteBuf, T> decoder,
 			final Consumer<T> handler) {
 		register(clazz, encoder, decoder, (packet, player) -> handler.accept(packet));

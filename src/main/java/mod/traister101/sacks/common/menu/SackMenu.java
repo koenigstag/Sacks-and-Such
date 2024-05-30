@@ -1,6 +1,8 @@
 package mod.traister101.sacks.common.menu;
 
-import mod.traister101.sacks.common.capability.ExtendedSlotCapacityHandler;
+import mod.trasiter101.esc.common.capability.ExtendedSlotCapacityHandler;
+import mod.trasiter101.esc.common.menu.ExtendedSlotCapacityMenu;
+import mod.trasiter101.esc.common.slot.ExtendedSlotItemHandler;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
@@ -155,6 +157,23 @@ public class SackMenu extends ExtendedSlotCapacityMenu {
 					addSlot(new ExtendedSlotItemHandler(handler, index, xPosition, yPosition));
 				}
 			}
+		}
+	}
+
+	/**
+	 * Adds the player inventory slots to the container.
+	 */
+	protected final void addPlayerInventorySlots(final Inventory inventory) {
+		// Main Inventory. Indexes [0, 27)
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+			}
+		}
+
+		// Hotbar. Indexes [27, 36)
+		for (int k = 0; k < 9; k++) {
+			addSlot(new Slot(inventory, k, 8 + k * 18, 142));
 		}
 	}
 }

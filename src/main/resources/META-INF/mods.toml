@@ -32,6 +32,13 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.sns]]
+modId = "esc"
+mandatory = true
+versionRange = "[1.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.sns]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.20.1,1.20.2)"

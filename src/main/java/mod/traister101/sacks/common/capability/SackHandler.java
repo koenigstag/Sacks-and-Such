@@ -1,5 +1,6 @@
 package mod.traister101.sacks.common.capability;
 
+import mod.trasiter101.esc.common.capability.ExtendedSlotCapacityHandler;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
