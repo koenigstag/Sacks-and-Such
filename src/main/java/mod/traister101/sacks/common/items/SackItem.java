@@ -1,8 +1,6 @@
 package mod.traister101.sacks.common.items;
 
-import net.dries007.tfc.common.capabilities.size.IItemSize;
-import net.dries007.tfc.common.capabilities.size.Size;
-import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.capabilities.size.*;
 import net.dries007.tfc.util.Helpers;
 
 import mod.traister101.sacks.SacksNSuch;
@@ -10,38 +8,28 @@ import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerial
 import mod.traister101.sacks.common.capability.SackHandler;
 import mod.traister101.sacks.common.menu.SackMenu;
 import mod.traister101.sacks.config.SNSConfig;
-import mod.traister101.sacks.util.NBTHelper;
-import mod.traister101.sacks.util.SNSUtils;
+import mod.traister101.sacks.util.*;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
-import mod.traister101.sacks.util.SackType;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickAction;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
 import lombok.Getter;
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 public class SackItem extends Item implements IItemSize {

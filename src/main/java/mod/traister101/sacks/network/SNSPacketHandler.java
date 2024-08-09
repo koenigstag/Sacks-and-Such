@@ -9,13 +9,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.*;
 import net.minecraftforge.network.simple.SimpleChannel;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.*;
 
 public final class SNSPacketHandler {
 

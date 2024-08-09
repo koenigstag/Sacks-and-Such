@@ -1,7 +1,5 @@
 package mod.traister101.sacks.network;
 
-import org.jetbrains.annotations.Nullable;
-
 import mod.traister101.sacks.common.items.SackItem;
 import mod.traister101.sacks.util.NBTHelper;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
@@ -9,6 +7,8 @@ import mod.traister101.sacks.util.SNSUtils.ToggleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+
+import org.jetbrains.annotations.Nullable;
 
 public final class ServerboundTogglePacket {
 

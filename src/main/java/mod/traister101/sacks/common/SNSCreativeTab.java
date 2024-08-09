@@ -3,16 +3,13 @@ package mod.traister101.sacks.common;
 import net.dries007.tfc.common.TFCCreativeTabs.CreativeTabHolder;
 
 import mod.traister101.sacks.SacksNSuch;
-import mod.traister101.sacks.common.items.DefaultSacks;
-import mod.traister101.sacks.common.items.SNSItems;
+import mod.traister101.sacks.common.items.*;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.*;
 
 import java.util.function.Supplier;
 

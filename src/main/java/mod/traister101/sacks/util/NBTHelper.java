@@ -3,8 +3,7 @@ package mod.traister101.sacks.util;
 import mod.traister101.sacks.common.items.SackItem;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.world.item.ItemStack;
 
 import lombok.experimental.UtilityClass;

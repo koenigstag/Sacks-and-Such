@@ -1,8 +1,7 @@
 package mod.traister101.sacks.client;
 
 import mod.traister101.sacks.config.SNSConfig;
-import mod.traister101.sacks.util.NBTHelper;
-import mod.traister101.sacks.util.SNSUtils;
+import mod.traister101.sacks.util.*;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
 import mod.traister101.sacks.util.handlers.PickBlockHandler;
 
@@ -12,15 +11,12 @@ import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.HitResult.Type;
 
 import net.minecraftforge.client.event.InputEvent;

@@ -6,17 +6,14 @@ import mod.trasiter101.esc.common.slot.ExtendedSlotItemHandler;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickType;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.entity.player.*;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.*;
 
 public class SackMenu extends ExtendedSlotCapacityMenu {
 

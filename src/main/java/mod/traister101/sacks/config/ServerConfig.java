@@ -3,10 +3,7 @@ package mod.traister101.sacks.config;
 import net.dries007.tfc.common.capabilities.size.Size;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.Builder;
-import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.common.ForgeConfigSpec.*;
 
 public final class ServerConfig {
 

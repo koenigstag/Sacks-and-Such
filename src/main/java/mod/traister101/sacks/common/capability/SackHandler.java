@@ -1,11 +1,7 @@
 package mod.traister101.sacks.common.capability;
 
 import mod.trasiter101.esc.common.capability.ExtendedSlotCapacityHandler;
-import net.dries007.tfc.common.capabilities.size.IItemSize;
-import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.capabilities.size.Size;
-import net.dries007.tfc.common.capabilities.size.Weight;
-import org.jetbrains.annotations.Nullable;
+import net.dries007.tfc.common.capabilities.size.*;
 
 import mod.traister101.sacks.common.SNSTags;
 import mod.traister101.sacks.common.SNSTags.Items;
@@ -15,6 +11,8 @@ import mod.traister101.sacks.util.SackType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+
+import org.jetbrains.annotations.Nullable;
 
 public class SackHandler extends ExtendedSlotCapacityHandler {
 

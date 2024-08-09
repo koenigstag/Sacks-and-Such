@@ -3,8 +3,7 @@ package mod.traister101.sacks;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
-import mod.traister101.sacks.client.ClientEventHandler;
-import mod.traister101.sacks.client.ClientForgeEventHandler;
+import mod.traister101.sacks.client.*;
 import mod.traister101.sacks.common.SNSCreativeTab;
 import mod.traister101.sacks.common.items.SNSItems;
 import mod.traister101.sacks.common.menu.SNSMenus;

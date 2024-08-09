@@ -1,11 +1,9 @@
 package mod.traister101.sacks.util;
 
 import mod.traister101.sacks.SacksNSuch;
-import mod.traister101.sacks.network.SNSPacketHandler;
-import mod.traister101.sacks.network.ServerboundTogglePacket;
+import mod.traister101.sacks.network.*;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.util.ByIdMap;
 
 import lombok.Getter;
