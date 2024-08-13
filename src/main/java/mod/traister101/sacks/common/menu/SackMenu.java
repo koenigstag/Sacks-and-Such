@@ -106,7 +106,7 @@ public class SackMenu extends ExtendedSlotCapacityMenu {
 			case 18 -> addSlots(2, 9, 8, 34);
 			default -> {
 				// We want to round up, integer math rounds down
-				final int rows = (int) Math.ceil((double) containerSlots / 9);
+				final int rows = Math.round((float) containerSlots / 9);
 				final int columns = containerSlots / rows;
 				addSlots(rows, columns);
 			}
@@ -122,6 +122,9 @@ public class SackMenu extends ExtendedSlotCapacityMenu {
 	 * @param startY The Y starting position
 	 */
 	private void addSlots(final int rows, final int columns, final int startX, final int startY) {
+		assert rows != 0 : "Cannot have zero rows of slots";
+		assert columns != 0 : "Cannot have zero columns of slots";
+
 		for (int row = 0; row < rows; row++) {
 			for (int column = 0; column < columns; column++) {
 				final int yPosition = startY + row * 18;
@@ -139,21 +142,15 @@ public class SackMenu extends ExtendedSlotCapacityMenu {
 	 * @param columns How many columns of slots
 	 */
 	private void addSlots(final int rows, final int columns) {
-		for (int row = 0; row < rows; row++) {
-			final int yPosition = 27 + row * 18;
-			if (row == rows - 1) {
-				for (int column = 0; column < columns; column++) {
-					final int xPosition = 8 + column * 18;
-					final int index = column + row * columns;
-					addSlot(new ExtendedSlotItemHandler(handler, index, xPosition, yPosition));
-				}
-			} else {
-				for (int j = 0; j < 9; j++) {
-					final int xPosition = 8 + j * 18;
-					final int index = j + row * columns;
-					addSlot(new ExtendedSlotItemHandler(handler, index, xPosition, yPosition));
-				}
-			}
+		if (rows > 1) {
+			addSlots(rows - 1, 9, 8, 18);
+		}
+
+		for (int column = 0; column < columns; column++) {
+			final int yPosition = 18 * (rows - 1) + 18;
+			final int xPosition = 8 + column * 18;
+			final int index = column + (rows - 1) * columns;
+			addSlot(new ExtendedSlotItemHandler(handler, index, xPosition, yPosition));
 		}
 	}
 
