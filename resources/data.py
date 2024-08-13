@@ -28,12 +28,6 @@ def generate(rm: ResourceManager):
     item_size(rm, "reinforced_fabric", "sns:reinforced_fabric", Size.small, Weight.very_light)
     item_size(rm, "pack_frame", "sns:pack_frame", Size.large, Weight.medium)
 
-    # rm.data("curios/slots/belt", {})
-    rm.data("curios/entities/belt", {
-        "entities": ["minecraft:player"],
-        "slots": ["belt"]
-    })
-
 
 def item_size(rm: ResourceManager, name_parts: ResourceIdentifier, ingredient: utils.Json, size: Size,
               weight: Weight):
