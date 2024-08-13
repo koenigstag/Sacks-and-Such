@@ -2,7 +2,6 @@ from mcresources import ResourceManager
 
 import data
 import recipes
-import tags
 
 
 def main() -> None:
@@ -11,7 +10,6 @@ def main() -> None:
 
     print("Starting resource generation.")
     data.generate(resourceManager)
-    tags.generate(resourceManager)
     recipes.generate(resourceManager)
     resourceManager.flush()
 

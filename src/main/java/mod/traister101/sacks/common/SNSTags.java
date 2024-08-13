@@ -28,6 +28,11 @@ public final class SNSTags {
 		public static final TagKey<Item> TFC_FOODS = fromTFC("foods");
 
 		/**
+		 * TFCs seed tag
+		 */
+		public static final TagKey<Item> TFC_SEEDS = fromTFC("seeds");
+
+		/**
 		 * Tag for items that shouldn't go inside sacks. We only put our sacks in this
 		 */
 		public static final TagKey<Item> PREVENTED_IN_ITEM_CONTAINERS = create("prevented_in_item_containers");

@@ -3,8 +3,6 @@ from enum import Enum, auto
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import ResourceIdentifier
 
-import constants
-
 
 class Size(Enum):
     tiny = auto()
@@ -29,10 +27,6 @@ def generate(rm: ResourceManager):
     item_size(rm, "reinforced_fiber", "sns:reinforced_fiber", Size.small, Weight.very_light)
     item_size(rm, "reinforced_fabric", "sns:reinforced_fabric", Size.small, Weight.very_light)
     item_size(rm, "pack_frame", "sns:pack_frame", Size.large, Weight.medium)
-
-    rm.item_tag("curios:belt", *constants.SACKS)
-
-    rm.item_tag("curios:back", *constants.PACKS)
 
     # rm.data("curios/slots/belt", {})
     rm.data("curios/entities/belt", {
