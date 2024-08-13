@@ -1,7 +1,6 @@
 from mcresources import ResourceManager
 
 import assets
-import constants
 import data
 import recipes
 import tags
@@ -12,7 +11,6 @@ def main() -> None:
                                       on_error=lambda file, e: print(f"Error writing {file}\n{e}"))
 
     print("Starting resource generation.")
-    resourceManager.lang(constants.DEFAULT_LANG)
     assets.generate(resourceManager)
     data.generate(resourceManager)
     tags.generate(resourceManager)
