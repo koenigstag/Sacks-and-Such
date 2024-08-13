@@ -15,10 +15,10 @@ import javax.annotation.Nonnull;
  *
  * @see LazySerializedCapabilityProvider if your handler needs serializing
  */
-public sealed class LazyCapabilityProvider<Handler> implements ICapabilityProvider {
+public sealed class LazyCapabilityProvider<Cap extends Capability<? super Handler>, Handler> implements ICapabilityProvider {
 
 	private final HandlerFactory<Handler> handlerFactory;
-	private final Capability<?> lazyCap;
+	private final Cap capability;
 	@Nullable
 	protected Handler handler;
 	@Nullable
@@ -28,14 +28,14 @@ public sealed class LazyCapabilityProvider<Handler> implements ICapabilityProvid
 	 * @param capability The capability to lazily evaluate
 	 * @param handlerFactory A factory for the handler
 	 */
-	public LazyCapabilityProvider(final Capability<?> capability, final HandlerFactory<Handler> handlerFactory) {
-		this.lazyCap = capability;
+	public LazyCapabilityProvider(final Cap capability, final HandlerFactory<Handler> handlerFactory) {
+		this.capability = capability;
 		this.handlerFactory = handlerFactory;
 	}
 
 	@Override
 	public <T> LazyOptional<T> getCapability(final Capability<T> cap, @Nullable final Direction side) {
-		if (lazyCap == cap) {
+		if (capability == cap) {
 			return getHolder().cast();
 		}
 
@@ -63,11 +63,11 @@ public sealed class LazyCapabilityProvider<Handler> implements ICapabilityProvid
 		Handler create();
 	}
 
-	public static final class LazySerializedCapabilityProvider<Handler extends INBTSerializable<CompoundTag>> extends
-			LazyCapabilityProvider<Handler> implements INBTSerializable<CompoundTag> {
+	public static final class LazySerializedCapabilityProvider<Cap extends Capability<? super Handler>, Handler extends INBTSerializable<CompoundTag>> extends
+			LazyCapabilityProvider<Cap, Handler> implements INBTSerializable<CompoundTag> {
 
-		public LazySerializedCapabilityProvider(final Capability<?> lazyCap, final HandlerFactory<Handler> handlerFactory) {
-			super(lazyCap, handlerFactory);
+		public LazySerializedCapabilityProvider(final Cap capability, final HandlerFactory<Handler> handlerFactory) {
+			super(capability, handlerFactory);
 		}
 
 		@Override
