@@ -1,9 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "entities": [
-	"minecraft:player"
-  ],
-  "slots": [
-	"belt"
-  ]
-}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "R": {
+      "tag": "forge:rods/steel"
+    }
+  },
+  "pattern": [
+    "RRR",
+    "R R",
+    "RRR"
+  ],
+  "result": {
+    "item": "sns:pack_frame"
+  },
+  "show_notification": true
+}

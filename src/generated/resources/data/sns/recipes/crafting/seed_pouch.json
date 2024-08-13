@@ -1,0 +1,30 @@
+{
+  "type": "tfc:damage_inputs_shaped_crafting",
+  "recipe": {
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+	  "N": {
+		"tag": "tfc:sewing_needles"
+	  },
+	  "S": {
+		"tag": "forge:string"
+	  },
+	  "U": {
+		"item": "sns:burlap_sack"
+	  },
+	  "W": {
+		"item": "tfc:wool_cloth"
+	  }
+	},
+	"pattern": [
+	  "SSS",
+	  "WUW",
+	  " WN"
+	],
+	"result": {
+	  "item": "sns:seed_pouch"
+	},
+	"show_notification": true
+  }
+}

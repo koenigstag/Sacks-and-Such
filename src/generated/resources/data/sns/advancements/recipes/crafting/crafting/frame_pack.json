@@ -1,0 +1,85 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_pack_frame": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sns:pack_frame"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_reinforced_fabric": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sns:reinforced_fabric"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_reinforced_fiber": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sns:reinforced_fiber"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_sewing_needle": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:sewing_needles"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "sns:crafting/frame_pack"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_unfinished_leather_sack": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sns:unfinished_leather_sack"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_reinforced_fiber",
+      "has_pack_frame",
+      "has_reinforced_fabric",
+      "has_unfinished_leather_sack",
+      "has_sewing_needle",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "sns:crafting/frame_pack"
+    ]
+  },
+  "sends_telemetry_event": false
+}

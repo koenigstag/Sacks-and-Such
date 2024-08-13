@@ -1,0 +1,27 @@
+{
+  "type": "tfc:damage_inputs_shaped_crafting",
+  "recipe": {
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+	  "J": {
+		"item": "tfc:jute_fiber"
+	  },
+	  "K": {
+		"tag": "tfc:knives"
+	  },
+	  "T": {
+		"item": "tfc:straw"
+	  }
+	},
+	"pattern": [
+	  "JJJ",
+	  "T T",
+	  " TK"
+	],
+	"result": {
+	  "item": "sns:thatch_basket"
+	},
+	"show_notification": true
+  }
+}
