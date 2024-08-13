@@ -8,8 +8,8 @@ import mod.traister101.sacks.common.items.*;
 public final class CuriosCompat {
 
 	public static void clientSetup() {
-		for (final DefaultSacks sackType : DefaultSacks.values()) {
-			CuriosRendererRegistry.register(SNSItems.SACKS.get(sackType).get(), CurioSackItemRenderer::new);
+		for (final DefaultContainers sackType : DefaultContainers.values()) {
+			CuriosRendererRegistry.register(SNSItems.ITEM_CONTAINERS.get(sackType).get(), CurioSackItemRenderer::new);
 		}
 	}
 }

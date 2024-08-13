@@ -1,6 +1,6 @@
 package mod.traister101.sacks.network;
 
-import mod.traister101.sacks.common.items.SackItem;
+import mod.traister101.sacks.common.items.ContainerItem;
 import mod.traister101.sacks.util.NBTHelper;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
 
@@ -34,7 +34,7 @@ public final class ServerboundTogglePacket {
 		if (player == null) return;
 
 		final ItemStack mainHandItem = player.getMainHandItem();
-		if (!(mainHandItem.getItem() instanceof SackItem)) return;
+		if (!(mainHandItem.getItem() instanceof ContainerItem)) return;
 
 		NBTHelper.toggle(mainHandItem, type, toggle);
 	}

@@ -1,6 +1,6 @@
 package mod.traister101.sacks.util.handlers;
 
-import mod.traister101.sacks.common.items.SackItem;
+import mod.traister101.sacks.common.items.ContainerItem;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.network.*;
 
@@ -102,7 +102,7 @@ public final class PickBlockHandler {
 			// Handle pick block for all items with containers
 			if (!SNSConfig.SERVER.allPickBlock.get()) {
 				// Not a sack
-				if (!(itemContainer.getItem() instanceof SackItem)) continue;
+				if (!(itemContainer.getItem() instanceof ContainerItem)) continue;
 			}
 
 			final IItemHandler handler;

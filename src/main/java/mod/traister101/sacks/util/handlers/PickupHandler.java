@@ -6,9 +6,9 @@ import net.dries007.tfc.common.blocks.wood.FallenLeavesBlock;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
-import mod.traister101.sacks.common.items.SackItem;
+import mod.traister101.sacks.common.items.ContainerItem;
 import mod.traister101.sacks.config.SNSConfig;
-import mod.traister101.sacks.util.SackType;
+import mod.traister101.sacks.util.ContainerType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundTakeItemEntityPacket;
@@ -113,7 +113,7 @@ public final class PickupHandler {
 	}
 
 	/**
-	 * Tries to first fill any valid stacks in the player inventory then tries to fill any {@link SackItem}s. If both fail to consume the entire stack
+	 * Tries to first fill any valid stacks in the player inventory then tries to fill any {@link ContainerItem}s. If both fail to consume the entire stack
 	 * the remainer is returned
 	 *
 	 * @param player Player to handle
@@ -137,7 +137,7 @@ public final class PickupHandler {
 				for (int slotIndex = 0; slotIndex < equippedCurios.getSlots(); slotIndex++) {
 					final ItemStack itemContainer = equippedCurios.getStackInSlot(slotIndex);
 
-					if (!SackType.canDoItemPickup(itemContainer)) continue;
+					if (!ContainerType.canDoItemPickup(itemContainer)) continue;
 
 					final Optional<IItemHandler> containerInv = itemContainer.getCapability(ForgeCapabilities.ITEM_HANDLER)
 							.resolve()
@@ -148,7 +148,7 @@ public final class PickupHandler {
 					remainder = insertStack(remainder, containerInv.get());
 
 					if (remainder.isEmpty()) continue;
-					if (SNSConfig.SERVER.doVoiding.get() && !SackType.canDoItemVoiding(itemContainer)) continue;
+					if (SNSConfig.SERVER.doVoiding.get() && !ContainerType.canDoItemVoiding(itemContainer)) continue;
 
 					if (!voidedItem(remainder, containerInv.get())) continue;
 
@@ -160,7 +160,7 @@ public final class PickupHandler {
 		for (int slotIndex = 0; slotIndex < playerInventory.getContainerSize(); slotIndex++) {
 			final ItemStack itemContainer = playerInventory.getItem(slotIndex);
 
-			if (!SackType.canDoItemPickup(itemContainer)) continue;
+			if (!ContainerType.canDoItemPickup(itemContainer)) continue;
 
 			final Optional<IItemHandler> containerInv = itemContainer.getCapability(ForgeCapabilities.ITEM_HANDLER)
 					.resolve()
@@ -171,7 +171,7 @@ public final class PickupHandler {
 			remainder = insertStack(remainder, containerInv.get());
 
 			if (remainder.isEmpty()) continue;
-			if (SNSConfig.SERVER.doVoiding.get() && !SackType.canDoItemVoiding(itemContainer)) continue;
+			if (SNSConfig.SERVER.doVoiding.get() && !ContainerType.canDoItemVoiding(itemContainer)) continue;
 
 			if (!voidedItem(remainder, containerInv.get())) continue;
 

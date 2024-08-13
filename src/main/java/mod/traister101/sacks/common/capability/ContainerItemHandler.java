@@ -5,29 +5,29 @@ import net.dries007.tfc.common.capabilities.size.*;
 
 import mod.traister101.sacks.common.SNSTags;
 import mod.traister101.sacks.common.SNSTags.Items;
-import mod.traister101.sacks.common.items.DefaultSacks;
+import mod.traister101.sacks.common.items.DefaultContainers;
 import mod.traister101.sacks.config.SNSConfig;
-import mod.traister101.sacks.util.SackType;
+import mod.traister101.sacks.util.ContainerType;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 import org.jetbrains.annotations.Nullable;
 
-public class SackHandler extends ExtendedSlotCapacityHandler {
+public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
-	private final SackType type;
+	private final ContainerType type;
 	@Nullable
 	private Weight cachedWeight;
 
-	public SackHandler(final SackType type) {
+	public ContainerItemHandler(final ContainerType type) {
 		super(type.getSlotCount(), type.getSlotCapacity());
 		this.type = type;
 	}
 
 	@Override
 	public int getStackLimit(final int slotIndex, final ItemStack itemStack) {
-		if (type == DefaultSacks.FRAME_PACK) return itemStack.getMaxStackSize();
+		if (type == DefaultContainers.FRAME_PACK) return itemStack.getMaxStackSize();
 		return super.getStackLimit(slotIndex, itemStack);
 	}
 
@@ -47,15 +47,15 @@ public class SackHandler extends ExtendedSlotCapacityHandler {
 
 	@Override
 	public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
-		if (itemStack.is(SNSTags.Items.PREVENTED_IN_SACKS)) return false;
+		if (itemStack.is(SNSTags.Items.PREVENTED_IN_ITEM_CONTAINERS)) return false;
 
-		if (type == DefaultSacks.SEED_POUCH && !itemStack.is(Items.ALLOWED_IN_SEED_POUCH)) return false;
+		if (type == DefaultContainers.SEED_POUCH && !itemStack.is(Items.ALLOWED_IN_SEED_POUCH)) return false;
 
 		if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(Items.TFC_FOODS)) return false;
 
-		if (type == DefaultSacks.ORE_SACK && itemStack.is(Items.TFC_ORE)) return true;
+		if (type == DefaultContainers.ORE_SACK && itemStack.is(Items.TFC_ORE)) return true;
 
-		if (!SNSConfig.SERVER.allAllowOre.get() && type != DefaultSacks.ORE_SACK && itemStack.is(Items.TFC_ORE)) return false;
+		if (!SNSConfig.SERVER.allAllowOre.get() && type != DefaultContainers.ORE_SACK && itemStack.is(Items.TFC_ORE)) return false;
 
 		final IItemSize stackSize = ItemSizeManager.get(itemStack);
 		final Size size = stackSize.getSize(itemStack);

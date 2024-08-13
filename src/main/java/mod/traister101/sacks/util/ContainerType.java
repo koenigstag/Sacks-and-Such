@@ -2,21 +2,21 @@ package mod.traister101.sacks.util;
 
 import net.dries007.tfc.common.capabilities.size.Size;
 
-import mod.traister101.sacks.common.items.SackItem;
+import mod.traister101.sacks.common.items.ContainerItem;
 
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 
-public interface SackType extends StringRepresentable {
+public interface ContainerType extends StringRepresentable {
 
 	/**
 	 * @return If the passed {@link ItemStack} supports auto pickup
 	 */
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	static boolean canDoItemPickup(final ItemStack itemStack) {
-		if (!(itemStack.getItem() instanceof SackItem sackItem)) return false;
+		if (!(itemStack.getItem() instanceof ContainerItem containerItem)) return false;
 
-		if (!sackItem.getType().doesAutoPickup()) return false;
+		if (!containerItem.getType().doesAutoPickup()) return false;
 
 		return NBTHelper.isAutoPickup(itemStack);
 	}
@@ -26,9 +26,9 @@ public interface SackType extends StringRepresentable {
 	 */
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	static boolean canDoItemVoiding(final ItemStack itemStack) {
-		if (!(itemStack.getItem() instanceof SackItem sackItem)) return false;
+		if (!(itemStack.getItem() instanceof ContainerItem containerItem)) return false;
 
-		if (!sackItem.getType().doesVoiding()) return false;
+		if (!containerItem.getType().doesVoiding()) return false;
 
 		return NBTHelper.isAutoVoid(itemStack);
 	}
@@ -59,9 +59,9 @@ public interface SackType extends StringRepresentable {
 	Size getAllowedSize();
 
 	/**
-	 * Abstracted out to allow custom overrides without the need of a new item class. Called by {@link SackItem#getSize(ItemStack)}
+	 * Abstracted out to allow custom overrides without the need of a new item class. Called by {@link ContainerItem#getSize(ItemStack)}
 	 *
-	 * @param itemStack The {@link SackItem} instance
+	 * @param itemStack The {@link ContainerItem} instance
 	 *
 	 * @return Size for the stack
 	 */

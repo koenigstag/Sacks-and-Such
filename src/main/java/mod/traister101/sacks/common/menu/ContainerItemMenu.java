@@ -15,7 +15,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import java.util.*;
 
-public class SackMenu extends ExtendedSlotCapacityMenu {
+public class ContainerItemMenu extends ExtendedSlotCapacityMenu {
 
 	private static final Set<ClickType> ILLEGAL_ITEM_CLICKS = EnumSet.of(ClickType.QUICK_MOVE, ClickType.PICKUP, ClickType.THROW, ClickType.SWAP);
 	protected final Player player;
@@ -30,7 +30,8 @@ public class SackMenu extends ExtendedSlotCapacityMenu {
 	 */
 	protected int itemIndex;
 
-	public SackMenu(final int windowId, final Inventory inventory, final IItemHandler handler, final InteractionHand hand, final int hotbarSlot) {
+	public ContainerItemMenu(final int windowId, final Inventory inventory, final IItemHandler handler, final InteractionHand hand,
+			final int hotbarSlot) {
 		super(SNSMenus.SACK_MENU.get(), windowId, handler.getSlots());
 		this.player = inventory.player;
 		this.hand = hand;
@@ -47,13 +48,13 @@ public class SackMenu extends ExtendedSlotCapacityMenu {
 		this.addPlayerInventorySlots(inventory);
 	}
 
-	static SackMenu fromNetwork(final int windowId, final Inventory inventory, final FriendlyByteBuf byteBuf) {
+	static ContainerItemMenu fromNetwork(final int windowId, final Inventory inventory, final FriendlyByteBuf byteBuf) {
 		final InteractionHand hand = byteBuf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 
 		final ItemStack heldStack = inventory.player.getItemInHand(hand);
 		final IItemHandler itemHandler = heldStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
 				.orElse(new ExtendedSlotCapacityHandler(byteBuf.readInt(), byteBuf.readInt()));
-		return new SackMenu(windowId, inventory, itemHandler, hand, hand == InteractionHand.OFF_HAND ? -1 : inventory.selected);
+		return new ContainerItemMenu(windowId, inventory, itemHandler, hand, hand == InteractionHand.OFF_HAND ? -1 : inventory.selected);
 	}
 
 	@Override

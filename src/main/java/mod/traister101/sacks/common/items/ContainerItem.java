@@ -4,9 +4,9 @@ import net.dries007.tfc.common.capabilities.size.*;
 import net.dries007.tfc.util.Helpers;
 
 import mod.traister101.sacks.SacksNSuch;
+import mod.traister101.sacks.common.capability.ContainerItemHandler;
 import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
-import mod.traister101.sacks.common.capability.SackHandler;
-import mod.traister101.sacks.common.menu.SackMenu;
+import mod.traister101.sacks.common.menu.ContainerItemMenu;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.*;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
@@ -32,12 +32,12 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 @Getter
-public class SackItem extends Item implements IItemSize {
+public class ContainerItem extends Item implements IItemSize {
 
 	public static final String CONTENTS_TAG = "contents";
-	private final SackType type;
+	private final ContainerType type;
 
-	public SackItem(final Properties properties, final SackType type) {
+	public ContainerItem(final Properties properties, final ContainerType type) {
 		super(properties);
 		this.type = type;
 	}
@@ -45,7 +45,7 @@ public class SackItem extends Item implements IItemSize {
 	private static SimpleMenuProvider createMenuProvider(final Player player, final InteractionHand hand, final ItemStack heldStack) {
 		//noinspection OptionalGetWithoutIsPresent our Sack should always have this capability
 		final IItemHandler itemHandler = heldStack.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().get();
-		return new SimpleMenuProvider((windowId, inventory, unused) -> new SackMenu(windowId, inventory, itemHandler, hand,
+		return new SimpleMenuProvider((windowId, inventory, unused) -> new ContainerItemMenu(windowId, inventory, itemHandler, hand,
 				hand == InteractionHand.OFF_HAND ? -1 : player.getInventory().selected), heldStack.getHoverName());
 	}
 
@@ -96,7 +96,7 @@ public class SackItem extends Item implements IItemSize {
 	public boolean overrideStackedOnOther(final ItemStack itemStack, final Slot slot, final ClickAction clickAction, final Player player) {
 		if (player.isCreative()) return false;
 		if (clickAction != ClickAction.SECONDARY) return false;
-		if (!SNSConfig.SERVER.enableSackInventoryInteraction.get()) return false;
+		if (!SNSConfig.SERVER.enableContainerInventoryInteraction.get()) return false;
 
 		return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).map(handler -> {
 			for (int slotIndex = handler.getSlots() - 1; slotIndex >= 0; slotIndex--) {
@@ -123,7 +123,7 @@ public class SackItem extends Item implements IItemSize {
 			final Player player, final SlotAccess carriedSlot) {
 		if (player.isCreative()) return false;
 		if (clickAction != ClickAction.SECONDARY) return false;
-		if (!SNSConfig.SERVER.enableSackInventoryInteraction.get()) return false;
+		if (!SNSConfig.SERVER.enableContainerInventoryInteraction.get()) return false;
 
 		return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).map(handler -> {
 
@@ -228,8 +228,8 @@ public class SackItem extends Item implements IItemSize {
 
 		// Serialize our contents
 		itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-			if (handler instanceof final SackHandler sackHandler) {
-				compoundTag.put(CONTENTS_TAG, sackHandler.serializeNBT());
+			if (handler instanceof final ContainerItemHandler containerItemHandler) {
+				compoundTag.put(CONTENTS_TAG, containerItemHandler.serializeNBT());
 			}
 		});
 
@@ -244,8 +244,8 @@ public class SackItem extends Item implements IItemSize {
 
 		// Deserlialize our contents
 		itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-			if (handler instanceof final SackHandler sackHandler) {
-				sackHandler.deserializeNBT(compoundTag.getCompound(CONTENTS_TAG));
+			if (handler instanceof final ContainerItemHandler containerItemHandler) {
+				containerItemHandler.deserializeNBT(compoundTag.getCompound(CONTENTS_TAG));
 			}
 		});
 	}
@@ -254,7 +254,7 @@ public class SackItem extends Item implements IItemSize {
 	@Override
 	public ICapabilityProvider initCapabilities(final ItemStack itemStack, @Nullable CompoundTag nbt) {
 		// Must be lazy as stacks can be created before server config is initalized
-		return new LazySerializedCapabilityProvider<>(ForgeCapabilities.ITEM_HANDLER, () -> new SackHandler(type));
+		return new LazySerializedCapabilityProvider<>(ForgeCapabilities.ITEM_HANDLER, () -> new ContainerItemHandler(type));
 	}
 
 	@Override
@@ -265,7 +265,7 @@ public class SackItem extends Item implements IItemSize {
 	@Override
 	public Weight getWeight(final ItemStack itemStack) {
 		return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER)
-				.map(handler -> handler instanceof final SackHandler sackHandler ? sackHandler.getWeight() : Weight.VERY_HEAVY)
+				.map(handler -> handler instanceof final ContainerItemHandler containerItemHandler ? containerItemHandler.getWeight() : Weight.VERY_HEAVY)
 				.orElse(Weight.VERY_HEAVY);
 	}
 

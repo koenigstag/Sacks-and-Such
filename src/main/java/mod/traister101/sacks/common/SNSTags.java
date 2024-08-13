@@ -30,7 +30,7 @@ public final class SNSTags {
 		/**
 		 * Tag for items that shouldn't go inside sacks. We only put our sacks in this
 		 */
-		public static final TagKey<Item> PREVENTED_IN_SACKS = create("prevented_in_sacks");
+		public static final TagKey<Item> PREVENTED_IN_ITEM_CONTAINERS = create("prevented_in_item_containers");
 
 		public static final TagKey<Item> ALLOWED_IN_SEED_POUCH = create("allowed_in_seed_pouch");
 

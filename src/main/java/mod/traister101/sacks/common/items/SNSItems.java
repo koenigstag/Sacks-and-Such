@@ -19,13 +19,13 @@ public final class SNSItems {
 	public static final RegistryObject<Item> UNFINISHED_LEATHER_SACK = registerSimple("unfinished_leather_sack");
 	public static final RegistryObject<Item> REINFORCED_FIBER = registerSimple("reinforced_fiber");
 	public static final RegistryObject<Item> REINFORCED_FABRIC = registerSimple("reinforced_fabric");
-    public static final RegistryObject<Item> PACK_FRAME = registerSimple("pack_frame");
+	public static final RegistryObject<Item> PACK_FRAME = registerSimple("pack_frame");
 
 	/**
 	 * All our sacks
 	 */
-	public static final EnumMap<DefaultSacks, RegistryObject<SackItem>> SACKS = Helpers.mapOfKeys(DefaultSacks.class,
-			sackType -> register(sackType.getSerializedName(), () -> new SackItem(new Properties().stacksTo(1), sackType)));
+	public static final EnumMap<DefaultContainers, RegistryObject<ContainerItem>> ITEM_CONTAINERS = Helpers.mapOfKeys(DefaultContainers.class,
+			sackType -> register(sackType.getSerializedName(), () -> new ContainerItem(new Properties().stacksTo(1), sackType)));
 
 	private static RegistryObject<Item> registerSimple(final String name) {
 		return register(name, () -> new Item(new Properties()));

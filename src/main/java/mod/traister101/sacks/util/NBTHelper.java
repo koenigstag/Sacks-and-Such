@@ -1,6 +1,6 @@
 package mod.traister101.sacks.util;
 
-import mod.traister101.sacks.common.items.SackItem;
+import mod.traister101.sacks.common.items.ContainerItem;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
 
 import net.minecraft.nbt.*;
@@ -16,7 +16,7 @@ public final class NBTHelper {
 	}
 
 	public static boolean isAutoVoid(final ItemStack itemStack) {
-		if (!(itemStack.getItem() instanceof SackItem)) {
+		if (!(itemStack.getItem() instanceof ContainerItem)) {
 			return false;
 		}
 
@@ -29,7 +29,7 @@ public final class NBTHelper {
 	}
 
 	public static boolean isAutoPickup(final ItemStack itemStack) {
-		if (!(itemStack.getItem() instanceof SackItem)) {
+		if (!(itemStack.getItem() instanceof ContainerItem)) {
 			return false;
 		}
 

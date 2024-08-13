@@ -2,7 +2,7 @@ package mod.traister101.sacks.client;
 
 import top.theillusivec4.curios.api.CuriosApi;
 
-import mod.traister101.sacks.client.screen.SackScreen;
+import mod.traister101.sacks.client.screen.ContainerItemScreen;
 import mod.traister101.sacks.common.menu.SNSMenus;
 import mod.traister101.sacks.compat.curios.CuriosCompat;
 
@@ -28,7 +28,7 @@ public final class ClientEventHandler {
 
 	private static void onClientSetup(final FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			MenuScreens.register(SNSMenus.SACK_MENU.get(), SackScreen::new);
+			MenuScreens.register(SNSMenus.SACK_MENU.get(), ContainerItemScreen::new);
 			if (ModList.get().isLoaded(CuriosApi.MODID)) {
 				CuriosCompat.clientSetup();
 			}

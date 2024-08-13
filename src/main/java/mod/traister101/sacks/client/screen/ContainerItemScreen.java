@@ -1,7 +1,7 @@
 package mod.traister101.sacks.client.screen;
 
 import mod.traister101.sacks.SacksNSuch;
-import mod.traister101.sacks.common.menu.SackMenu;
+import mod.traister101.sacks.common.menu.ContainerItemMenu;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -10,11 +10,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
-public class SackScreen extends AbstractContainerScreen<SackMenu> {
+public class ContainerItemScreen extends AbstractContainerScreen<ContainerItemMenu> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SacksNSuch.MODID, "textures/gui/sack.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SacksNSuch.MODID, "textures/gui/container.png");
 
-	public SackScreen(final SackMenu menu, final Inventory inventory, final Component title) {
+	public ContainerItemScreen(final ContainerItemMenu menu, final Inventory inventory, final Component title) {
 		super(menu, inventory, title);
 	}
 
