@@ -84,9 +84,7 @@ minecraft {
 }
 
 repositories {
-    mavenLocal()
     maven {
-        // tfc
         url = "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
@@ -99,6 +97,7 @@ repositories {
         name = "Illusive Soulworks maven"
         url = "https://maven.theillusivec4.top/"
     }
+    mavenLocal()
 }
 
 dependencies {
@@ -120,16 +119,10 @@ dependencies {
     // Patchouli
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$minecraftVersion-$patchouliVersion-FORGE")
 
-    // Jade / The One Probe
-    compileOnly fg.deobf("curse.maven:jade-324717:$jadeFileID")
-    compileOnly fg.deobf("curse.maven:top-245211:$topFleID")
-
-    // Only use Jade at runtime
+    // Jade
     runtimeOnly fg.deobf("curse.maven:jade-324717:$jadeFileID")
 
     // JEI
-    compileOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge-api:$jeiVersion")
-    compileOnly fg.deobf("mezz.jei:jei-$minecraftVersion-common-api:$jeiVersion")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraftVersion-forge:$jeiVersion")
 
     // Curios
@@ -155,7 +148,17 @@ idea {
         downloadSources = true
 
         // Add directory exlusions
-        ["run", ".gradle", "build", ".idea", "gradle", "resources/venv", "resources/.idea"].forEach { excludeDirs.add(file(it)) }
+        final def exludes = ["run",
+                             ".gradle",
+                             "build",
+                             ".idea",
+                             "gradle",
+                             "src/generated/resources/.cache",
+                             "resources/venv",
+                             "resources/.idea",
+                             "resources/models",
+                             "resources/textures"]
+        excludeDirs.addAll(exludes.stream().map { file it }.toList())
     }
 }
 
