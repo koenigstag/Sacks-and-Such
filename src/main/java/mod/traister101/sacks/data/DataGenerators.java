@@ -25,6 +25,7 @@ public final class DataGenerators {
 				poutput -> new BuiltInBlockTags(poutput, lookupProvider, existingFileHelper));
 		generator.addProvider(event.includeServer(),
 				new BuiltInItemTags(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+		generator.addProvider(event.includeServer(), new BuiltInRecipes(packOutput));
 		generator.addProvider(event.includeServer(), new BuiltInCurios(packOutput, existingFileHelper, lookupProvider));
 
 		generator.addProvider(event.includeClient(), new BuiltIntLanguage(packOutput));
