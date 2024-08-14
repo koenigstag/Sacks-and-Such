@@ -22,6 +22,7 @@ class Weight(Enum):
     very_heavy = auto()
 
 
+# TODO migrate this to TFC java data gen when 1.21 comes around. I can't be arsed to bodge a provider
 def generate(rm: ResourceManager):
     item_size(rm, "unfinished_leather_sack", "sns:unfinished_leather_sack", Size.small, Weight.medium)
     item_size(rm, "reinforced_fiber", "sns:reinforced_fiber", Size.small, Weight.very_light)

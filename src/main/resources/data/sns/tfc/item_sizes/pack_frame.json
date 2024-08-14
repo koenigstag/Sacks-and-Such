@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-	"item": "sns:steel_reinforced_fabric"
+	"item": "sns:pack_frame"
   },
   "size": "large",
   "weight": "medium"
