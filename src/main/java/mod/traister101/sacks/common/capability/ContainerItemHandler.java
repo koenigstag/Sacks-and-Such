@@ -53,7 +53,7 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
 		if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(Items.TFC_FOODS)) return false;
 
-		if (type == DefaultContainers.ORE_SACK && itemStack.is(Items.TFC_ORE)) return true;
+		if (type == DefaultContainers.ORE_SACK && !itemStack.is(Items.TFC_ORE)) return false;
 
 		if (!SNSConfig.SERVER.allAllowOre.get() && type != DefaultContainers.ORE_SACK && itemStack.is(Items.TFC_ORE)) return false;
 
