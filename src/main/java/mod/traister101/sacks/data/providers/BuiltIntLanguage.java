@@ -1,8 +1,10 @@
 package mod.traister101.sacks.data.providers;
 
 import mod.traister101.sacks.SacksNSuch;
-import mod.traister101.sacks.common.items.SNSItems;
+import mod.traister101.sacks.common.items.*;
 import mod.traister101.sacks.data.SmartLanguageProvider;
+import mod.traister101.sacks.util.SNSUtils;
+import mod.traister101.sacks.util.SNSUtils.ToggleType;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
@@ -32,10 +34,21 @@ public class BuiltIntLanguage extends SmartLanguageProvider {
 		addItemTranslations();
 
 		// Keybinds
-		add("sns.key.pickup", "Toggle Sack Pickup");
-		add("sns.key.void", "Toggle Sack Voiding");
+		add("sns.key.pickup", "Toggle Container Item Pickup");
+		add("sns.key.void", "Toggle Container Item Voiding");
 		// Creative Tab
 		add("sns.creative_tab.sacks", "Sacks 'N Such");
+		// Tooltips
+		add(ContainerItem.TYPE_NO_VOID, "This container type has voiding disabled");
+		add(ContainerItem.TYPE_NO_PICKUP, "This container type has pickup disabled");
+		add(ContainerItem.HOLD_SHIFT_TOOLTIP, "Hold [Shift]");
+		add(ContainerItem.STATUS_TOOLTIP, "Status:");
+		add(ContainerItem.PICKUP_TOOLTIP, "Item Pickup %s");
+		add(ContainerItem.VOID_TOOLTIP, "Item Voiding %s");
+		add(ToggleType.PICKUP.langKey, "Auto Pickup %s");
+		add(ToggleType.VOID.langKey, "Voiding %s");
+		add(SNSUtils.ENABLED, "Enabled");
+		add(SNSUtils.DISABLED, "Disabled");
 	}
 
 	@Override

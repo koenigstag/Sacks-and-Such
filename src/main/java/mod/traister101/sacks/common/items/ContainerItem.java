@@ -11,6 +11,7 @@ import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.*;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,6 +36,12 @@ import java.util.*;
 public class ContainerItem extends Item implements IItemSize {
 
 	public static final String CONTENTS_TAG = "contents";
+	public static final String TYPE_NO_PICKUP = SacksNSuch.MODID + ".status.item_container.no_pickup";
+	public static final String TYPE_NO_VOID = SacksNSuch.MODID + ".status.item_container.no_void";
+	public static final String HOLD_SHIFT_TOOLTIP = SacksNSuch.MODID + "tooltip.item_container.tooltip.shift";
+	public static final String STATUS_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.status";
+	public static final String PICKUP_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.tooltip.pickup";
+	public static final String VOID_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.tooltip.void";
 	private final ContainerType type;
 
 	public ContainerItem(final Properties properties, final ContainerType type) {
@@ -60,10 +67,9 @@ public class ContainerItem extends Item implements IItemSize {
 				if (type.doesVoiding()) {
 					final boolean flag = !NBTHelper.isAutoVoid(heldStack);
 					SNSUtils.sendTogglePacket(ToggleType.VOID, flag);
-					player.displayClientMessage(ToggleType.VOID.getComponent(flag), true);
+					player.displayClientMessage(ToggleType.VOID.getTooltip(flag), true);
 				} else {
-					final Component status = Component.translatable(SacksNSuch.MODID + ".sack.no_void");
-					player.displayClientMessage(status, true);
+					player.displayClientMessage(Component.translatable(TYPE_NO_VOID), true);
 				}
 				return InteractionResultHolder.consume(heldStack);
 			}
@@ -71,10 +77,9 @@ public class ContainerItem extends Item implements IItemSize {
 			if (type.doesAutoPickup()) {
 				final boolean flag = !NBTHelper.isAutoPickup(heldStack);
 				SNSUtils.sendTogglePacket(ToggleType.PICKUP, flag);
-				player.displayClientMessage(ToggleType.PICKUP.getComponent(flag), true);
+				player.displayClientMessage(ToggleType.PICKUP.getTooltip(flag), true);
 			} else {
-				final Component status = Component.translatable(SacksNSuch.MODID + ".sack.no_pickup");
-				player.displayClientMessage(status, true);
+				player.displayClientMessage(Component.translatable(TYPE_NO_PICKUP), true);
 			}
 
 			return InteractionResultHolder.success(heldStack);
@@ -174,17 +179,20 @@ public class ContainerItem extends Item implements IItemSize {
 
 	@Override
 	public void appendHoverText(final ItemStack itemStack, @Nullable final Level level, final List<Component> tooltip, final TooltipFlag flagIn) {
-		String text = SacksNSuch.MODID + ".sack.tooltip";
-		if (Screen.hasShiftDown()) {
-			if (NBTHelper.isAutoVoid(itemStack) && type.doesVoiding()) {
-				text += ".void";
-			}
-			if (NBTHelper.isAutoPickup(itemStack) && type.doesAutoPickup()) {
-				text += ".pickup";
-			}
-			text += ".shift";
+		if (!Screen.hasShiftDown()) {
+			tooltip.add(Component.translatable(HOLD_SHIFT_TOOLTIP).withStyle(ChatFormatting.GRAY));
+			return;
 		}
-		tooltip.add(Component.translatable((text)));
+
+		tooltip.add(Component.translatable(STATUS_TOOLTIP));
+
+		if (type.doesAutoPickup()) {
+			tooltip.add(Component.translatable(PICKUP_TOOLTIP, SNSUtils.toggleTooltip(NBTHelper.isAutoPickup(itemStack))));
+		}
+
+		if (type.doesVoiding()) {
+			tooltip.add(Component.translatable(VOID_TOOLTIP, SNSUtils.toggleTooltip(NBTHelper.isAutoVoid(itemStack))));
+		}
 	}
 
 	@Override

@@ -42,14 +42,14 @@ public final class ClientForgeEventHandler {
 			final ItemStack heldStack = MC.player.getMainHandItem();
 			final boolean flag = !NBTHelper.isAutoVoid(heldStack);
 			SNSUtils.sendTogglePacket(ToggleType.VOID, flag);
-			MC.player.displayClientMessage(ToggleType.VOID.getComponent(flag), true);
+			MC.player.displayClientMessage(ToggleType.VOID.getTooltip(flag), true);
 		}
 
 		if (SNSKeybinds.TOGGLE_PICKUP.isDown()) {
 			final ItemStack heldStack = MC.player.getMainHandItem();
 			final boolean flag = !NBTHelper.isAutoPickup(heldStack);
 			SNSUtils.sendTogglePacket(ToggleType.PICKUP, flag);
-			MC.player.displayClientMessage(ToggleType.PICKUP.getComponent(flag), true);
+			MC.player.displayClientMessage(ToggleType.PICKUP.getTooltip(flag), true);
 		}
 	}
 

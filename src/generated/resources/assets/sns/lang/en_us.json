@@ -10,6 +10,16 @@
   "item.sns.thatch_basket": "Thatch Basket",
   "item.sns.unfinished_leather_sack": "Unfinished Leather Sack",
   "sns.creative_tab.sacks": "Sacks 'N Such",
-  "sns.key.pickup": "Toggle Sack Pickup",
-  "sns.key.void": "Toggle Sack Voiding"
+  "sns.disabled": "Disabled",
+  "sns.enabled": "Enabled",
+  "sns.key.pickup": "Toggle Container Item Pickup",
+  "sns.key.void": "Toggle Container Item Voiding",
+  "sns.status.item_container.no_pickup": "This container type has pickup disabled",
+  "sns.status.item_container.no_void": "This container type has voiding disabled",
+  "sns.status.sack.auto_pickup": "Auto Pickup %s",
+  "sns.status.sack.auto_void": "Voiding %s",
+  "sns.tooltip.item_container.status": "Status:",
+  "sns.tooltip.item_container.tooltip.pickup": "Item Pickup %s",
+  "sns.tooltip.item_container.tooltip.void": "Item Voiding %s",
+  "snstooltip.item_container.tooltip.shift": "Hold [Shift]"
 }

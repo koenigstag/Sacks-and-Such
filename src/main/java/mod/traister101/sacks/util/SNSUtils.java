@@ -3,6 +3,7 @@ package mod.traister101.sacks.util;
 import mod.traister101.sacks.SacksNSuch;
 import mod.traister101.sacks.network.*;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.util.ByIdMap;
 
@@ -13,8 +14,16 @@ import java.util.function.IntFunction;
 @UtilityClass
 public final class SNSUtils {
 
+	public static final String ENABLED = SacksNSuch.MODID + ".enabled";
+	public static final String DISABLED = SacksNSuch.MODID + ".disabled";
+
 	public static void sendTogglePacket(final ToggleType toggleType, final boolean flag) {
 		SNSPacketHandler.sendToServer(new ServerboundTogglePacket(flag, toggleType));
+	}
+
+	public static MutableComponent toggleTooltip(final boolean flag) {
+		return flag ? Component.translatable(ENABLED).withStyle(ChatFormatting.GREEN) : Component.translatable(DISABLED)
+				.withStyle(ChatFormatting.RED);
 	}
 
 	/**
@@ -22,8 +31,8 @@ public final class SNSUtils {
 	 */
 	public enum ToggleType {
 		NONE(0, "", ""),
-		VOID(1, SacksNSuch.MODID + ".sack.auto_void", "void"),
-		PICKUP(2, SacksNSuch.MODID + ".sack.auto_pickup", "pickup");
+		VOID(1, SacksNSuch.MODID + ".status.sack.auto_void", "void"),
+		PICKUP(2, SacksNSuch.MODID + ".status.sack.auto_pickup", "pickup");
 
 		private static final IntFunction<ToggleType> BY_ID = ByIdMap.continuous(ToggleType::getId, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
 		@Getter
@@ -41,8 +50,16 @@ public final class SNSUtils {
 			return BY_ID.apply(toggleTypeId);
 		}
 
-		public MutableComponent getComponent(final boolean flag) {
-			return Component.translatable(langKey + "." + (flag ? "enabled" : "disabled"));
+		public boolean supportsContainerType(final ContainerType containerType) {
+			return switch (this) {
+				case NONE -> false;
+				case VOID -> containerType.doesVoiding();
+				case PICKUP -> containerType.doesAutoPickup();
+			};
+		}
+
+		public MutableComponent getTooltip(final boolean flag) {
+			return Component.translatable(langKey, toggleTooltip(flag));
 		}
 	}
 }
