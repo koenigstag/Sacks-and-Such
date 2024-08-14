@@ -8,7 +8,7 @@ version = "${file.jarVersion}"
 displayName = "Sacks 'N Such"
 logoFile = "icon.png"
 authors = "Traister101"
-description = '''An addon for TFC.'''
+description = '''An addon for TFC focusing on bringing vessel like handheld containers for all your adventuring needs'''
 
 [[dependencies.sns]]
 modId = "tfc"
