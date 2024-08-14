@@ -26,11 +26,11 @@ public final class ServerConfig {
 		builder.push("Sack Config");
 
 		thatchBasket = buildContainerConfig(builder, "Thatch Basket", true, true, 4, 32, Size.SMALL);
-		leatherSack = buildContainerConfig(builder, "Leather Sack", true, true, 4, 64, Size.NORMAL);
-		burlapSack = buildContainerConfig(builder, "Burlap Sack", true, false, 8, 48, Size.SMALL);
+		leatherSack = buildContainerConfig(builder, "Leather Sack", false, false, 4, 64, Size.NORMAL);
+		burlapSack = buildContainerConfig(builder, "Burlap Sack", true, true, 8, 48, Size.SMALL);
 		oreSack = buildContainerConfig(builder, "Ore Sack", true, false, 1, 512, Size.SMALL);
 		seedPouch = buildContainerConfig(builder, "Seed Pouch", true, false, 27, 64, Size.SMALL);
-		framePack = buildContainerConfig(builder, "Frame Pack", false, false, 18, 64, Size.LARGE);
+		framePack = buildContainerConfig(builder, "Frame Pack", true, false, 18, 64, Size.LARGE);
 
 		builder.pop();
 
