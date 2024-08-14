@@ -16,8 +16,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.*;
-import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -99,23 +100,45 @@ public class ContainerItem extends Item implements IItemSize {
 
 	@Override
 	public boolean overrideStackedOnOther(final ItemStack itemStack, final Slot slot, final ClickAction clickAction, final Player player) {
-		if (player.isCreative()) return false;
 		if (clickAction != ClickAction.SECONDARY) return false;
 		if (!SNSConfig.SERVER.enableContainerInventoryInteraction.get()) return false;
 
 		return itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).map(handler -> {
-			for (int slotIndex = handler.getSlots() - 1; slotIndex >= 0; slotIndex--) {
-				final ItemStack simulate = handler.extractItem(slotIndex, Container.LARGE_MAX_STACK_SIZE, true);
-				if (simulate.isEmpty()) continue;
+			if (!slot.hasItem()) {
+				for (int slotIndex = handler.getSlots() - 1; slotIndex >= 0; slotIndex--) {
+					final ItemStack simulate = handler.extractItem(slotIndex, Container.LARGE_MAX_STACK_SIZE, true);
+					if (simulate.isEmpty()) continue;
 
-				final ItemStack extracted = handler.extractItem(slotIndex, Container.LARGE_MAX_STACK_SIZE, false);
-				final ItemStack leftover = slot.safeInsert(extracted);
+					final ItemStack extracted = handler.extractItem(slotIndex, Container.LARGE_MAX_STACK_SIZE, false);
+					final ItemStack leftover = slot.safeInsert(extracted);
 
-				if (leftover.isEmpty()) continue;
+					if (!leftover.isEmpty()) continue;
 
-				handler.insertItem(slotIndex, leftover, false);
+					handler.insertItem(slotIndex, leftover, false);
+					player.containerMenu.slotsChanged(slot.container);
+					playRemoveOneSound(player);
+					return true;
+				}
+				return false;
+			}
 
+			boolean slotsChanged = false;
+			final int initalCount = slot.getItem().getCount();
+
+			for (int slotIndex = 0; slotIndex < handler.getSlots(); slotIndex++) {
+				final ItemStack remainder = handler.insertItem(slotIndex, slot.getItem(), false);
+
+				if (remainder.getCount() != initalCount || slotsChanged) {
+					slotsChanged = true;
+					slot.set(remainder);
+				}
+
+				if (remainder.isEmpty()) break;
+			}
+
+			if (slotsChanged) {
 				player.containerMenu.slotsChanged(slot.container);
+				playInsertSound(player);
 				return true;
 			}
 
@@ -126,7 +149,7 @@ public class ContainerItem extends Item implements IItemSize {
 	@Override
 	public boolean overrideOtherStackedOnMe(final ItemStack itemStack, final ItemStack carriedStack, final Slot slot, final ClickAction clickAction,
 			final Player player, final SlotAccess carriedSlot) {
-		if (player.isCreative()) return false;
+		if (!slot.allowModification(player)) return false;
 		if (clickAction != ClickAction.SECONDARY) return false;
 		if (!SNSConfig.SERVER.enableContainerInventoryInteraction.get()) return false;
 
@@ -140,6 +163,7 @@ public class ContainerItem extends Item implements IItemSize {
 					carriedSlot.set(handler.extractItem(slotIndex, Container.LARGE_MAX_STACK_SIZE, false));
 
 					player.containerMenu.slotsChanged(slot.container);
+					playRemoveOneSound(player);
 					return true;
 				}
 				return false;
@@ -172,6 +196,7 @@ public class ContainerItem extends Item implements IItemSize {
 			if (!slotsChanged) return false;
 
 			player.containerMenu.slotsChanged(slot.container);
+			playInsertSound(player);
 			return true;
 
 		}).orElse(false);
@@ -263,6 +288,14 @@ public class ContainerItem extends Item implements IItemSize {
 	public ICapabilityProvider initCapabilities(final ItemStack itemStack, @Nullable CompoundTag nbt) {
 		// Must be lazy as stacks can be created before server config is initalized
 		return new LazySerializedCapabilityProvider<>(ForgeCapabilities.ITEM_HANDLER, () -> new ContainerItemHandler(type));
+	}
+
+	private void playRemoveOneSound(final Entity entity) {
+		entity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
+	}
+
+	private void playInsertSound(final Entity entity) {
+		entity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
 	}
 
 	@Override
