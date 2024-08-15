@@ -34,7 +34,7 @@ side = "BOTH"
 [[dependencies.sns]]
 modId = "esc"
 mandatory = true
-versionRange = "[1.0,)"
+versionRange = "[1.1,)"
 ordering = "AFTER"
 side = "BOTH"
 

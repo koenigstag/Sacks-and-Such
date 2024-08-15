@@ -112,8 +112,8 @@ dependencies {
     implementation fg.deobf("curse.maven:terrafirmacraft-302973:$tfcFileID")
 
     // https://github.com/Traister101/ExtendedSlotCapacity
-    implementation jarJar(fg.deobf("mod.traister101:Extended-Slot-Capacity-1.20.1:1.0")) {
-        jarJar.ranged(it as Dependency, "[1.0,)")
+    implementation jarJar(fg.deobf("mod.traister101:Extended-Slot-Capacity-1.20.1:$extendedSlotCapacityVersion")) {
+        jarJar.ranged(it as Dependency, "[$extendedSlotCapacityVersion,)")
     }
 
     // Patchouli
