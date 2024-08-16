@@ -7,7 +7,7 @@ import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 
 import mod.traister101.sacks.SacksNSuch;
-import mod.traister101.sacks.common.items.*;
+import mod.traister101.sacks.common.items.SNSItems;
 import mod.traister101.sacks.data.recipes.ShapedRecipeBuilder;
 import mod.traister101.sacks.data.recipes.*;
 
@@ -49,7 +49,7 @@ public class BuiltInRecipes extends RecipeProvider {
 				.unlockedBy("has_steel_rod", has(steelRodsTag))
 				.save(writer);
 
-		DamageInputShapedRecipeBuilder.shaped(SNSItems.ITEM_CONTAINERS.get(DefaultContainers.THATCH_BASKET).get())
+		DamageInputShapedRecipeBuilder.shaped(SNSItems.THATCH_BASKET.get())
 				.pattern("JJJ", "T T", " TK")
 				.define('J', TFCItems.JUTE_FIBER.get())
 				.define('T', TFCItems.STRAW.get())
@@ -59,7 +59,7 @@ public class BuiltInRecipes extends RecipeProvider {
 				.unlockedBy("has_knife", has(TFCTags.Items.KNIVES))
 				.save(writer);
 
-		DamageInputShapedRecipeBuilder.shaped(SNSItems.ITEM_CONTAINERS.get(DefaultContainers.LEATHER_SACK).get())
+		DamageInputShapedRecipeBuilder.shaped(SNSItems.LEATHER_SACK.get())
 				.pattern("JJJ", "LUL", " LN")
 				.define('J', TFCItems.JUTE_FIBER.get())
 				.define('L', Tags.Items.LEATHER)
@@ -71,7 +71,7 @@ public class BuiltInRecipes extends RecipeProvider {
 				.unlockedBy("has_sewing_needle", has(TFCTags.Items.SEWING_NEEDLES))
 				.save(writer);
 
-		DamageInputShapedRecipeBuilder.shaped(SNSItems.ITEM_CONTAINERS.get(DefaultContainers.BURLAP_SACK).get())
+		DamageInputShapedRecipeBuilder.shaped(SNSItems.BURLAP_SACK.get())
 				.pattern("JJJ", "B B", " BN")
 				.define('J', TFCItems.JUTE_FIBER.get())
 				.define('B', TFCItems.BURLAP_CLOTH.get())
@@ -81,31 +81,31 @@ public class BuiltInRecipes extends RecipeProvider {
 				.unlockedBy("has_sewing_needle", has(TFCTags.Items.SEWING_NEEDLES))
 				.save(writer);
 
-		DamageInputShapedRecipeBuilder.shaped(SNSItems.ITEM_CONTAINERS.get(DefaultContainers.SEED_POUCH).get())
+		DamageInputShapedRecipeBuilder.shaped(SNSItems.SEED_POUCH.get())
 				.pattern("SSS", "WUW", " WN")
 				.define('S', Tags.Items.STRING)
 				.define('W', TFCItems.WOOL_CLOTH.get())
-				.define('U', SNSItems.ITEM_CONTAINERS.get(DefaultContainers.BURLAP_SACK).get())
+				.define('U', SNSItems.BURLAP_SACK.get())
 				.define('N', TFCTags.Items.SEWING_NEEDLES)
 				.unlockedBy("has_string", has(Tags.Items.STRING))
 				.unlockedBy("has_wool_cloth", has(TFCItems.WOOL_CLOTH.get()))
-				.unlockedBy("has_burlap_sack", has(SNSItems.ITEM_CONTAINERS.get(DefaultContainers.BURLAP_SACK).get()))
+				.unlockedBy("has_burlap_sack", has(SNSItems.BURLAP_SACK.get()))
 				.unlockedBy("has_sewing_needle", has(TFCTags.Items.SEWING_NEEDLES))
 				.save(writer);
 
-		DamageInputShapedRecipeBuilder.shaped(SNSItems.ITEM_CONTAINERS.get(DefaultContainers.ORE_SACK).get())
+		DamageInputShapedRecipeBuilder.shaped(SNSItems.ORE_SACK.get())
 				.pattern("RRR", "LUL", " LN")
 				.define('R', SNSItems.REINFORCED_FIBER.get())
 				.define('L', Tags.Items.LEATHER)
-				.define('U', SNSItems.ITEM_CONTAINERS.get(DefaultContainers.BURLAP_SACK).get())
+				.define('U', SNSItems.BURLAP_SACK.get())
 				.define('N', TFCTags.Items.SEWING_NEEDLES)
 				.unlockedBy("has_reinforced_fiber", has(SNSItems.REINFORCED_FIBER.get()))
 				.unlockedBy("has_leather", has(Tags.Items.LEATHER))
-				.unlockedBy("has_burlap_sack", has(SNSItems.ITEM_CONTAINERS.get(DefaultContainers.BURLAP_SACK).get()))
+				.unlockedBy("has_burlap_sack", has(SNSItems.BURLAP_SACK.get()))
 				.unlockedBy("has_sewing_needle", has(TFCTags.Items.SEWING_NEEDLES))
 				.save(writer);
 
-		DamageInputShapedRecipeBuilder.shaped(SNSItems.ITEM_CONTAINERS.get(DefaultContainers.FRAME_PACK).get())
+		DamageInputShapedRecipeBuilder.shaped(SNSItems.FRAME_PACK.get())
 				.pattern("RPR", "FLF", " FN")
 				.define('R', SNSItems.REINFORCED_FIBER.get())
 				.define('P', SNSItems.PACK_FRAME.get())

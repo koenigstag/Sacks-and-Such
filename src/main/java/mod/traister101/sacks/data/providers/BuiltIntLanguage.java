@@ -57,12 +57,10 @@ public class BuiltIntLanguage extends SmartLanguageProvider {
 	}
 
 	private void addItemTranslations() {
-		add(SNSItems.UNFINISHED_LEATHER_SACK.get(), "Unfinished Leather Sack");
-		add(SNSItems.REINFORCED_FIBER.get(), "Reinforced Fiber");
-		add(SNSItems.REINFORCED_FABRIC.get(), "Reinforced Fabric");
-		add(SNSItems.PACK_FRAME.get(), "Pack Frame");
+		SNSItems.ITEMS.getEntries().forEach(this::addSimpleItem);
+	}
 
-		SNSItems.ITEM_CONTAINERS.forEach(
-				(defaultContainer, registryObject) -> add(registryObject.get(), langify(defaultContainer.getSerializedName())));
+	private void addSimpleItem(final RegistryObject<Item> item) {
+		add(item.get(), langify(item.getId().getPath()));
 	}
 }
