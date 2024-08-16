@@ -1,25 +1,33 @@
-package mod.traister101.sacks.client.renderer;
+package mod.traister101.sacks.client.renderer.curios;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
+import mod.traister101.sacks.SacksNSuch;
+import mod.traister101.sacks.client.models.FramePackModel;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.*;
-import net.minecraft.client.model.geom.*;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
 
-public class CurioSackItemRenderer implements ICurioRenderer {
+import net.minecraftforge.api.distmarker.*;
 
-	private final HumanoidModel<LivingEntity> model;
+@OnlyIn(Dist.CLIENT)
+public class FramePackCurioRenderer implements ICurioRenderer {
 
-	public CurioSackItemRenderer() {
+	public static final ResourceLocation PACK_FRAME_TEXTURE = new ResourceLocation(SacksNSuch.MODID, "textures/curios/frame_pack.png");
+	private final FramePackModel model;
+
+	public FramePackCurioRenderer() {
 		final EntityModelSet entityModels = Minecraft.getInstance().getEntityModels();
-		this.model = new HumanoidModel<>(entityModels.bakeLayer(ModelLayers.PLAYER));
+		this.model = new FramePackModel(entityModels.bakeLayer(FramePackModel.LAYER_LOCATION));
 	}
 
 	@Override
@@ -34,15 +42,11 @@ public class CurioSackItemRenderer implements ICurioRenderer {
 
 			ICurioRenderer.translateIfSneaking(poseStack, entity);
 			ICurioRenderer.rotateIfSneaking(poseStack, entity);
-			ICurioRenderer.followBodyRotations(entity, model);
 
-			poseStack.translate(0, 0.6, 0.15);
-			poseStack.scale(0.5F, 0.5F, 0.5F);
+			poseStack.translate(0, -0.9, 0.6);
 
-			Minecraft.getInstance()
-					.getItemRenderer()
-					.renderStatic(itemStack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource,
-							entity.level(), entity.getId());
+			model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(PACK_FRAME_TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1,
+					1, 1, 1);
 
 			poseStack.popPose();
 		}
