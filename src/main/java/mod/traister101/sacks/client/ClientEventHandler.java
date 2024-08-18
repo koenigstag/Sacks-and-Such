@@ -47,5 +47,6 @@ public final class ClientEventHandler {
 	private static void registerLayers(final RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(FramePackModel.LAYER_LOCATION, FramePackModel::createBodyLayer);
 		event.registerLayerDefinition(SmallSackModel.LAYER_LOCATION, SmallSackModel::createBodyLayer);
+		event.registerLayerDefinition(LargeSackModel.LAYER_LOCATION, LargeSackModel::createBodyLayer);
 	}
 }
