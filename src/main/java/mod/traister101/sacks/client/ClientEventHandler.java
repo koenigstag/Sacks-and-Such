@@ -2,7 +2,7 @@ package mod.traister101.sacks.client;
 
 import top.theillusivec4.curios.api.CuriosApi;
 
-import mod.traister101.sacks.client.models.FramePackModel;
+import mod.traister101.sacks.client.models.*;
 import mod.traister101.sacks.client.screen.ContainerItemScreen;
 import mod.traister101.sacks.common.menu.SNSMenus;
 import mod.traister101.sacks.compat.curios.CuriosCompat;
@@ -46,5 +46,6 @@ public final class ClientEventHandler {
 
 	private static void registerLayers(final RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(FramePackModel.LAYER_LOCATION, FramePackModel::createBodyLayer);
+		event.registerLayerDefinition(SmallSackModel.LAYER_LOCATION, SmallSackModel::createBodyLayer);
 	}
 }
