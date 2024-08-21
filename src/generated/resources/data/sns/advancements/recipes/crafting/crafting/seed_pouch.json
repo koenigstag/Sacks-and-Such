@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-	"has_burlap_sack": {
+	"has_burlap_cloth": {
 	  "conditions": {
 		"items": [
 		  {
 			"items": [
-			  "sns:burlap_sack"
+			  "tfc:burlap_cloth"
 			]
 		  }
 		]
@@ -56,7 +56,7 @@
 	[
 	  "has_string",
 	  "has_wool_cloth",
-	  "has_burlap_sack",
+	  "has_burlap_cloth",
 	  "has_sewing_needle",
 	  "has_the_recipe"
 	]

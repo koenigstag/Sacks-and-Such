@@ -4,14 +4,14 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "misc",
 	"key": {
+	  "B": {
+		"item": "tfc:burlap_cloth"
+	  },
 	  "N": {
 		"tag": "tfc:sewing_needles"
 	  },
 	  "S": {
 		"tag": "forge:string"
-	  },
-	  "U": {
-		"item": "sns:burlap_sack"
 	  },
 	  "W": {
 		"item": "tfc:wool_cloth"
@@ -19,7 +19,7 @@
 	},
 	"pattern": [
 	  "SSS",
-	  "WUW",
+	  "WBW",
 	  " WN"
 	],
 	"result": {

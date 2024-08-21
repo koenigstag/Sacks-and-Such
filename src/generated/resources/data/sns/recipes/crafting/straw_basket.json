@@ -4,18 +4,18 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "misc",
 	"key": {
-	  "J": {
-		"item": "tfc:jute_fiber"
-	  },
 	  "K": {
 		"tag": "tfc:knives"
 	  },
-	  "T": {
+	  "S": {
 		"item": "tfc:straw"
+	  },
+	  "T": {
+		"item": "tfc:thatch"
 	  }
 	},
 	"pattern": [
-	  "JJJ",
+	  "SSS",
 	  "T T",
 	  " TK"
 	],

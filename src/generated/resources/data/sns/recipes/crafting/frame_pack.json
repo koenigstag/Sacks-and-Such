@@ -8,21 +8,18 @@
 		"item": "sns:reinforced_fabric"
 	  },
 	  "L": {
-		"item": "sns:unfinished_leather_sack"
+		"tag": "forge:leather"
 	  },
 	  "N": {
 		"tag": "tfc:sewing_needles"
 	  },
 	  "P": {
 		"item": "sns:pack_frame"
-	  },
-	  "R": {
-		"item": "sns:reinforced_fiber"
 	  }
 	},
 	"pattern": [
-	  "RPR",
-	  "FLF",
+	  " F ",
+	  "LPL",
 	  " FN"
 	],
 	"result": {
