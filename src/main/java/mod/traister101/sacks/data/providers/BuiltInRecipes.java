@@ -49,7 +49,7 @@ public class BuiltInRecipes extends RecipeProvider {
 				.unlockedBy("has_steel_rod", has(steelRodsTag))
 				.save(writer);
 
-		DamageInputShapedRecipeBuilder.shaped(SNSItems.THATCH_BASKET.get())
+		DamageInputShapedRecipeBuilder.shaped(SNSItems.STRAW_BASKET.get())
 				.pattern("JJJ", "T T", " TK")
 				.define('J', TFCItems.JUTE_FIBER.get())
 				.define('T', TFCItems.STRAW.get())

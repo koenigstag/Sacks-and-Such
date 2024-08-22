@@ -22,7 +22,7 @@ public final class SNSItems {
 	public static final RegistryObject<Item> PACK_FRAME = registerSimple("pack_frame");
 
 	// Container Items
-	public static final RegistryObject<ContainerItem> THATCH_BASKET = registerContainerItem(DefaultContainers.THATCH_BASKET);
+	public static final RegistryObject<ContainerItem> STRAW_BASKET = registerContainerItem(DefaultContainers.STRAW_BASKET);
 	public static final RegistryObject<ContainerItem> LEATHER_SACK = registerContainerItem(DefaultContainers.LEATHER_SACK);
 	public static final RegistryObject<ContainerItem> BURLAP_SACK = registerContainerItem(DefaultContainers.BURLAP_SACK);
 	public static final RegistryObject<ContainerItem> ORE_SACK = registerContainerItem(DefaultContainers.ORE_SACK);

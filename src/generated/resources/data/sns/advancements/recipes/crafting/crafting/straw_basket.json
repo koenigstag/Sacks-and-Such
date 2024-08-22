@@ -37,7 +37,7 @@
 	},
 	"has_the_recipe": {
 	  "conditions": {
-		"recipe": "sns:crafting/thatch_basket"
+		"recipe": "sns:crafting/straw_basket"
 	  },
 	  "trigger": "minecraft:recipe_unlocked"
 	}
@@ -52,7 +52,7 @@
   ],
   "rewards": {
 	"recipes": [
-	  "sns:crafting/thatch_basket"
+	  "sns:crafting/straw_basket"
 	]
   },
   "sends_telemetry_event": false

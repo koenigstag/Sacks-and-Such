@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public enum DefaultContainers implements ContainerType {
 
-	THATCH_BASKET(SNSConfig.SERVER.thatchBasket),
+	STRAW_BASKET(SNSConfig.SERVER.strawBasket),
 	LEATHER_SACK(SNSConfig.SERVER.leatherSack),
 	BURLAP_SACK(SNSConfig.SERVER.burlapSack),
 	ORE_SACK(SNSConfig.SERVER.oreSack),

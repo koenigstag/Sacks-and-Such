@@ -7,7 +7,7 @@ import net.minecraftforge.common.ForgeConfigSpec.*;
 
 public final class ServerConfig {
 
-	public final ContainerConfig thatchBasket;
+	public final ContainerConfig strawBasket;
 	public final ContainerConfig leatherSack;
 	public final ContainerConfig burlapSack;
 	public final ContainerConfig oreSack;
@@ -25,7 +25,7 @@ public final class ServerConfig {
 
 		builder.push("Sack Config");
 
-		thatchBasket = buildContainerConfig(builder, "Thatch Basket", true, true, 4, 32, Size.SMALL);
+		strawBasket = buildContainerConfig(builder, "Straw Basket", true, true, 4, 32, Size.SMALL);
 		leatherSack = buildContainerConfig(builder, "Leather Sack", false, false, 4, 64, Size.NORMAL);
 		burlapSack = buildContainerConfig(builder, "Burlap Sack", true, true, 8, 48, Size.SMALL);
 		oreSack = buildContainerConfig(builder, "Ore Sack", true, false, 1, 512, Size.SMALL);
