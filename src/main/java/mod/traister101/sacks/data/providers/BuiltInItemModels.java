@@ -31,9 +31,9 @@ public class BuiltInItemModels extends ItemModelProvider {
 		basicItem(SNSItems.BURLAP_SACK.get());
 		basicItem(SNSItems.ORE_SACK.get());
 		basicItem(SNSItems.SEED_POUCH.get());
-		basicItem(SNSItems.FRAME_PACK.get());
 
 		iconWithHeldModel(SNSItems.STRAW_BASKET.get());
+		iconWithHeldModel(SNSItems.FRAME_PACK.get());
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
