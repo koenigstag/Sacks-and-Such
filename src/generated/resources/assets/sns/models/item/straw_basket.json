@@ -1,6 +1,18 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-	"layer0": "sns:item/straw_basket"
+  "parent": "forge:item/default",
+  "base": {
+    "parent": "sns:item/held/straw_basket"
+  },
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "sns:icon/straw_basket"
+    },
+    "ground": {
+      "parent": "sns:icon/straw_basket"
+    },
+    "gui": {
+      "parent": "sns:icon/straw_basket"
+    }
   }
 }
