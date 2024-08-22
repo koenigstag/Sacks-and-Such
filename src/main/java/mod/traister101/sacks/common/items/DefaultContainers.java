@@ -46,6 +46,11 @@ public enum DefaultContainers implements ContainerType {
 	}
 
 	@Override
+	public boolean doesInventoryInteraction() {
+		return containerConfig.doInventoryTransfer.get();
+	}
+
+	@Override
 	public Size getAllowedSize() {
 		return containerConfig.allowedSize.get();
 	}

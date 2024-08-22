@@ -103,6 +103,7 @@ public class ContainerItem extends Item implements IItemSize {
 
 	@Override
 	public boolean overrideStackedOnOther(final ItemStack itemStack, final Slot slot, final ClickAction clickAction, final Player player) {
+		if (!type.doesInventoryInteraction()) return false;
 		if (clickAction != ClickAction.SECONDARY) return false;
 		if (!SNSConfig.SERVER.enableContainerInventoryInteraction.get()) return false;
 
@@ -152,6 +153,7 @@ public class ContainerItem extends Item implements IItemSize {
 	@Override
 	public boolean overrideOtherStackedOnMe(final ItemStack itemStack, final ItemStack carriedStack, final Slot slot, final ClickAction clickAction,
 			final Player player, final SlotAccess carriedSlot) {
+		if (!type.doesInventoryInteraction()) return false;
 		if (!slot.allowModification(player)) return false;
 		if (clickAction != ClickAction.SECONDARY) return false;
 		if (!SNSConfig.SERVER.enableContainerInventoryInteraction.get()) return false;

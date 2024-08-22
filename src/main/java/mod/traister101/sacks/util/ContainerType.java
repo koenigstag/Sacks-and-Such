@@ -34,24 +34,30 @@ public interface ContainerType extends StringRepresentable {
 	}
 
 	/**
-	 * @return The amount of slots this sack has TODO mention and link to menu and screen
+	 * @return The amount of slots this {@link ContainerType}
 	 */
 	int getSlotCount();
 
 	/**
-	 * @return The slot capacity of this sack type
+	 * @return The slot capacity of this {@link ContainerType}
 	 */
 	int getSlotCapacity();
 
 	/**
-	 * @return If this sack type supports item pickup
+	 * @return If this {@link ContainerType} supports item pickup
 	 */
 	boolean doesAutoPickup();
 
 	/**
-	 * @return If this sack type supports item voiding
+	 * @return If this {@link ContainerType} supports item voiding
 	 */
 	boolean doesVoiding();
+
+	/**
+	 * @return If this {@link ContainerType} allows you to tranasfer items via the inventory
+	 */
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+	boolean doesInventoryInteraction();
 
 	/**
 	 * @return The largest allowed {@link Size} inside the sack
