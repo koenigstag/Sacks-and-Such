@@ -29,3 +29,4 @@ __pycache__/
 
 # Auto generated
 src/generated/resources/.cache/
+dev.gradle
