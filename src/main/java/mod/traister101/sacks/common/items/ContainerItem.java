@@ -43,6 +43,9 @@ public class ContainerItem extends Item implements IItemSize {
 	public static final String STATUS_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.status";
 	public static final String PICKUP_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.tooltip.pickup";
 	public static final String VOID_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.tooltip.void";
+	public static final String SLOT_COUNT_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.slot_count";
+	public static final String SLOT_CAPACITY_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.slot_capacity";
+	public static final String ALLOWED_SIZE_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.allowed_size";
 	private final ContainerType type;
 
 	public ContainerItem(final Properties properties, final ContainerType type) {
@@ -210,6 +213,10 @@ public class ContainerItem extends Item implements IItemSize {
 		}
 
 		tooltip.add(Component.translatable(STATUS_TOOLTIP));
+
+		tooltip.add(Component.translatable(SLOT_COUNT_TOOLTIP, type.getSlotCount()));
+		tooltip.add(Component.translatable(SLOT_CAPACITY_TOOLTIP, type.getSlotCapacity()));
+		tooltip.add(Component.translatable(ALLOWED_SIZE_TOOLTIP, Helpers.translateEnum(type.getAllowedSize())));
 
 		if (type.doesAutoPickup()) {
 			tooltip.add(Component.translatable(PICKUP_TOOLTIP, SNSUtils.toggleTooltip(NBTHelper.isAutoPickup(itemStack))));
