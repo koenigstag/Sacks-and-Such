@@ -3,7 +3,7 @@ package mod.traister101.sacks.common.items;
 import mod.traister101.sacks.SacksNSuch;
 import mod.traister101.sacks.util.ContainerType;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.Item.Properties;
 
 import net.minecraftforge.registries.*;
@@ -19,7 +19,7 @@ public final class SNSItems {
 	public static final RegistryObject<Item> UNFINISHED_LEATHER_SACK = registerSimple("unfinished_leather_sack");
 	public static final RegistryObject<Item> REINFORCED_FIBER = registerSimple("reinforced_fiber");
 	public static final RegistryObject<Item> REINFORCED_FABRIC = registerSimple("reinforced_fabric");
-	public static final RegistryObject<Item> PACK_FRAME = registerSimple("pack_frame");
+	public static final RegistryObject<Item> PACK_FRAME = registerSimple("pack_frame", new Properties().rarity(Rarity.UNCOMMON));
 
 	// Container Items
 	public static final RegistryObject<ContainerItem> STRAW_BASKET = registerContainerItem(DefaultContainers.STRAW_BASKET);
@@ -27,14 +27,23 @@ public final class SNSItems {
 	public static final RegistryObject<ContainerItem> BURLAP_SACK = registerContainerItem(DefaultContainers.BURLAP_SACK);
 	public static final RegistryObject<ContainerItem> ORE_SACK = registerContainerItem(DefaultContainers.ORE_SACK);
 	public static final RegistryObject<ContainerItem> SEED_POUCH = registerContainerItem(DefaultContainers.SEED_POUCH);
-	public static final RegistryObject<ContainerItem> FRAME_PACK = registerContainerItem(DefaultContainers.FRAME_PACK);
+	public static final RegistryObject<ContainerItem> FRAME_PACK = registerContainerItem(DefaultContainers.FRAME_PACK,
+			new Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
 
 	private static RegistryObject<ContainerItem> registerContainerItem(final ContainerType containerType) {
-		return register(containerType.getSerializedName(), () -> new ContainerItem(new Properties().stacksTo(1), containerType));
+		return registerContainerItem(containerType, new Properties().stacksTo(1));
+	}
+
+	private static RegistryObject<ContainerItem> registerContainerItem(final ContainerType containerType, final Properties properties) {
+		return register(containerType.getSerializedName(), () -> new ContainerItem(properties, containerType));
 	}
 
 	private static RegistryObject<Item> registerSimple(final String name) {
-		return register(name, () -> new Item(new Properties()));
+		return registerSimple(name, new Properties());
+	}
+
+	private static RegistryObject<Item> registerSimple(final String name, final Properties properties) {
+		return register(name, () -> new Item(properties));
 	}
 
 	private static <I extends Item> RegistryObject<I> register(final String name, final Supplier<I> itemSupplier) {
