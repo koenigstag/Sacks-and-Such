@@ -45,6 +45,7 @@ public class ContainerItem extends Item implements IItemSize {
 	public static final String SLOT_COUNT_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.slot_count";
 	public static final String SLOT_CAPACITY_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.slot_capacity";
 	public static final String ALLOWED_SIZE_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.allowed_size";
+	public static final String INVENTORY_INTERACTION_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.tooltip.inventory_interaction";
 	private final ContainerType type;
 
 	public ContainerItem(final Properties properties, final ContainerType type) {
@@ -213,9 +214,12 @@ public class ContainerItem extends Item implements IItemSize {
 			return;
 		}
 
-		tooltip.add(Component.translatable(SLOT_COUNT_TOOLTIP, type.getSlotCount()).withStyle(ChatFormatting.GRAY));
-		tooltip.add(Component.translatable(SLOT_CAPACITY_TOOLTIP, type.getSlotCapacity()).withStyle(ChatFormatting.GRAY));
-		tooltip.add(Component.translatable(ALLOWED_SIZE_TOOLTIP, Helpers.translateEnum(type.getAllowedSize())).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(SLOT_COUNT_TOOLTIP, Component.literal(String.valueOf(type.getSlotCount())).withStyle(ChatFormatting.WHITE))
+				.withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(SLOT_CAPACITY_TOOLTIP,
+				Component.literal(String.valueOf(type.getSlotCapacity())).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(ALLOWED_SIZE_TOOLTIP, Helpers.translateEnum(type.getAllowedSize()).withStyle(ChatFormatting.WHITE))
+				.withStyle(ChatFormatting.GRAY));
 
 		if (type.doesAutoPickup()) {
 			tooltip.add(
@@ -225,6 +229,9 @@ public class ContainerItem extends Item implements IItemSize {
 		if (type.doesVoiding()) {
 			tooltip.add(Component.translatable(VOID_TOOLTIP, SNSUtils.toggleTooltip(NBTHelper.isAutoVoid(itemStack))).withStyle(ChatFormatting.GRAY));
 		}
+
+		tooltip.add(Component.translatable(INVENTORY_INTERACTION_TOOLTIP, SNSUtils.toggleTooltip(type.doesInventoryInteraction()))
+				.withStyle(ChatFormatting.GRAY));
 	}
 
 	@Override

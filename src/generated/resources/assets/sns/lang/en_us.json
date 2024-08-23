@@ -18,9 +18,10 @@
   "sns.status.item_container.no_void": "%s has item voiding disabled",
   "sns.status.sack.auto_pickup": "Item Pickup %s",
   "sns.status.sack.auto_void": "Item Voiding %s",
-  "sns.tooltip.item_container.allowed_size": "Fits at most: Size %s",
+  "sns.tooltip.item_container.allowed_size": "Fits at most size: %s",
   "sns.tooltip.item_container.slot_capacity": "Slot Capacity: %s",
   "sns.tooltip.item_container.slot_count": "Slot Count: %s",
+  "sns.tooltip.item_container.tooltip.inventory_interaction": "Inventory Interaction: %s",
   "sns.tooltip.item_container.tooltip.pickup": "Item Pickup %s",
   "sns.tooltip.item_container.tooltip.void": "Item Voiding %s",
   "snstooltip.item_container.tooltip.shift": "Hold [Shift]"
