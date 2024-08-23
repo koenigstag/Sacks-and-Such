@@ -42,7 +42,6 @@ public class BuiltIntLanguage extends SmartLanguageProvider {
 		add(ContainerItem.TYPE_NO_VOID, "This container type has voiding disabled");
 		add(ContainerItem.TYPE_NO_PICKUP, "This container type has pickup disabled");
 		add(ContainerItem.HOLD_SHIFT_TOOLTIP, "Hold [Shift]");
-		add(ContainerItem.STATUS_TOOLTIP, "Status:");
 		add(ContainerItem.PICKUP_TOOLTIP, "Item Pickup %s");
 		add(ContainerItem.VOID_TOOLTIP, "Item Voiding %s");
 		add(ContainerItem.SLOT_COUNT_TOOLTIP, "Slot Count: %s");

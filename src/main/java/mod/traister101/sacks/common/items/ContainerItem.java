@@ -40,7 +40,6 @@ public class ContainerItem extends Item implements IItemSize {
 	public static final String TYPE_NO_PICKUP = SacksNSuch.MODID + ".status.item_container.no_pickup";
 	public static final String TYPE_NO_VOID = SacksNSuch.MODID + ".status.item_container.no_void";
 	public static final String HOLD_SHIFT_TOOLTIP = SacksNSuch.MODID + "tooltip.item_container.tooltip.shift";
-	public static final String STATUS_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.status";
 	public static final String PICKUP_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.tooltip.pickup";
 	public static final String VOID_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.tooltip.void";
 	public static final String SLOT_COUNT_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.slot_count";
@@ -213,8 +212,6 @@ public class ContainerItem extends Item implements IItemSize {
 			tooltip.add(Component.translatable(HOLD_SHIFT_TOOLTIP).withStyle(ChatFormatting.GRAY));
 			return;
 		}
-
-		tooltip.add(Component.translatable(STATUS_TOOLTIP));
 
 		tooltip.add(Component.translatable(SLOT_COUNT_TOOLTIP, type.getSlotCount()));
 		tooltip.add(Component.translatable(SLOT_CAPACITY_TOOLTIP, type.getSlotCapacity()));
