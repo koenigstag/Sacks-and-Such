@@ -23,14 +23,14 @@ public final class ServerConfig {
 
 	ServerConfig(final ForgeConfigSpec.Builder builder) {
 
-		builder.push("Sack Config");
+		builder.push("Container Item Config");
 
 		strawBasket = buildContainerConfig(builder, "Straw Basket", true, true, true, 4, 32, Size.SMALL);
 		leatherSack = buildContainerConfig(builder, "Leather Sack", false, false, true, 4, 64, Size.NORMAL);
 		burlapSack = buildContainerConfig(builder, "Burlap Sack", true, true, false, 8, 48, Size.SMALL);
 		oreSack = buildContainerConfig(builder, "Ore Sack", true, false, true, 1, 512, Size.SMALL);
 		seedPouch = buildContainerConfig(builder, "Seed Pouch", true, false, true, 27, 64, Size.SMALL);
-		framePack = buildContainerConfig(builder, "Frame Pack", true, false, false, 18, 64, Size.LARGE);
+		framePack = buildContainerConfig(builder, "Frame Pack", false, false, false, 18, 64, Size.LARGE);
 
 		builder.pop();
 
