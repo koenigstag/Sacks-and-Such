@@ -72,7 +72,7 @@ public class ContainerItem extends Item implements IItemSize {
 					SNSUtils.sendTogglePacket(ToggleType.VOID, flag);
 					player.displayClientMessage(ToggleType.VOID.getTooltip(flag), true);
 				} else {
-					player.displayClientMessage(Component.translatable(TYPE_NO_VOID), true);
+					player.displayClientMessage(Component.translatable(TYPE_NO_VOID, this.getName(heldStack)), true);
 				}
 				return InteractionResultHolder.consume(heldStack);
 			}
@@ -82,7 +82,7 @@ public class ContainerItem extends Item implements IItemSize {
 				SNSUtils.sendTogglePacket(ToggleType.PICKUP, flag);
 				player.displayClientMessage(ToggleType.PICKUP.getTooltip(flag), true);
 			} else {
-				player.displayClientMessage(Component.translatable(TYPE_NO_PICKUP), true);
+				player.displayClientMessage(Component.translatable(TYPE_NO_PICKUP, this.getName(heldStack)), true);
 			}
 
 			return InteractionResultHolder.success(heldStack);

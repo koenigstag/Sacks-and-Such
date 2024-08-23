@@ -39,16 +39,16 @@ public class BuiltIntLanguage extends SmartLanguageProvider {
 		// Creative Tab
 		add("sns.creative_tab.sacks", "Sacks 'N Such");
 		// Tooltips
-		add(ContainerItem.TYPE_NO_VOID, "This container type has voiding disabled");
-		add(ContainerItem.TYPE_NO_PICKUP, "This container type has pickup disabled");
+		add(ContainerItem.TYPE_NO_VOID, "%s has item voiding disabled");
+		add(ContainerItem.TYPE_NO_PICKUP, "%s has item pickup disabled");
 		add(ContainerItem.HOLD_SHIFT_TOOLTIP, "Hold [Shift]");
 		add(ContainerItem.PICKUP_TOOLTIP, "Item Pickup %s");
 		add(ContainerItem.VOID_TOOLTIP, "Item Voiding %s");
 		add(ContainerItem.SLOT_COUNT_TOOLTIP, "Slot Count: %s");
 		add(ContainerItem.SLOT_CAPACITY_TOOLTIP, "Slot Capacity: %s");
 		add(ContainerItem.ALLOWED_SIZE_TOOLTIP, "Fits at most: Size %s");
-		add(ToggleType.PICKUP.langKey, "Auto Pickup %s");
-		add(ToggleType.VOID.langKey, "Voiding %s");
+		add(ToggleType.PICKUP.langKey, "Item Pickup %s");
+		add(ToggleType.VOID.langKey, "Item Voiding %s");
 		add(SNSUtils.ENABLED, "Enabled");
 		add(SNSUtils.DISABLED, "Disabled");
 	}
