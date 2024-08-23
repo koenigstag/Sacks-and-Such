@@ -1,0 +1,305 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "forge:item/default",
+  "texture_size": [
+	32,
+	32
+  ],
+  "elements": [
+	{
+	  "from": [
+		5.5,
+		0,
+		0
+	  ],
+	  "to": [
+		10.5,
+		4,
+		5
+	  ],
+	  "rotation": {
+		"angle": 0,
+		"axis": "y",
+		"origin": [
+		  8,
+		  4.5,
+		  1.5
+		]
+	  },
+	  "faces": {
+		"north": {
+		  "uv": [
+			2.5,
+			2.5,
+			5,
+			4.5
+		  ],
+		  "texture": "#sack"
+		},
+		"east": {
+		  "uv": [
+			0,
+			2.5,
+			2.5,
+			4.5
+		  ],
+		  "texture": "#sack"
+		},
+		"south": {
+		  "uv": [
+			7.5,
+			2.5,
+			10,
+			4.5
+		  ],
+		  "texture": "#sack"
+		},
+		"west": {
+		  "uv": [
+			5,
+			2.5,
+			7.5,
+			4.5
+		  ],
+		  "texture": "#sack"
+		},
+		"up": {
+		  "uv": [
+			5,
+			2.5,
+			2.5,
+			0
+		  ],
+		  "texture": "#sack"
+		},
+		"down": {
+		  "uv": [
+			7.5,
+			0,
+			5,
+			2.5
+		  ],
+		  "texture": "#sack"
+		}
+	  }
+	},
+	{
+	  "from": [
+		6,
+		4,
+		0
+	  ],
+	  "to": [
+		10,
+		6,
+		4
+	  ],
+	  "rotation": {
+		"angle": 0,
+		"axis": "y",
+		"origin": [
+		  8,
+		  4.5,
+		  1.5
+		]
+	  },
+	  "faces": {
+		"north": {
+		  "uv": [
+			2,
+			6.5,
+			4,
+			7.5
+		  ],
+		  "texture": "#sack"
+		},
+		"east": {
+		  "uv": [
+			0,
+			6.5,
+			2,
+			7.5
+		  ],
+		  "texture": "#sack"
+		},
+		"south": {
+		  "uv": [
+			6,
+			6.5,
+			8,
+			7.5
+		  ],
+		  "texture": "#sack"
+		},
+		"west": {
+		  "uv": [
+			4,
+			6.5,
+			6,
+			7.5
+		  ],
+		  "texture": "#sack"
+		},
+		"up": {
+		  "uv": [
+			4,
+			6.5,
+			2,
+			4.5
+		  ],
+		  "texture": "#sack"
+		}
+	  }
+	},
+	{
+	  "from": [
+		7,
+		6,
+		0
+	  ],
+	  "to": [
+		9,
+		8,
+		1
+	  ],
+	  "rotation": {
+		"angle": 0,
+		"axis": "y",
+		"origin": [
+		  8,
+		  4.5,
+		  1.5
+		]
+	  },
+	  "faces": {
+		"east": {
+		  "uv": [
+			6.5,
+			5,
+			6,
+			6
+		  ],
+		  "texture": "#sack"
+		},
+		"west": {
+		  "uv": [
+			7.5,
+			5,
+			8,
+			6
+		  ],
+		  "texture": "#sack"
+		},
+		"up": {
+		  "uv": [
+			6.5,
+			4.5,
+			7.5,
+			5
+		  ],
+		  "texture": "#sack"
+		}
+	  }
+	},
+	{
+	  "from": [
+		9,
+		8,
+		1
+	  ],
+	  "to": [
+		7,
+		6,
+		0
+	  ],
+	  "rotation": {
+		"angle": 0,
+		"axis": "z",
+		"origin": [
+		  8,
+		  4.5,
+		  1.5
+		]
+	  },
+	  "faces": {
+		"east": {
+		  "uv": [
+			7.5,
+			6,
+			8,
+			5
+		  ],
+		  "texture": "#sack"
+		},
+		"west": {
+		  "uv": [
+			6.5,
+			6,
+			6,
+			5
+		  ],
+		  "texture": "#sack"
+		},
+		"down": {
+		  "uv": [
+			7.5,
+			4.5,
+			6.5,
+			5
+		  ],
+		  "texture": "#sack"
+		}
+	  }
+	}
+  ],
+  "display": {
+	"thirdperson_righthand": {
+	  "rotation": [
+		-110.5,
+		0,
+		-180
+	  ],
+	  "translation": [
+		0,
+		6.5,
+		-2.25
+	  ]
+	},
+	"thirdperson_lefthand": {
+	  "rotation": [
+		-110.5,
+		0,
+		-180
+	  ],
+	  "translation": [
+		0,
+		6.5,
+		-2.25
+	  ]
+	},
+	"firstperson_righthand": {
+	  "rotation": [
+		177.25,
+		-6,
+		-180
+	  ],
+	  "translation": [
+		-0.5,
+		5.75,
+		-4
+	  ]
+	},
+	"firstperson_lefthand": {
+	  "rotation": [
+		177.25,
+		-6,
+		-180
+	  ],
+	  "translation": [
+		-0.5,
+		5.75,
+		-4
+	  ]
+	}
+  }
+}

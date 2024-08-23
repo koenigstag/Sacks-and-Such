@@ -17,6 +17,7 @@ import java.util.Objects;
 public class BuiltInItemModels extends ItemModelProvider {
 
 	public static final ResourceLocation SMALL_SACK = new ResourceLocation(SacksNSuch.MODID, "item/held/small_sack");
+	public static final ResourceLocation LARGE_SACK = new ResourceLocation(SacksNSuch.MODID, "item/held/large_sack");
 
 	public BuiltInItemModels(final PackOutput output, final ExistingFileHelper existingFileHelper) {
 		super(output, SacksNSuch.MODID, existingFileHelper);
@@ -29,14 +30,13 @@ public class BuiltInItemModels extends ItemModelProvider {
 		basicItem(SNSItems.REINFORCED_FABRIC.get());
 		basicItem(SNSItems.PACK_FRAME.get());
 
-		basicItem(SNSItems.ORE_SACK.get());
-
 		iconWithHeldModel(SNSItems.STRAW_BASKET.get());
 		iconWithHeldModel(SNSItems.LEATHER_SACK.get(),
 				withExistingParent("item/held/leather_sack", SMALL_SACK).texture("sack", modLoc("item/held/leather_sack")));
 		iconWithHeldModel(SNSItems.BURLAP_SACK.get(),
 				withExistingParent("item/held/burlap_sack", SMALL_SACK).texture("sack", modLoc("item/held/burlap_sack")));
-
+		iconWithHeldModel(SNSItems.ORE_SACK.get(),
+				withExistingParent("item/held/ore_sack", LARGE_SACK).texture("sack", modLoc("item/held/ore_sack")));
 		iconWithHeldModel(SNSItems.SEED_POUCH.get(),
 				withExistingParent("item/held/seed_pouch", SMALL_SACK).texture("sack", modLoc("item/held/seed_pouch")));
 		iconWithHeldModel(SNSItems.FRAME_PACK.get());
