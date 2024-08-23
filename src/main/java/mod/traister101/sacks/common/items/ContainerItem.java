@@ -213,16 +213,17 @@ public class ContainerItem extends Item implements IItemSize {
 			return;
 		}
 
-		tooltip.add(Component.translatable(SLOT_COUNT_TOOLTIP, type.getSlotCount()));
-		tooltip.add(Component.translatable(SLOT_CAPACITY_TOOLTIP, type.getSlotCapacity()));
-		tooltip.add(Component.translatable(ALLOWED_SIZE_TOOLTIP, Helpers.translateEnum(type.getAllowedSize())));
+		tooltip.add(Component.translatable(SLOT_COUNT_TOOLTIP, type.getSlotCount()).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(SLOT_CAPACITY_TOOLTIP, type.getSlotCapacity()).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(ALLOWED_SIZE_TOOLTIP, Helpers.translateEnum(type.getAllowedSize())).withStyle(ChatFormatting.GRAY));
 
 		if (type.doesAutoPickup()) {
-			tooltip.add(Component.translatable(PICKUP_TOOLTIP, SNSUtils.toggleTooltip(NBTHelper.isAutoPickup(itemStack))));
+			tooltip.add(
+					Component.translatable(PICKUP_TOOLTIP, SNSUtils.toggleTooltip(NBTHelper.isAutoPickup(itemStack))).withStyle(ChatFormatting.GRAY));
 		}
 
 		if (type.doesVoiding()) {
-			tooltip.add(Component.translatable(VOID_TOOLTIP, SNSUtils.toggleTooltip(NBTHelper.isAutoVoid(itemStack))));
+			tooltip.add(Component.translatable(VOID_TOOLTIP, SNSUtils.toggleTooltip(NBTHelper.isAutoVoid(itemStack))).withStyle(ChatFormatting.GRAY));
 		}
 	}
 
