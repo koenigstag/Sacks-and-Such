@@ -16,6 +16,8 @@ import java.util.Objects;
 
 public class BuiltInItemModels extends ItemModelProvider {
 
+	public static final ResourceLocation SMALL_SACK = new ResourceLocation(SacksNSuch.MODID, "item/held/small_sack");
+
 	public BuiltInItemModels(final PackOutput output, final ExistingFileHelper existingFileHelper) {
 		super(output, SacksNSuch.MODID, existingFileHelper);
 	}
@@ -27,27 +29,53 @@ public class BuiltInItemModels extends ItemModelProvider {
 		basicItem(SNSItems.REINFORCED_FABRIC.get());
 		basicItem(SNSItems.PACK_FRAME.get());
 
-		basicItem(SNSItems.LEATHER_SACK.get());
-		basicItem(SNSItems.BURLAP_SACK.get());
 		basicItem(SNSItems.ORE_SACK.get());
-		basicItem(SNSItems.SEED_POUCH.get());
 
 		iconWithHeldModel(SNSItems.STRAW_BASKET.get());
+		iconWithHeldModel(SNSItems.LEATHER_SACK.get(),
+				withExistingParent("item/held/leather_sack", SMALL_SACK).texture("sack", modLoc("item/held/leather_sack")));
+		iconWithHeldModel(SNSItems.BURLAP_SACK.get(),
+				withExistingParent("item/held/burlap_sack", SMALL_SACK).texture("sack", modLoc("item/held/burlap_sack")));
+
+		iconWithHeldModel(SNSItems.SEED_POUCH.get(),
+				withExistingParent("item/held/seed_pouch", SMALL_SACK).texture("sack", modLoc("item/held/seed_pouch")));
 		iconWithHeldModel(SNSItems.FRAME_PACK.get());
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
 	private SeparateTransformsModelBuilder<ItemModelBuilder> iconWithHeldModel(final Item item) {
-		final var key = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+		return iconWithHeldModel(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+	}
 
-		final var heldModel = getExistingFile(key.withPrefix(ITEM_FOLDER + "/held/"));
-		final var icon = getBuilder(key.withPrefix("icon/").toString()).parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.texture("layer0", key.withPrefix("item/icon/"));
+	private SeparateTransformsModelBuilder<ItemModelBuilder> iconWithHeldModel(final ResourceLocation item) {
+		return iconWithHeldModel(item, getExistingFile(item.withPrefix(ITEM_FOLDER + "/held/")));
+	}
 
-		return getTransformedItemModelBuilder(key).base(nested().parent(heldModel))
-				.perspective(ItemDisplayContext.GUI, nested().parent(icon))
-				.perspective(ItemDisplayContext.GROUND, nested().parent(icon))
-				.perspective(ItemDisplayContext.FIXED, nested().parent(icon));
+	@SuppressWarnings("UnusedReturnValue")
+	private SeparateTransformsModelBuilder<ItemModelBuilder> iconWithHeldModel(final Item item, final ModelFile heldModel) {
+		return iconWithHeldModel(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), heldModel);
+	}
+
+	private SeparateTransformsModelBuilder<ItemModelBuilder> iconWithHeldModel(final ResourceLocation item, final ModelFile heldModel) {
+		return iconWithHeldModel(item, heldModel, icon(item));
+	}
+
+	private SeparateTransformsModelBuilder<ItemModelBuilder> iconWithHeldModel(final ResourceLocation item, final ModelFile heldModel,
+			final ModelFile iconModel) {
+		return getTransformedItemModelBuilder(item).base(nested().parent(heldModel))
+				.perspective(ItemDisplayContext.GUI, nested().parent(iconModel))
+				.perspective(ItemDisplayContext.GROUND, nested().parent(iconModel))
+				.perspective(ItemDisplayContext.FIXED, nested().parent(iconModel));
+	}
+
+	@SuppressWarnings("unused")
+	private ItemModelBuilder icon(final Item item) {
+		return icon(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+	}
+
+	private ItemModelBuilder icon(final ResourceLocation item) {
+		return getBuilder(item.withPrefix("icon/").toString()).parent(new ModelFile.UncheckedModelFile("item/generated"))
+				.texture("layer0", item.withPrefix("item/icon/"));
 	}
 
 	@SuppressWarnings("unused")

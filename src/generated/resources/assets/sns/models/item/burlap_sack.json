@@ -1,6 +1,18 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-	"layer0": "sns:item/burlap_sack"
+  "parent": "forge:item/default",
+  "base": {
+	"parent": "sns:item/held/burlap_sack"
+  },
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+	"fixed": {
+	  "parent": "sns:icon/burlap_sack"
+	},
+	"ground": {
+	  "parent": "sns:icon/burlap_sack"
+	},
+	"gui": {
+	  "parent": "sns:icon/burlap_sack"
+	}
   }
 }

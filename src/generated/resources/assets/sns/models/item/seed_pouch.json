@@ -1,6 +1,18 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-	"layer0": "sns:item/seed_pouch"
+  "parent": "forge:item/default",
+  "base": {
+	"parent": "sns:item/held/seed_pouch"
+  },
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+	"fixed": {
+	  "parent": "sns:icon/seed_pouch"
+	},
+	"ground": {
+	  "parent": "sns:icon/seed_pouch"
+	},
+	"gui": {
+	  "parent": "sns:icon/seed_pouch"
+	}
   }
 }
