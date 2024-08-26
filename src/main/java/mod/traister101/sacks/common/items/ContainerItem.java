@@ -53,7 +53,7 @@ public class ContainerItem extends Item implements IItemSize {
 		this.type = type;
 	}
 
-	private static SimpleMenuProvider createMenuProvider(final Player player, final InteractionHand hand, final ItemStack heldStack) {
+	protected static SimpleMenuProvider createMenuProvider(final Player player, final InteractionHand hand, final ItemStack heldStack) {
 		//noinspection OptionalGetWithoutIsPresent our Sack should always have this capability
 		final IItemHandler itemHandler = heldStack.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().get();
 		return new SimpleMenuProvider((windowId, inventory, unused) -> new ContainerItemMenu(windowId, inventory, itemHandler, hand,

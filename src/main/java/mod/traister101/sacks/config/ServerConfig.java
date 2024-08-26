@@ -13,6 +13,7 @@ public final class ServerConfig {
 	public final ContainerConfig oreSack;
 	public final ContainerConfig seedPouch;
 	public final ContainerConfig framePack;
+	public final ContainerConfig lunchBox;
 	public final BooleanValue doPickup;
 	public final BooleanValue doVoiding;
 	public final BooleanValue allPickup;
@@ -31,6 +32,7 @@ public final class ServerConfig {
 		oreSack = buildContainerConfig(builder, "Ore Sack", true, false, true, 1, 512, Size.SMALL);
 		seedPouch = buildContainerConfig(builder, "Seed Pouch", true, false, true, 27, 64, Size.SMALL);
 		framePack = buildContainerConfig(builder, "Frame Pack", false, false, false, 18, 64, Size.LARGE);
+		lunchBox = buildContainerConfig(builder, "Lunch Box", false, false, true, 8, 4, Size.NORMAL);
 
 		builder.pop();
 

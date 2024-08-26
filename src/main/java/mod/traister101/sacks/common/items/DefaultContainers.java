@@ -17,7 +17,8 @@ public enum DefaultContainers implements ContainerType {
 	BURLAP_SACK(SNSConfig.SERVER.burlapSack),
 	ORE_SACK(SNSConfig.SERVER.oreSack),
 	SEED_POUCH(SNSConfig.SERVER.seedPouch),
-	FRAME_PACK(SNSConfig.SERVER.framePack);
+	FRAME_PACK(SNSConfig.SERVER.framePack),
+	LUNCHBOX(SNSConfig.SERVER.lunchBox);
 
 	private final ContainerConfig containerConfig;
 
