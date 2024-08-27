@@ -35,7 +35,7 @@ public final class ServerboundTogglePacket {
 
 		final ItemStack mainHandItem = player.getMainHandItem();
 		if (!(mainHandItem.getItem() instanceof final ContainerItem containerItem)) return;
-		if (!type.supportsContainerType(containerItem.getType())) return;
+		if (!type.supportsContainerType(containerItem.type)) return;
 
 		NBTHelper.toggle(mainHandItem, type, toggle);
 	}

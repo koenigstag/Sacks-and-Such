@@ -29,11 +29,9 @@ import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
-import lombok.Getter;
 import javax.annotation.Nullable;
 import java.util.*;
 
-@Getter
 public class ContainerItem extends Item implements IItemSize {
 
 	public static final String CONTENTS_TAG = "contents";
@@ -46,7 +44,8 @@ public class ContainerItem extends Item implements IItemSize {
 	public static final String SLOT_CAPACITY_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.slot_capacity";
 	public static final String ALLOWED_SIZE_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.allowed_size";
 	public static final String INVENTORY_INTERACTION_TOOLTIP = SacksNSuch.MODID + ".tooltip.item_container.tooltip.inventory_interaction";
-	private final ContainerType type;
+
+	public final ContainerType type;
 
 	public ContainerItem(final Properties properties, final ContainerType type) {
 		super(properties);

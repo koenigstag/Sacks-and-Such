@@ -16,7 +16,7 @@ public interface ContainerType extends StringRepresentable {
 	static boolean canDoItemPickup(final ItemStack itemStack) {
 		if (!(itemStack.getItem() instanceof ContainerItem containerItem)) return false;
 
-		if (!containerItem.getType().doesAutoPickup()) return false;
+		if (!containerItem.type.doesAutoPickup()) return false;
 
 		return NBTHelper.isAutoPickup(itemStack);
 	}
@@ -28,7 +28,7 @@ public interface ContainerType extends StringRepresentable {
 	static boolean canDoItemVoiding(final ItemStack itemStack) {
 		if (!(itemStack.getItem() instanceof ContainerItem containerItem)) return false;
 
-		if (!containerItem.getType().doesVoiding()) return false;
+		if (!containerItem.type.doesVoiding()) return false;
 
 		return NBTHelper.isAutoVoid(itemStack);
 	}

@@ -40,9 +40,15 @@ public class LunchBoxItem extends ContainerItem {
 	@Override
 	public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
 		final ItemStack heldStack = player.getItemInHand(hand);
-		if (!level.isClientSide && player.isShiftKeyDown()) {
-			NetworkHooks.openScreen((ServerPlayer) player, createMenuProvider(player, hand, heldStack));
-			return InteractionResultHolder.consume(heldStack);
+		if (!level.isClientSide) {
+			if (player.isShiftKeyDown()) {
+				NetworkHooks.openScreen((ServerPlayer) player, createMenuProvider(player, hand, heldStack), byteBuf -> {
+					byteBuf.writeBoolean(hand == InteractionHand.MAIN_HAND);
+					byteBuf.writeInt(type.getSlotCount());
+					byteBuf.writeInt(type.getSlotCapacity());
+				});
+				return InteractionResultHolder.consume(heldStack);
+			}
 		}
 
 		if (!player.isShiftKeyDown()) {
