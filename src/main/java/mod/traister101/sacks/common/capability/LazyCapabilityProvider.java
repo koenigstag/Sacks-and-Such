@@ -15,28 +15,32 @@ import javax.annotation.Nonnull;
  *
  * @see LazySerializedCapabilityProvider if your handler needs serializing
  */
-public sealed class LazyCapabilityProvider<Cap extends Capability<? super Handler>, Handler> implements ICapabilityProvider {
+public sealed class LazyCapabilityProvider<Handler> implements ICapabilityProvider {
 
 	private final HandlerFactory<Handler> handlerFactory;
-	private final Cap capability;
+	private final Capability<? super Handler>[] capabilities;
 	@Nullable
 	protected Handler handler;
 	@Nullable
 	private LazyOptional<Handler> holder;
 
 	/**
-	 * @param capability The capability to lazily evaluate
 	 * @param handlerFactory A factory for the handler
+	 * @param capabilities The capability to lazily evaluate
 	 */
-	public LazyCapabilityProvider(final Cap capability, final HandlerFactory<Handler> handlerFactory) {
-		this.capability = capability;
+	@SafeVarargs
+	@SuppressWarnings("varargs")
+	public LazyCapabilityProvider(final HandlerFactory<Handler> handlerFactory, final Capability<? super Handler>... capabilities) {
+		this.capabilities = capabilities;
 		this.handlerFactory = handlerFactory;
 	}
 
 	@Override
 	public <T> LazyOptional<T> getCapability(final Capability<T> cap, @Nullable final Direction side) {
-		if (capability == cap) {
-			return getHolder().cast();
+		for (final var capability : capabilities) {
+			if (capability == cap) {
+				return getHolder().cast();
+			}
 		}
 
 		return LazyOptional.empty();
@@ -63,11 +67,13 @@ public sealed class LazyCapabilityProvider<Cap extends Capability<? super Handle
 		Handler create();
 	}
 
-	public static final class LazySerializedCapabilityProvider<Cap extends Capability<? super Handler>, Handler extends INBTSerializable<CompoundTag>> extends
-			LazyCapabilityProvider<Cap, Handler> implements INBTSerializable<CompoundTag> {
+	public static final class LazySerializedCapabilityProvider<Handler extends INBTSerializable<CompoundTag>> extends
+			LazyCapabilityProvider<Handler> implements INBTSerializable<CompoundTag> {
 
-		public LazySerializedCapabilityProvider(final Cap capability, final HandlerFactory<Handler> handlerFactory) {
-			super(capability, handlerFactory);
+		@SafeVarargs
+		@SuppressWarnings("varargs")
+		public LazySerializedCapabilityProvider(final HandlerFactory<Handler> handlerFactory, final Capability<? super Handler>... capabilities) {
+			super(handlerFactory, capabilities);
 		}
 
 		@Override

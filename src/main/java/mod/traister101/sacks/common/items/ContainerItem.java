@@ -300,7 +300,7 @@ public class ContainerItem extends Item implements IItemSize {
 	@Override
 	public ICapabilityProvider initCapabilities(final ItemStack itemStack, @Nullable CompoundTag nbt) {
 		// Must be lazy as stacks can be created before server config is initalized
-		return new LazySerializedCapabilityProvider<>(ForgeCapabilities.ITEM_HANDLER, () -> new ContainerItemHandler(type));
+		return new LazySerializedCapabilityProvider<>(() -> new ContainerItemHandler(type), ForgeCapabilities.ITEM_HANDLER);
 	}
 
 	private void playRemoveOneSound(final Entity entity) {
