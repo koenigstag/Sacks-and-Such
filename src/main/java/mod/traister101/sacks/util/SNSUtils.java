@@ -26,6 +26,10 @@ public final class SNSUtils {
 				.withStyle(ChatFormatting.RED);
 	}
 
+	public static MutableComponent intComponent(final int i) {
+		return Component.literal(String.valueOf(i));
+	}
+
 	/**
 	 * An enum for easy and consistent toggle logic
 	 */

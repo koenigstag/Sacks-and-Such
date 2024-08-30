@@ -48,6 +48,7 @@ public class BuiltIntLanguage extends SmartLanguageProvider {
 		add(ContainerItem.SLOT_CAPACITY_TOOLTIP, "Slot Capacity: %s");
 		add(ContainerItem.INVENTORY_INTERACTION_TOOLTIP, "Inventory Interaction: %s");
 		add(ContainerItem.ALLOWED_SIZE_TOOLTIP, "Fits at most size: %s");
+		add(LunchBoxItem.SELECTED_SLOT_TOOLTIP, "Selected Slot: %s");
 		add(ToggleType.PICKUP.langKey, "Item Pickup %s");
 		add(ToggleType.VOID.langKey, "Item Voiding %s");
 		add(SNSUtils.ENABLED, "Enabled");

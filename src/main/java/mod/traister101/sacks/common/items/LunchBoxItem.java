@@ -1,45 +1,56 @@
 package mod.traister101.sacks.common.items;
 
-import mod.traister101.sacks.util.ContainerType;
+import mod.traister101.sacks.SacksNSuch;
+import mod.traister101.sacks.common.capability.*;
+import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
+import mod.traister101.sacks.util.*;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.network.NetworkHooks;
 
+import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
+import java.util.*;
 
 public class LunchBoxItem extends ContainerItem {
+
+	public static final String SELECTED_SLOT_TOOLTIP = SacksNSuch.MODID + ".tooltip.lunchbox.selected_slot";
 
 	public LunchBoxItem(final Properties properties, final ContainerType type) {
 		super(properties, type);
 	}
 
-	public static ItemStack getTargetStack(final ItemStack itemStack) {
-		final var optItemHandler = itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve();
-
-		if (optItemHandler.isEmpty()) return ItemStack.EMPTY;
-
-		final var itemHandler = optItemHandler.get();
-
-		for (int slotIndex = itemHandler.getSlots() - 1; slotIndex >= 0; slotIndex--) {
-			final ItemStack stackInSlot = itemHandler.getStackInSlot(slotIndex);
-			if (stackInSlot.isEmpty() || !stackInSlot.isEdible()) continue;
-			return stackInSlot;
-		}
-
-		return ItemStack.EMPTY;
-	}
-
 	@Override
 	public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
 		final ItemStack heldStack = player.getItemInHand(hand);
+
+		if (!player.isShiftKeyDown()) {
+			return heldStack.getCapability(LunchboxCapability.LUNCHBOX).map(lunchboxHandler -> {
+				final ItemStack targetFood = lunchboxHandler.getSelectedStack();
+				if (targetFood.isEmpty()) return InteractionResultHolder.pass(heldStack);
+				final FoodProperties targetFoodProperties = targetFood.getFoodProperties(player);
+				if (!targetFood.isEmpty() && !player.getCooldowns().isOnCooldown(targetFood.getItem()) && player.canEat(
+						(targetFood.isEdible() && targetFoodProperties != null && targetFoodProperties.canAlwaysEat()))) {
+					player.startUsingItem(hand);
+					return InteractionResultHolder.consume(heldStack);
+				}
+				return InteractionResultHolder.pass(heldStack);
+			}).orElseGet(() -> InteractionResultHolder.pass(heldStack));
+		}
+
 		if (!level.isClientSide) {
 			if (player.isShiftKeyDown()) {
 				NetworkHooks.openScreen((ServerPlayer) player, createMenuProvider(player, hand, heldStack), byteBuf -> {
@@ -51,39 +62,119 @@ public class LunchBoxItem extends ContainerItem {
 			}
 		}
 
-		if (!player.isShiftKeyDown()) {
-			final ItemStack targetFood = getTargetStack(heldStack);
-			if (targetFood.isEmpty()) return InteractionResultHolder.pass(heldStack);
-			final FoodProperties targetFoodProperties = targetFood.getFoodProperties(player);
-			if (!targetFood.isEmpty() && !player.getCooldowns().isOnCooldown(targetFood.getItem()) && player.canEat(
-					(targetFood.isEdible() && targetFoodProperties != null && targetFoodProperties.canAlwaysEat()))) {
-				player.startUsingItem(hand);
-				return InteractionResultHolder.consume(heldStack);
-			}
-
-			return InteractionResultHolder.fail(heldStack);
-		}
 		return InteractionResultHolder.pass(heldStack);
 	}
 
 	@Override
+	public void appendHoverText(final ItemStack itemStack, @Nullable final Level level, final List<Component> tooltip, final TooltipFlag flagIn) {
+		if (Screen.hasShiftDown()) {
+			tooltip.add(Component.translatable(SELECTED_SLOT_TOOLTIP,
+					SNSUtils.intComponent(itemStack.getCapability(LunchboxCapability.LUNCHBOX).map(ILunchboxHandler::getSelectedSlot).orElse(0) + 1)
+							.withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+			super.appendHoverText(itemStack, level, tooltip, flagIn);
+			return;
+		}
+
+		super.appendHoverText(itemStack, level, tooltip, flagIn);
+	}
+
+	@Override
+	public Optional<TooltipComponent> getTooltipImage(final ItemStack itemStack) {
+		// TODO handle the selected slot somehow
+		return super.getTooltipImage(itemStack);
+	}
+
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(final ItemStack itemStack, @Nullable final CompoundTag nbt) {
+		return new LazySerializedCapabilityProvider<>(() -> new LunchboxHandler(type), ForgeCapabilities.ITEM_HANDLER, LunchboxCapability.LUNCHBOX);
+	}
+
+	@Override
 	public ItemStack finishUsingItem(final ItemStack itemStack, final Level level, final LivingEntity livingEntity) {
-		itemStack.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
-			for (int slotIndex = itemHandler.getSlots() - 1; slotIndex >= 0; slotIndex--) {
-				final ItemStack extractItem = itemHandler.extractItem(slotIndex, 1, false);
-				if (extractItem.isEmpty()) continue;
+		return itemStack.getCapability(LunchboxCapability.LUNCHBOX)
+				.map(itemHandler -> itemHandler.consumeSelected(itemStack, level, livingEntity))
+				.orElse(itemStack);
+	}
 
-				livingEntity.eat(level, extractItem);
-				break;
-			}
-		});
+	@Override
+	public UseAnim getUseAnimation(final ItemStack itemStack) {
+		return UseAnim.EAT;
+	}
 
-		return itemStack;
+	@Override
+	public int getUseDuration(final ItemStack itemStack) {
+		return itemStack.getCapability(LunchboxCapability.LUNCHBOX)
+				.map(lunchboxHandler -> lunchboxHandler.getSelectedStack().getUseDuration())
+				.orElse(32);
 	}
 
 	@Nullable
 	@Override
 	public FoodProperties getFoodProperties(final ItemStack itemStack, final @Nullable LivingEntity entity) {
-		return getTargetStack(itemStack).getFoodProperties(entity);
+		final var capability = itemStack.getCapability(LunchboxCapability.LUNCHBOX).resolve();
+		return capability.map(lunchboxHandler -> lunchboxHandler.getSelectedFoodProperties(entity)).orElse(null);
+	}
+
+	@Getter
+	public static class LunchboxHandler extends ContainerItemHandler implements ILunchboxHandler {
+
+		public static final String SELECTED_SLOT_KEY = "selectedSlot";
+		private int selectedSlot = 0;
+
+		public LunchboxHandler(final ContainerType type) {
+			super(type);
+		}
+
+		@Override
+		public CompoundTag serializeNBT() {
+			final CompoundTag compoundTag = super.serializeNBT();
+			compoundTag.putInt(SELECTED_SLOT_KEY, selectedSlot);
+			return compoundTag;
+		}
+
+		@Override
+		public void deserializeNBT(final CompoundTag compoundTag) {
+			super.deserializeNBT(compoundTag);
+			selectedSlot = compoundTag.getInt(SELECTED_SLOT_KEY);
+		}
+
+		@Override
+		public ItemStack getSelectedStack() {
+			return getStackInSlot(getSelectedSlot());
+		}
+
+		@Override
+		public void cycleSelected(final CycleDirection cycleDirection) {
+			int nextSelection = selectedSlot + switch (cycleDirection) {
+				case FORWARD -> 1;
+				case BACKWARD -> -1;
+			};
+
+			{ // Wrap to within slot bounds
+				if (nextSelection >= getSlots()) {
+					nextSelection -= getSlots();
+				}
+
+				if (nextSelection < 0) {
+					nextSelection += getSlots();
+				}
+			}
+
+			selectedSlot = nextSelection;
+			assert selectedSlot >= 0 && selectedSlot < getSlots() : String.format("Selected Slot: %s must be a valid slot index in range [0,%s)",
+					selectedSlot, getSlots());
+		}
+
+		@Override
+		public ItemStack consumeSelected(final ItemStack itemStack, final Level level, final LivingEntity livingEntity) {
+			final ItemStack food = extractItem(getSelectedSlot(), 1, false);
+			livingEntity.eat(level, food);
+
+			while (getSelectedStack().isEmpty() && getSelectedSlot() != 0) {
+				cycleSelected(CycleDirection.BACKWARD);
+			}
+			return itemStack;
+		}
 	}
 }

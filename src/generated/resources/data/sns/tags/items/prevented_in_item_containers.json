@@ -5,6 +5,7 @@
 	"sns:burlap_sack",
 	"sns:ore_sack",
 	"sns:seed_pouch",
-	"sns:frame_pack"
+	"sns:frame_pack",
+	"sns:lunchbox"
   ]
 }

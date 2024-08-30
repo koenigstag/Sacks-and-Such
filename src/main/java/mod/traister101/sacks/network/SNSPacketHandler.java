@@ -37,6 +37,8 @@ public final class SNSPacketHandler {
 		register(ServerboundPickBlockPacket.class, ServerboundPickBlockPacket::encode, ServerboundPickBlockPacket::new,
 				ServerboundPickBlockPacket::handle);
 		register(ServerboundTogglePacket.class, ServerboundTogglePacket::encode, ServerboundTogglePacket::new, ServerboundTogglePacket::handle);
+		register(ServerboundPacketCycleSlotPacket.class, ServerboundPacketCycleSlotPacket::encode, ServerboundPacketCycleSlotPacket::new,
+				ServerboundPacketCycleSlotPacket::handle);
 	}
 
 	@SuppressWarnings("unused")

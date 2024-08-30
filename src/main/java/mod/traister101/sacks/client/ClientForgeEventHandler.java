@@ -1,6 +1,10 @@
 package mod.traister101.sacks.client;
 
+import mod.traister101.sacks.common.capability.ILunchboxHandler.CycleDirection;
+import mod.traister101.sacks.common.capability.LunchboxCapability;
+import mod.traister101.sacks.common.items.SNSItems;
 import mod.traister101.sacks.config.SNSConfig;
+import mod.traister101.sacks.network.*;
 import mod.traister101.sacks.util.*;
 import mod.traister101.sacks.util.SNSUtils.ToggleType;
 import mod.traister101.sacks.util.handlers.PickBlockHandler;
@@ -32,6 +36,7 @@ public final class ClientForgeEventHandler {
 
 		eventBus.addListener(ClientForgeEventHandler::onKeyPress);
 		eventBus.addListener(ClientForgeEventHandler::onClickInput);
+		eventBus.addListener(ClientForgeEventHandler::onMouseScroll);
 	}
 
 	public static void onKeyPress(final InputEvent.Key event) {
@@ -67,6 +72,33 @@ public final class ClientForgeEventHandler {
 			event.setCanceled(
 					vanillaPickBlock(MC.hitResult, MC.player, MC.level, MC.gameMode) || PickBlockHandler.onPickBlock(MC.player, MC.hitResult));
 		}
+	}
+
+	private static void onMouseScroll(final InputEvent.MouseScrollingEvent event) {
+		// Sanity checks
+		if (MC.player == null) return;
+
+		final ItemStack mainHandStack = MC.player.getMainHandItem();
+
+		if (!mainHandStack.is(SNSItems.LUNCHBOX.get())) return;
+
+		if (!MC.player.isShiftKeyDown()) return;
+
+		final double scrollDelta = event.getScrollDelta();
+
+		final boolean scrollForwards = scrollDelta < 0;
+		final boolean scrollBackwards = scrollDelta > 0;
+
+		final var capability = mainHandStack.getCapability(LunchboxCapability.LUNCHBOX);
+
+		if (scrollForwards) {
+			capability.ifPresent(lunchboxHandler -> lunchboxHandler.cycleSelected(CycleDirection.FORWARD));
+			SNSPacketHandler.sendToServer(new ServerboundPacketCycleSlotPacket(CycleDirection.FORWARD));
+		} else if (scrollBackwards) {
+			capability.ifPresent(lunchboxHandler -> lunchboxHandler.cycleSelected(CycleDirection.BACKWARD));
+			SNSPacketHandler.sendToServer(new ServerboundPacketCycleSlotPacket(CycleDirection.BACKWARD));
+		}
+		event.setCanceled(true);
 	}
 
 	/**

@@ -2,6 +2,7 @@
   "item.sns.burlap_sack": "Burlap Sack",
   "item.sns.frame_pack": "Frame Pack",
   "item.sns.leather_sack": "Leather Sack",
+  "item.sns.lunchbox": "Lunchbox",
   "item.sns.ore_sack": "Ore Sack",
   "item.sns.pack_frame": "Pack Frame",
   "item.sns.reinforced_fabric": "Reinforced Fabric",
@@ -24,5 +25,6 @@
   "sns.tooltip.item_container.tooltip.inventory_interaction": "Inventory Interaction: %s",
   "sns.tooltip.item_container.tooltip.pickup": "Item Pickup %s",
   "sns.tooltip.item_container.tooltip.void": "Item Voiding %s",
+  "sns.tooltip.lunchbox.selected_slot": "Selected Slot: %s",
   "snstooltip.item_container.tooltip.shift": "Hold [Shift]"
 }
