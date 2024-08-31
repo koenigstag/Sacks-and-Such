@@ -2,10 +2,17 @@ package mod.traister101.sacks.util;
 
 import net.dries007.tfc.common.capabilities.size.Size;
 
+import mod.traister101.sacks.common.capability.ContainerItemHandler;
+import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
 import mod.traister101.sacks.common.items.ContainerItem;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
+
+import net.minecraftforge.common.capabilities.*;
+
+import org.jetbrains.annotations.Nullable;
 
 public interface ContainerType extends StringRepresentable {
 
@@ -72,4 +79,14 @@ public interface ContainerType extends StringRepresentable {
 	 * @return Size for the stack
 	 */
 	Size getSize(final ItemStack itemStack);
+
+	/**
+	 * @param itemStack The {@link ItemStack}
+	 * @param nbt The {@link CompoundTag}
+	 *
+	 * @return The {@link ICapabilityProvider} for the {@link ContainerItem}s of this {@link ContainerType}
+	 */
+	default ICapabilityProvider getCapabilityProvider(final ItemStack itemStack, final @Nullable CompoundTag nbt) {
+		return new LazySerializedCapabilityProvider<>(() -> new ContainerItemHandler(this), ForgeCapabilities.ITEM_HANDLER);
+	}
 }

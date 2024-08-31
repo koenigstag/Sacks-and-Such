@@ -2,7 +2,6 @@ package mod.traister101.sacks.common.items;
 
 import mod.traister101.sacks.SacksNSuch;
 import mod.traister101.sacks.common.capability.*;
-import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
 import mod.traister101.sacks.util.*;
 
 import net.minecraft.ChatFormatting;
@@ -18,7 +17,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 
-import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.network.NetworkHooks;
 
 import lombok.Getter;
@@ -82,12 +80,6 @@ public class LunchBoxItem extends ContainerItem {
 	public Optional<TooltipComponent> getTooltipImage(final ItemStack itemStack) {
 		// TODO handle the selected slot somehow
 		return super.getTooltipImage(itemStack);
-	}
-
-	@Nullable
-	@Override
-	public ICapabilityProvider initCapabilities(final ItemStack itemStack, @Nullable final CompoundTag nbt) {
-		return new LazySerializedCapabilityProvider<>(() -> new LunchboxHandler(type), ForgeCapabilities.ITEM_HANDLER, LunchboxCapability.LUNCHBOX);
 	}
 
 	@Override

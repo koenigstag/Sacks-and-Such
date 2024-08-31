@@ -5,7 +5,6 @@ import net.dries007.tfc.util.Helpers;
 
 import mod.traister101.sacks.SacksNSuch;
 import mod.traister101.sacks.common.capability.ContainerItemHandler;
-import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
 import mod.traister101.sacks.common.menu.ContainerItemMenu;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.*;
@@ -296,11 +295,9 @@ public class ContainerItem extends Item implements IItemSize {
 		});
 	}
 
-	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(final ItemStack itemStack, @Nullable CompoundTag nbt) {
-		// Must be lazy as stacks can be created before server config is initalized
-		return new LazySerializedCapabilityProvider<>(() -> new ContainerItemHandler(type), ForgeCapabilities.ITEM_HANDLER);
+	public final ICapabilityProvider initCapabilities(final ItemStack itemStack, @Nullable final CompoundTag nbt) {
+		return type.getCapabilityProvider(itemStack, nbt);
 	}
 
 	private void playRemoveOneSound(final Entity entity) {

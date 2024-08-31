@@ -2,68 +2,100 @@ package mod.traister101.sacks.common.items;
 
 import net.dries007.tfc.common.capabilities.size.Size;
 
+import mod.traister101.sacks.common.capability.*;
+import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
+import mod.traister101.sacks.common.items.LunchBoxItem.LunchboxHandler;
 import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.config.ServerConfig.ContainerConfig;
 import mod.traister101.sacks.util.ContainerType;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Locale;
+import net.minecraftforge.common.capabilities.*;
+import net.minecraftforge.common.util.INBTSerializable;
 
-public enum DefaultContainers implements ContainerType {
+import org.jetbrains.annotations.Nullable;
+import java.util.function.Function;
 
-	STRAW_BASKET(SNSConfig.SERVER.strawBasket),
-	LEATHER_SACK(SNSConfig.SERVER.leatherSack),
-	BURLAP_SACK(SNSConfig.SERVER.burlapSack),
-	ORE_SACK(SNSConfig.SERVER.oreSack),
-	SEED_POUCH(SNSConfig.SERVER.seedPouch),
-	FRAME_PACK(SNSConfig.SERVER.framePack),
-	LUNCHBOX(SNSConfig.SERVER.lunchBox);
+public final class DefaultContainers {
 
-	private final ContainerConfig containerConfig;
+	public static final ContainerType STRAW_BASKET = new ContainerItemType<>("straw_basket", Size.NORMAL, SNSConfig.SERVER.strawBasket,
+			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	DefaultContainers(final ContainerConfig containerConfig) {
-		this.containerConfig = containerConfig;
-	}
+	public static final ContainerType LEATHER_SACK = new ContainerItemType<>("leather_sack", Size.NORMAL, SNSConfig.SERVER.leatherSack,
+			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	@Override
-	public int getSlotCount() {
-		return containerConfig.slotCount.get();
-	}
+	public static final ContainerType BURLAP_SACK = new ContainerItemType<>("burlap_sack", Size.NORMAL, SNSConfig.SERVER.burlapSack,
+			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	@Override
-	public int getSlotCapacity() {
-		return containerConfig.slotCap.get();
-	}
+	public static final ContainerType ORE_SACK = new ContainerItemType<>("ore_sack", Size.NORMAL, SNSConfig.SERVER.oreSack, ContainerItemHandler::new,
+			ForgeCapabilities.ITEM_HANDLER);
 
-	@Override
-	public boolean doesAutoPickup() {
-		return containerConfig.doPickup.get();
-	}
+	public static final ContainerType SEED_POUCH = new ContainerItemType<>("seed_pouch", Size.NORMAL, SNSConfig.SERVER.seedPouch,
+			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	@Override
-	public boolean doesVoiding() {
-		return containerConfig.doVoiding.get();
-	}
+	public static final ContainerType FRAME_PACK = new ContainerItemType<>("frame_pack", Size.HUGE, SNSConfig.SERVER.framePack,
+			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	@Override
-	public boolean doesInventoryInteraction() {
-		return containerConfig.doInventoryTransfer.get();
-	}
+	public static final ContainerType LUNCHBOX = new ContainerItemType<>("lunchbox", Size.NORMAL, SNSConfig.SERVER.lunchBox, LunchboxHandler::new,
+			ForgeCapabilities.ITEM_HANDLER, LunchboxCapability.LUNCHBOX);
 
-	@Override
-	public Size getAllowedSize() {
-		return containerConfig.allowedSize.get();
-	}
+	private record ContainerItemType<Handler extends INBTSerializable<CompoundTag>>(String name,
+			Size size,
+			ContainerConfig containerConfig,
+			Function<ContainerType, Handler> handlerFactory,
+			Capability<? super Handler>... capabilities) implements ContainerType {
 
-	@Override
-	public Size getSize(final ItemStack itemStack) {
-		if (this == FRAME_PACK) return Size.HUGE;
-		return Size.NORMAL;
-	}
+		@SafeVarargs
+		@SuppressWarnings("varargs")
+		private ContainerItemType {
+		}
 
-	@Override
-	public String getSerializedName() {
-		return this.name().toLowerCase(Locale.ROOT);
+		@Override
+		public int getSlotCount() {
+			return containerConfig.slotCount.get();
+		}
+
+		@Override
+		public int getSlotCapacity() {
+			return containerConfig.slotCap.get();
+		}
+
+		@Override
+		public boolean doesAutoPickup() {
+			return containerConfig.doPickup.get();
+		}
+
+		@Override
+		public boolean doesVoiding() {
+			return containerConfig.doVoiding.get();
+		}
+
+		@Override
+		public boolean doesInventoryInteraction() {
+			return containerConfig.doInventoryTransfer.get();
+		}
+
+		@Override
+		public Size getAllowedSize() {
+			return containerConfig.allowedSize.get();
+		}
+
+		@Override
+		public Size getSize(final ItemStack itemStack) {
+			return size;
+		}
+
+		@Override
+		public ICapabilityProvider getCapabilityProvider(final ItemStack itemStack, @Nullable final CompoundTag nbt) {
+			// Must be lazy as stacks can be created before server config is initalized
+			return new LazySerializedCapabilityProvider<>(() -> handlerFactory.apply(this), capabilities);
+		}
+
+		@Override
+		public String getSerializedName() {
+			return name;
+		}
 	}
 }

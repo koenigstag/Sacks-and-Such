@@ -59,10 +59,7 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
 		if (!SNSConfig.SERVER.allAllowOre.get() && type != DefaultContainers.ORE_SACK && itemStack.is(Items.TFC_ORE)) return false;
 
-		final IItemSize stackSize = ItemSizeManager.get(itemStack);
-		final Size size = stackSize.getSize(itemStack);
-		// Larger than the sacks slot size
-		return size.isEqualOrSmallerThan(type.getAllowedSize());
+		return fitsInSlot(itemStack);
 	}
 
 	@Override
@@ -70,6 +67,18 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 		// Invalidate our cached weight when any contents change
 		this.cachedWeight = null;
 		super.onContentsChanged(slotIndex);
+	}
+
+	/**
+	 * @param itemStack The {@link ItemStack} to check
+	 *
+	 * @return If the provided {@link ItemStack} will fit inside our slots
+	 */
+	protected final boolean fitsInSlot(final ItemStack itemStack) {
+		final IItemSize stackSize = ItemSizeManager.get(itemStack);
+		final Size size = stackSize.getSize(itemStack);
+		// Larger than the sacks slot size
+		return size.isEqualOrSmallerThan(type.getAllowedSize());
 	}
 
 	/**
