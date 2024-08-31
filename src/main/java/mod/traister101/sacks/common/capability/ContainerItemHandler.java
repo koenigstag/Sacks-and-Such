@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
-	private final ContainerType type;
+	public final ContainerType type;
 	@Nullable
 	private Weight cachedWeight;
 
