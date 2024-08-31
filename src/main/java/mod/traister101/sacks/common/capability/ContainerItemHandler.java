@@ -3,7 +3,7 @@ package mod.traister101.sacks.common.capability;
 import mod.trasiter101.esc.common.capability.ExtendedSlotCapacityHandler;
 import net.dries007.tfc.common.capabilities.size.*;
 
-import mod.traister101.sacks.common.SNSTags;
+import mod.traister101.sacks.common.SNSItemTags;
 import mod.traister101.sacks.util.ContainerType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +38,7 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
 	@Override
 	public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
-		if (itemStack.is(SNSTags.Items.PREVENTED_IN_ITEM_CONTAINERS)) return false;
+		if (itemStack.is(SNSItemTags.PREVENTED_IN_ITEM_CONTAINERS)) return false;
 
 		return fitsInSlot(itemStack);
 	}

@@ -2,8 +2,7 @@ package mod.traister101.sacks.common.items;
 
 import net.dries007.tfc.common.capabilities.size.Size;
 
-import mod.traister101.sacks.common.SNSTags;
-import mod.traister101.sacks.common.SNSTags.Items;
+import mod.traister101.sacks.common.SNSItemTags;
 import mod.traister101.sacks.common.capability.*;
 import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
 import mod.traister101.sacks.common.items.LunchBoxItem.LunchboxHandler;
@@ -109,9 +108,10 @@ public final class DefaultContainers {
 
 		@Override
 		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
-			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(SNSTags.Items.TFC_FOODS)) return false;
+			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(SNSItemTags.TFC_FOODS)) return false;
 
-			if (!SNSConfig.SERVER.allAllowOre.get() && itemStack.is(Items.TFC_SMALL_ORE_PIECES) && itemStack.is(Items.TFC_ORE_PIECES)) return false;
+			if (!SNSConfig.SERVER.allAllowOre.get() && (itemStack.is(SNSItemTags.TFC_SMALL_ORE_PIECES) || itemStack.is(SNSItemTags.TFC_ORE_PIECES)))
+				return false;
 
 			return super.isItemValid(slotIndex, itemStack);
 		}
@@ -125,9 +125,9 @@ public final class DefaultContainers {
 
 		@Override
 		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
-			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(Items.TFC_FOODS)) return false;
+			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(SNSItemTags.TFC_FOODS)) return false;
 
-			return itemStack.is(Items.ALLOWED_IN_SEED_POUCH) && super.isItemValid(slotIndex, itemStack);
+			return itemStack.is(SNSItemTags.ALLOWED_IN_SEED_POUCH) && super.isItemValid(slotIndex, itemStack);
 		}
 	}
 
@@ -139,9 +139,9 @@ public final class DefaultContainers {
 
 		@Override
 		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
-			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(Items.TFC_FOODS)) return false;
+			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(SNSItemTags.TFC_FOODS)) return false;
 
-			return itemStack.is(Items.ALLOWED_IN_ORE_SACK) && super.isItemValid(slotIndex, itemStack);
+			return itemStack.is(SNSItemTags.ALLOWED_IN_ORE_SACK) && super.isItemValid(slotIndex, itemStack);
 		}
 	}
 
