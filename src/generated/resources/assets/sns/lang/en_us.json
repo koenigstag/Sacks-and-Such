@@ -26,5 +26,5 @@
   "sns.tooltip.item_container.tooltip.pickup": "Item Pickup %s",
   "sns.tooltip.item_container.tooltip.void": "Item Voiding %s",
   "sns.tooltip.lunchbox.selected_slot": "Selected Slot: %s",
-  "snstooltip.item_container.tooltip.shift": "Hold [Shift]"
+  "snstooltip.item_container.tooltip.shift": "Hold (Shift) for container info"
 }
