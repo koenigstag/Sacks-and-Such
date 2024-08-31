@@ -27,8 +27,8 @@ public final class ClientEventHandler {
 		modEventBus.addListener(ClientEventHandler::onClientSetup);
 		modEventBus.addListener(ClientEventHandler::registerKeyBindings);
 		modEventBus.addListener(ClientEventHandler::registerLayers);
+		modEventBus.addListener(SacksNSuchGuiOverlay::registerOverlays);
 	}
-
 
 	private static void onClientSetup(final FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
