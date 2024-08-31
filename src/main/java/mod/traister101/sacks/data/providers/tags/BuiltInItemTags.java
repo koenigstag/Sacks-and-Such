@@ -32,6 +32,7 @@ public class BuiltInItemTags extends ItemTagsProvider {
 		tag(SNSTags.Items.PREVENTED_IN_ITEM_CONTAINERS).add(SNSItems.STRAW_BASKET.get(), SNSItems.LEATHER_SACK.get(), SNSItems.BURLAP_SACK.get(),
 				SNSItems.ORE_SACK.get(), SNSItems.SEED_POUCH.get(), SNSItems.FRAME_PACK.get(), SNSItems.LUNCHBOX.get());
 		tag(SNSTags.Items.ALLOWED_IN_SEED_POUCH).addTag(SNSTags.Items.TFC_SEEDS);
+		tag(SNSTags.Items.ALLOWED_IN_ORE_SACK).addTag(SNSTags.Items.TFC_SMALL_ORE_PIECES).addTag(SNSTags.Items.TFC_ORE_PIECES);
 		tag(SNSTags.Items.LUNCHBOX_FOOD).add(TFCItems.FOOD.get(Food.BARLEY_BREAD_SANDWICH).get(),
 						TFCItems.FOOD.get(Food.BARLEY_BREAD_JAM_SANDWICH).get(), TFCItems.FOOD.get(Food.MAIZE_BREAD_SANDWICH).get(),
 						TFCItems.FOOD.get(Food.MAIZE_BREAD_JAM_SANDWICH).get(), TFCItems.FOOD.get(Food.OAT_BREAD_SANDWICH).get(),

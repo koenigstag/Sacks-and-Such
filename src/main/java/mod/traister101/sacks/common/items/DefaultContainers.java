@@ -111,7 +111,7 @@ public final class DefaultContainers {
 		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
 			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(SNSTags.Items.TFC_FOODS)) return false;
 
-			if (!SNSConfig.SERVER.allAllowOre.get() && itemStack.is(Items.TFC_ORE)) return false;
+			if (!SNSConfig.SERVER.allAllowOre.get() && itemStack.is(Items.TFC_SMALL_ORE_PIECES) && itemStack.is(Items.TFC_ORE_PIECES)) return false;
 
 			return super.isItemValid(slotIndex, itemStack);
 		}
@@ -141,7 +141,7 @@ public final class DefaultContainers {
 		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
 			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(Items.TFC_FOODS)) return false;
 
-			return itemStack.is(Items.TFC_ORE) && super.isItemValid(slotIndex, itemStack);
+			return itemStack.is(Items.ALLOWED_IN_ORE_SACK) && super.isItemValid(slotIndex, itemStack);
 		}
 	}
 

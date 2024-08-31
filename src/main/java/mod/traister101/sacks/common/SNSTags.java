@@ -20,7 +20,11 @@ public final class SNSTags {
 		/**
 		 * TFCs small ore tag for its ore items
 		 */
-		public static final TagKey<Item> TFC_ORE = fromTFC("ore_pieces");
+		public static final TagKey<Item> TFC_ORE_PIECES = fromTFC("ore_pieces");
+		/**
+		 * TFCs small ore tag for its small ore "nugget" items
+		 */
+		public static final TagKey<Item> TFC_SMALL_ORE_PIECES = fromTFC("small_ore_pieces");
 
 		/**
 		 * TFCs foods tag
@@ -63,6 +67,8 @@ public final class SNSTags {
 		public static final TagKey<Item> PREVENTED_IN_ITEM_CONTAINERS = create("prevented_in_item_containers");
 
 		public static final TagKey<Item> ALLOWED_IN_SEED_POUCH = create("allowed_in_seed_pouch");
+
+		public static final TagKey<Item> ALLOWED_IN_ORE_SACK = create("allowed_in_ore_sack");
 
 		/**
 		 * Tag for lunchbox food. Includes most TFC foods but not some like soups
