@@ -1,6 +1,7 @@
 package mod.traister101.sacks.common.items;
 
 import mod.traister101.sacks.SacksNSuch;
+import mod.traister101.sacks.common.SNSTags;
 import mod.traister101.sacks.common.capability.*;
 import mod.traister101.sacks.util.*;
 
@@ -129,6 +130,11 @@ public class LunchBoxItem extends ContainerItem {
 		public void deserializeNBT(final CompoundTag compoundTag) {
 			super.deserializeNBT(compoundTag);
 			selectedSlot = compoundTag.getInt(SELECTED_SLOT_KEY);
+		}
+
+		@Override
+		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
+			return itemStack.is(SNSTags.Items.LUNCHBOX_FOOD) && super.isItemValid(slotIndex, itemStack);
 		}
 
 		@Override

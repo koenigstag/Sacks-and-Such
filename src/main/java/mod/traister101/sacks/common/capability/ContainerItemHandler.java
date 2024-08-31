@@ -4,9 +4,6 @@ import mod.trasiter101.esc.common.capability.ExtendedSlotCapacityHandler;
 import net.dries007.tfc.common.capabilities.size.*;
 
 import mod.traister101.sacks.common.SNSTags;
-import mod.traister101.sacks.common.SNSTags.Items;
-import mod.traister101.sacks.common.items.DefaultContainers;
-import mod.traister101.sacks.config.SNSConfig;
 import mod.traister101.sacks.util.ContainerType;
 
 import net.minecraft.nbt.CompoundTag;
@@ -26,12 +23,6 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 	}
 
 	@Override
-	public int getStackLimit(final int slotIndex, final ItemStack itemStack) {
-		if (type == DefaultContainers.FRAME_PACK) return itemStack.getMaxStackSize();
-		return super.getStackLimit(slotIndex, itemStack);
-	}
-
-	@Override
 	public CompoundTag serializeNBT() {
 		final CompoundTag compoundTag = super.serializeNBT();
 		compoundTag.putByte("weight", (byte) (cachedWeight != null ? cachedWeight.ordinal() : -1));
@@ -48,16 +39,6 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 	@Override
 	public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
 		if (itemStack.is(SNSTags.Items.PREVENTED_IN_ITEM_CONTAINERS)) return false;
-
-		if (type == DefaultContainers.SEED_POUCH && !itemStack.is(Items.ALLOWED_IN_SEED_POUCH)) return false;
-
-		if (type == DefaultContainers.LUNCHBOX && !itemStack.is(SNSTags.Items.LUNCHBOX_FOOD)) return false;
-
-		if (!SNSConfig.SERVER.allAllowFood.get() && type != DefaultContainers.LUNCHBOX && itemStack.is(Items.TFC_FOODS)) return false;
-
-		if (type == DefaultContainers.ORE_SACK && !itemStack.is(Items.TFC_ORE)) return false;
-
-		if (!SNSConfig.SERVER.allAllowOre.get() && type != DefaultContainers.ORE_SACK && itemStack.is(Items.TFC_ORE)) return false;
 
 		return fitsInSlot(itemStack);
 	}

@@ -2,6 +2,8 @@ package mod.traister101.sacks.common.items;
 
 import net.dries007.tfc.common.capabilities.size.Size;
 
+import mod.traister101.sacks.common.SNSTags;
+import mod.traister101.sacks.common.SNSTags.Items;
 import mod.traister101.sacks.common.capability.*;
 import mod.traister101.sacks.common.capability.LazyCapabilityProvider.LazySerializedCapabilityProvider;
 import mod.traister101.sacks.common.items.LunchBoxItem.LunchboxHandler;
@@ -21,22 +23,22 @@ import java.util.function.Function;
 public final class DefaultContainers {
 
 	public static final ContainerType STRAW_BASKET = new ContainerItemType<>("straw_basket", Size.NORMAL, SNSConfig.SERVER.strawBasket,
-			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
+			GenericHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
 	public static final ContainerType LEATHER_SACK = new ContainerItemType<>("leather_sack", Size.NORMAL, SNSConfig.SERVER.leatherSack,
-			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
+			GenericHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
 	public static final ContainerType BURLAP_SACK = new ContainerItemType<>("burlap_sack", Size.NORMAL, SNSConfig.SERVER.burlapSack,
-			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
+			GenericHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	public static final ContainerType ORE_SACK = new ContainerItemType<>("ore_sack", Size.NORMAL, SNSConfig.SERVER.oreSack, ContainerItemHandler::new,
+	public static final ContainerType ORE_SACK = new ContainerItemType<>("ore_sack", Size.NORMAL, SNSConfig.SERVER.oreSack, OreSackHandler::new,
 			ForgeCapabilities.ITEM_HANDLER);
 
 	public static final ContainerType SEED_POUCH = new ContainerItemType<>("seed_pouch", Size.NORMAL, SNSConfig.SERVER.seedPouch,
-			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
+			SeedPouchHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	public static final ContainerType FRAME_PACK = new ContainerItemType<>("frame_pack", Size.HUGE, SNSConfig.SERVER.framePack,
-			ContainerItemHandler::new, ForgeCapabilities.ITEM_HANDLER);
+	public static final ContainerType FRAME_PACK = new ContainerItemType<>("frame_pack", Size.HUGE, SNSConfig.SERVER.framePack, FramePackHandler::new,
+			ForgeCapabilities.ITEM_HANDLER);
 
 	public static final ContainerType LUNCHBOX = new ContainerItemType<>("lunchbox", Size.NORMAL, SNSConfig.SERVER.lunchBox, LunchboxHandler::new,
 			ForgeCapabilities.ITEM_HANDLER, LunchboxCapability.LUNCHBOX);
@@ -96,6 +98,62 @@ public final class DefaultContainers {
 		@Override
 		public String getSerializedName() {
 			return name;
+		}
+	}
+
+	private static class GenericHandler extends ContainerItemHandler {
+
+		public GenericHandler(final ContainerType type) {
+			super(type);
+		}
+
+		@Override
+		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
+			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(SNSTags.Items.TFC_FOODS)) return false;
+
+			if (!SNSConfig.SERVER.allAllowOre.get() && itemStack.is(Items.TFC_ORE)) return false;
+
+			return super.isItemValid(slotIndex, itemStack);
+		}
+	}
+
+	private static class SeedPouchHandler extends ContainerItemHandler {
+
+		public SeedPouchHandler(final ContainerType type) {
+			super(type);
+		}
+
+		@Override
+		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
+			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(Items.TFC_FOODS)) return false;
+
+			return itemStack.is(Items.ALLOWED_IN_SEED_POUCH) && super.isItemValid(slotIndex, itemStack);
+		}
+	}
+
+	private static class OreSackHandler extends ContainerItemHandler {
+
+		public OreSackHandler(final ContainerType type) {
+			super(type);
+		}
+
+		@Override
+		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
+			if (!SNSConfig.SERVER.allAllowFood.get() && itemStack.is(Items.TFC_FOODS)) return false;
+
+			return itemStack.is(Items.TFC_ORE) && super.isItemValid(slotIndex, itemStack);
+		}
+	}
+
+	private static class FramePackHandler extends GenericHandler {
+
+		public FramePackHandler(final ContainerType type) {
+			super(type);
+		}
+
+		@Override
+		public int getStackLimit(final int slotIndex, final ItemStack itemStack) {
+			return itemStack.getMaxStackSize();
 		}
 	}
 }
