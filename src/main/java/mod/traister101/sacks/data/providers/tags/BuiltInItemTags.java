@@ -1,5 +1,6 @@
 package mod.traister101.sacks.data.providers.tags;
 
+import net.dries007.tfc.common.items.*;
 import top.theillusivec4.curios.api.CuriosApi;
 
 import mod.traister101.sacks.SacksNSuch;
@@ -31,6 +32,18 @@ public class BuiltInItemTags extends ItemTagsProvider {
 		tag(SNSTags.Items.PREVENTED_IN_ITEM_CONTAINERS).add(SNSItems.STRAW_BASKET.get(), SNSItems.LEATHER_SACK.get(), SNSItems.BURLAP_SACK.get(),
 				SNSItems.ORE_SACK.get(), SNSItems.SEED_POUCH.get(), SNSItems.FRAME_PACK.get(), SNSItems.LUNCHBOX.get());
 		tag(SNSTags.Items.ALLOWED_IN_SEED_POUCH).addTag(SNSTags.Items.TFC_SEEDS);
+		tag(SNSTags.Items.LUNCHBOX_FOOD).add(TFCItems.FOOD.get(Food.BARLEY_BREAD_SANDWICH).get(),
+						TFCItems.FOOD.get(Food.BARLEY_BREAD_JAM_SANDWICH).get(), TFCItems.FOOD.get(Food.MAIZE_BREAD_SANDWICH).get(),
+						TFCItems.FOOD.get(Food.MAIZE_BREAD_JAM_SANDWICH).get(), TFCItems.FOOD.get(Food.OAT_BREAD_SANDWICH).get(),
+						TFCItems.FOOD.get(Food.OAT_BREAD_JAM_SANDWICH).get(), TFCItems.FOOD.get(Food.RYE_BREAD_SANDWICH).get(),
+						TFCItems.FOOD.get(Food.RYE_BREAD_JAM_SANDWICH).get(), TFCItems.FOOD.get(Food.RICE_BREAD_SANDWICH).get(),
+						TFCItems.FOOD.get(Food.RICE_BREAD_JAM_SANDWICH).get(), TFCItems.FOOD.get(Food.WHEAT_BREAD_SANDWICH).get(),
+						TFCItems.FOOD.get(Food.WHEAT_BREAD_JAM_SANDWICH).get())
+				.addTag(SNSTags.Items.TFC_BREADS)
+				.addTag(SNSTags.Items.TFC_COOKED_MEATS)
+				.addTag(SNSTags.Items.TFC_DAIRY)
+				.addTag(SNSTags.Items.TFC_FIRUITS)
+				.addTag(SNSTags.Items.TFC_VEGETABLES);
 
 		// Curios
 		tag(TagKey.create(Registries.ITEM, new ResourceLocation(CuriosApi.MODID, "belt"))).add(SNSItems.LEATHER_SACK.get(),

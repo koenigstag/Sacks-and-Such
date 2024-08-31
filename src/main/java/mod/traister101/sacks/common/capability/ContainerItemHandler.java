@@ -51,6 +51,8 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
 		if (type == DefaultContainers.SEED_POUCH && !itemStack.is(Items.ALLOWED_IN_SEED_POUCH)) return false;
 
+		if (type == DefaultContainers.LUNCHBOX && !itemStack.is(SNSTags.Items.LUNCHBOX_FOOD)) return false;
+
 		if (!SNSConfig.SERVER.allAllowFood.get() && type != DefaultContainers.LUNCHBOX && itemStack.is(Items.TFC_FOODS)) return false;
 
 		if (type == DefaultContainers.ORE_SACK && !itemStack.is(Items.TFC_ORE)) return false;
