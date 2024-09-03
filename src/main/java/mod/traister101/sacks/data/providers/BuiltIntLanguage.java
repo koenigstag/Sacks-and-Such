@@ -1,6 +1,7 @@
 package mod.traister101.sacks.data.providers;
 
 import mod.traister101.sacks.SacksNSuch;
+import mod.traister101.sacks.common.capability.LunchboxFoodTrait;
 import mod.traister101.sacks.common.items.*;
 import mod.traister101.sacks.data.SmartLanguageProvider;
 import mod.traister101.sacks.util.SNSUtils;
@@ -53,6 +54,8 @@ public class BuiltIntLanguage extends SmartLanguageProvider {
 		add(ToggleType.VOID.langKey, "Item Voiding %s");
 		add(SNSUtils.ENABLED, "Enabled");
 		add(SNSUtils.DISABLED, "Disabled");
+
+		add(LunchboxFoodTrait.LUNCHBOX_LANG, "Lunchbox Preserved");
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package mod.traister101.sacks.common.items;
 
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+
 import mod.traister101.sacks.SacksNSuch;
 import mod.traister101.sacks.common.SNSItemTags;
 import mod.traister101.sacks.common.capability.*;
@@ -135,6 +137,28 @@ public class LunchBoxItem extends ContainerItem {
 		@Override
 		public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
 			return itemStack.is(SNSItemTags.LUNCHBOX_FOOD) && super.isItemValid(slotIndex, itemStack);
+		}
+
+		@Override
+		public void setStackInSlot(final int slotIndex, final ItemStack itemStack) {
+			FoodCapability.applyTrait(itemStack, LunchboxFoodTrait.LUNCHBOX);
+			super.setStackInSlot(slotIndex, itemStack);
+		}
+
+		@Override
+		public ItemStack insertItem(final int slotIndex, final ItemStack itemStack, final boolean simulate) {
+			final ItemStack insert = itemStack.copy();
+			FoodCapability.applyTrait(insert, LunchboxFoodTrait.LUNCHBOX);
+			final ItemStack remainder = super.insertItem(slotIndex, insert, simulate);
+			FoodCapability.removeTrait(remainder, LunchboxFoodTrait.LUNCHBOX);
+			return remainder;
+		}
+
+		@Override
+		public ItemStack extractItem(final int slotIndex, final int amount, final boolean simulate) {
+			final ItemStack extractItem = super.extractItem(slotIndex, amount, simulate);
+			FoodCapability.removeTrait(extractItem, LunchboxFoodTrait.LUNCHBOX);
+			return extractItem;
 		}
 
 		@Override

@@ -21,6 +21,7 @@ public final class ServerConfig {
 	public final BooleanValue allAllowOre;
 	public final BooleanValue allAllowFood;
 	public final BooleanValue enableContainerInventoryInteraction;
+	public final DoubleValue traitLunchboxModifier;
 
 	ServerConfig(final ForgeConfigSpec.Builder builder) {
 
@@ -50,6 +51,10 @@ public final class ServerConfig {
 		enableContainerInventoryInteraction = builder.comment(
 						"This allows containers to have items inserted and extracted from them via the inventory like vanilla Bundles")
 				.define("enableContainerInventoryInteraction", true);
+
+		traitLunchboxModifier = builder.comment(
+						"The modifer for the 'Lunchbox' food trait. Values less than 1 extend food lifetime, values greater than one decrease it. A value of zero stops decay.")
+				.defineInRange("traitLunchboxModifier", 0.6, 0.0, Double.MAX_VALUE);
 	}
 
 	private ContainerConfig buildContainerConfig(final Builder builder, final String containerName, final boolean doPickup, final boolean doVoiding,

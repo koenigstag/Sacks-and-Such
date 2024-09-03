@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 
 import mod.traister101.sacks.client.*;
 import mod.traister101.sacks.common.SNSCreativeTab;
+import mod.traister101.sacks.common.capability.LunchboxFoodTrait;
 import mod.traister101.sacks.common.items.SNSItems;
 import mod.traister101.sacks.common.menu.SNSMenus;
 import mod.traister101.sacks.config.SNSConfig;
@@ -13,6 +14,7 @@ import mod.traister101.sacks.network.SNSPacketHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
@@ -26,6 +28,7 @@ public final class SacksNSuch {
 
 	public SacksNSuch() {
 		final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		eventBus.addListener(SacksNSuch::commonSetup);
 
 		SNSItems.ITEMS.register(eventBus);
 		SNSMenus.MENUS.register(eventBus);
@@ -39,5 +42,9 @@ public final class SacksNSuch {
 			ClientEventHandler.init();
 			ClientForgeEventHandler.init();
 		}
+	}
+
+	private static void commonSetup(final FMLCommonSetupEvent event) {
+		event.enqueueWork(LunchboxFoodTrait::init);
 	}
 }
