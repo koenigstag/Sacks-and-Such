@@ -9,7 +9,7 @@
       <value>
         <package name="" withSubpackages="true" static="false"/>
         <emptyLine/>
-        <package name="mod.traister101.sacks" withSubpackages="true" static="false"/>
+        <package name="mod.traister101.sns" withSubpackages="true" static="false"/>
         <emptyLine/>
         <package name="net.minecraft" withSubpackages="true" static="false"/>
         <emptyLine/>
