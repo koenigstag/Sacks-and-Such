@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "mod.traister101.sns.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+	"client.invoker.AddCustomNbtDataInvoker"
+  ],
+  "injectors": {
+	"defaultRequire": 1
+  },
+  "refmap": "sacks-n-such.refmap.json"
+}

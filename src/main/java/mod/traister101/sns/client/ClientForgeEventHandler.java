@@ -4,6 +4,7 @@ import mod.traister101.sns.common.capability.ILunchboxHandler.CycleDirection;
 import mod.traister101.sns.common.capability.LunchboxCapability;
 import mod.traister101.sns.common.items.SNSItems;
 import mod.traister101.sns.config.SNSConfig;
+import mod.traister101.sns.mixins.client.invoker.AddCustomNbtDataInvoker;
 import mod.traister101.sns.network.*;
 import mod.traister101.sns.util.*;
 import mod.traister101.sns.util.SNSUtils.ToggleType;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.HitResult.Type;
 
-import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.InputEvent.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 
@@ -39,7 +40,7 @@ public final class ClientForgeEventHandler {
 		eventBus.addListener(ClientForgeEventHandler::onMouseScroll);
 	}
 
-	public static void onKeyPress(final InputEvent.Key event) {
+	public static void onKeyPress(final Key event) {
 		// Sanity check
 		if (MC.player == null) return;
 
@@ -58,7 +59,7 @@ public final class ClientForgeEventHandler {
 		}
 	}
 
-	private static void onClickInput(final InputEvent.InteractionKeyMappingTriggered event) {
+	private static void onClickInput(final InteractionKeyMappingTriggered event) {
 		if (!event.isPickBlock()) return;
 
 		// If we should handle pickblock (Client)
@@ -74,7 +75,7 @@ public final class ClientForgeEventHandler {
 		}
 	}
 
-	private static void onMouseScroll(final InputEvent.MouseScrollingEvent event) {
+	private static void onMouseScroll(final MouseScrollingEvent event) {
 		// Sanity checks
 		if (MC.player == null) return;
 
@@ -150,7 +151,7 @@ public final class ClientForgeEventHandler {
 			if (creative && Screen.hasControlDown() && blockState.hasBlockEntity()) {
 				final BlockEntity blockEntity = level.getBlockEntity(blockpos);
 				if (blockEntity != null) {
-					MC.addCustomNbtData(itemStack, blockEntity);
+					((AddCustomNbtDataInvoker) MC).invokeAddCustomNbtData(itemStack, blockEntity);
 				}
 			}
 

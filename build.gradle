@@ -16,6 +16,7 @@ buildscript {
     dependencies {
         classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "6.0.+", changing: true
         classpath "org.parchmentmc:librarian:1.+"
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 
@@ -28,6 +29,7 @@ plugins {
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "org.parchmentmc.librarian.forgegradle"
+apply plugin: "org.spongepowered.mixin"
 
 
 // Allows local configuration.
@@ -82,10 +84,12 @@ configurations {
     datagenRuntimeClasspath.extendsFrom runtimeClasspath
 }
 
+mixin {
+    add sourceSets.main, "sacks-n-such.refmap.json"
+}
+
 minecraft {
     mappings channel: mappingsChannel, version: mappingsVersion
-
-    accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
 
     runs {
         configureEach {
@@ -99,6 +103,8 @@ minecraft {
             if (useAdvancedClassRedef) {
                 jvmArg("-XX:+AllowEnhancedClassRedefinition")
             }
+
+            arg "-mixin.config=sacks-n-such.mixins.json"
 
             mods {
                 "$modID" {
@@ -124,7 +130,7 @@ minecraft {
         data {
             workingDirectory file("run/datagen")
 
-            ideaModule "${ideaModule.substring(0, ideaModule.lastIndexOf("."))}.datagen"
+            ideaModule "${project.getName().replace(' ', '_')}.datagen"
 
             mods {
                 "$modID" {
@@ -240,19 +246,6 @@ processResources {
                 jsonBytesAfter += file.length()
             }
             println("Minified $jsonMinified json files. Reduced ${jsonBytesBefore / 1024} kB to ${(jsonBytesAfter / 1024)} kB. Took ${System.currentTimeMillis() - jsonMinifyStart} ms")
-        }
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
         }
     }
 }
