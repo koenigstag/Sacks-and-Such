@@ -1,36 +1,15 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = "https://maven.minecraftforge.net" }
-        maven { url = "https://maven.parchmentmc.org" }
-        maven { url = "https://repo.spongepowered.org/maven" }
-        maven {
-            url "https://repo.spongepowered.org/repository/maven-public/"
-            content { includeGroup "org.spongepowered" }
-        }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "6.0.+", changing: true
-        classpath "org.parchmentmc:librarian:1.+"
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-
 plugins {
     id "idea"
     id "java"
     id "eclipse"
     id "maven-publish"
+    id "net.minecraftforge.gradle" version "[6.0,6.2)"
+    id "org.parchmentmc.librarian.forgegradle" version "1.+"
+    id "org.spongepowered.mixin" version "0.7.+"
 }
-
-apply plugin: "net.minecraftforge.gradle"
-apply plugin: "org.parchmentmc.librarian.forgegradle"
-apply plugin: "org.spongepowered.mixin"
-
 
 // Allows local configuration.
 // Edit the generated `dev.gradle` file
@@ -146,17 +125,35 @@ minecraft {
 
 repositories {
     maven {
-        url = "https://www.cursemaven.com"
+        name "Curse maven"
+        url "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
     }
-    maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
-    maven { url = "https://modmaven.k-4u.nl" } // Mirror for JEI
     maven {
-        // Curios
-        name = "Illusive Soulworks maven"
-        url = "https://maven.theillusivec4.top/"
+        name "BlameJared maven"
+        url "https://maven.blamejared.com/"
+        content {
+            includeGroup "mezz.jei"
+            includeGroup "vazkii.patchouli"
+        }
+    }
+    maven {
+        name "Illusive Soulworks maven"
+        url "https://maven.theillusivec4.top/"
+        content {
+            includeGroup "top.theillusivec4.curios"
+        }
+    }
+    // Mirror for JEI and patchouli
+    maven {
+        name "Mod maven"
+        url "https://modmaven.k-4u.nl"
+        content {
+            includeGroup "mezz.jei"
+            includeGroup "vazkii.patchouli"
+        }
     }
     mavenLocal()
 }
@@ -173,6 +170,10 @@ dependencies {
 
     // TFC
     implementation fg.deobf("curse.maven:terrafirmacraft-302973:$tfcFileID")
+
+    if (System.getProperty("idea.sync.active") != "true") {
+        annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
+    }
 
     // https://github.com/Traister101/ExtendedSlotCapacity
     implementation jarJar(fg.deobf("mod.traister101:Extended-Slot-Capacity-1.20.1:$extendedSlotCapacityVersion")) {
