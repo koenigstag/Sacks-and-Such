@@ -67,6 +67,22 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 	public Weight getWeight() {
 		if (cachedWeight != null) return cachedWeight;
 
+		cachedWeight = fixedWeight();
+		// cachedWeight = percentageBasedWeight();
+	}
+
+	private Weight fixedWeight() {
+		int itemsCount = 0;
+
+		for (int slotIndex = 0; slotIndex < getSlots(); slotIndex++) {
+			final ItemStack itemStack = stacks.get(slotIndex);
+			itemsCount += itemStack.getCount();
+		}
+
+		return itemsCount > 1 ? Weight.HEAVY : Weight.VERY_LIGHT;
+	}
+
+	private Weight percentageBasedWeight() {
 		int totalItems = 0, maxCapacity = 0;
 
 		for (int slotIndex = 0; slotIndex < getSlots(); slotIndex++) {
@@ -79,21 +95,21 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
 		// TODO Simple percentage based approuch, maybe not the best?
 		if (0.80 <= amountFilled) {
-			return cachedWeight = Weight.VERY_HEAVY;
+			return Weight.VERY_HEAVY;
 		}
 
 		if (0.60 <= amountFilled) {
-			return cachedWeight = Weight.HEAVY;
+			return Weight.HEAVY;
 		}
 
 		if (0.40 <= amountFilled) {
-			return cachedWeight = Weight.MEDIUM;
+			return Weight.MEDIUM;
 		}
 
 		if (0.20 <= amountFilled) {
-			return cachedWeight = Weight.LIGHT;
+			return Weight.LIGHT;
 		}
 
-		return cachedWeight = Weight.VERY_LIGHT;
+		return Weight.VERY_LIGHT;
 	}
 }
