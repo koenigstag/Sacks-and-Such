@@ -79,7 +79,7 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 			itemsCount += itemStack.getCount();
 		}
 
-		return itemsCount > 1 ? Weight.HEAVY : Weight.VERY_LIGHT;
+		return itemsCount >= 1 ? Weight.VERY_HEAVY : Weight.VERY_LIGHT;
 	}
 
 	private Weight percentageBasedWeight() {
