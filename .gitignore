@@ -15,6 +15,9 @@ tfc.json
 *.ipr
 *.iws
 
+# VsCode
+.vscode/
+
 # Eclipse
 /eclipse/
 .classpath
