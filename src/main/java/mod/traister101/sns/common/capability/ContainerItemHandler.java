@@ -69,6 +69,8 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
 		cachedWeight = fixedWeight();
 		// cachedWeight = percentageBasedWeight();
+
+		return cachedWeight;
 	}
 
 	private Weight fixedWeight() {
