@@ -155,7 +155,12 @@ repositories {
             includeGroup "vazkii.patchouli"
         }
     }
+
     mavenLocal()
+
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
