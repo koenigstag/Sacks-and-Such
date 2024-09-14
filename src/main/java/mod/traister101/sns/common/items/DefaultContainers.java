@@ -20,25 +20,25 @@ import java.util.function.Function;
 
 public final class DefaultContainers {
 
-	public static final ContainerType STRAW_BASKET = new ContainerItemType<>("straw_basket", Size.NORMAL, SNSConfig.SERVER.strawBasket,
+	public static final ContainerType STRAW_BASKET = new ContainerItemType<>("straw_basket", Size.HUGE, SNSConfig.SERVER.strawBasket,
 			GenericHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	public static final ContainerType LEATHER_SACK = new ContainerItemType<>("leather_sack", Size.NORMAL, SNSConfig.SERVER.leatherSack,
+	public static final ContainerType LEATHER_SACK = new ContainerItemType<>("leather_sack", Size.HUGE, SNSConfig.SERVER.leatherSack,
 			GenericHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	public static final ContainerType BURLAP_SACK = new ContainerItemType<>("burlap_sack", Size.NORMAL, SNSConfig.SERVER.burlapSack,
+	public static final ContainerType BURLAP_SACK = new ContainerItemType<>("burlap_sack", Size.HUGE, SNSConfig.SERVER.burlapSack,
 			GenericHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
-	public static final ContainerType ORE_SACK = new ContainerItemType<>("ore_sack", Size.NORMAL, SNSConfig.SERVER.oreSack, OreSackHandler::new,
+	public static final ContainerType ORE_SACK = new ContainerItemType<>("ore_sack", Size.HUGE, SNSConfig.SERVER.oreSack, OreSackHandler::new,
 			ForgeCapabilities.ITEM_HANDLER);
 
-	public static final ContainerType SEED_POUCH = new ContainerItemType<>("seed_pouch", Size.NORMAL, SNSConfig.SERVER.seedPouch,
+	public static final ContainerType SEED_POUCH = new ContainerItemType<>("seed_pouch", Size.HUGE, SNSConfig.SERVER.seedPouch,
 			SeedPouchHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
 	public static final ContainerType FRAME_PACK = new ContainerItemType<>("frame_pack", Size.HUGE, SNSConfig.SERVER.framePack, FramePackHandler::new,
 			ForgeCapabilities.ITEM_HANDLER);
 
-	public static final ContainerType LUNCHBOX = new ContainerItemType<>("lunchbox", Size.NORMAL, SNSConfig.SERVER.lunchBox, LunchboxHandler::new,
+	public static final ContainerType LUNCHBOX = new ContainerItemType<>("lunchbox", Size.HUGE, SNSConfig.SERVER.lunchBox, LunchboxHandler::new,
 			ForgeCapabilities.ITEM_HANDLER, LunchboxCapability.LUNCHBOX);
 
 	private record ContainerItemType<Handler extends INBTSerializable<CompoundTag>>(String name,
