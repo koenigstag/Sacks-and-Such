@@ -10,6 +10,8 @@ import net.minecraft.world.item.ItemStack;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 
 	public final ContainerType type;
@@ -32,21 +34,36 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 	public void deserializeNBT(final CompoundTag compoundTag) {
 		super.deserializeNBT(compoundTag);
 		final byte weight = compoundTag.getByte("weight");
-		if (weight != -1) cachedWeight = Weight.valueOf(weight);
+		if (weight != -1)
+			cachedWeight = Weight.valueOf(weight);
 	}
 
 	@Override
 	public boolean isItemValid(final int slotIndex, final ItemStack itemStack) {
-		if (itemStack.is(SNSItemTags.PREVENTED_IN_ITEM_CONTAINERS)) return false;
+		if (itemStack.is(SNSItemTags.PREVENTED_IN_ITEM_CONTAINERS))
+			return false;
 
 		return fitsInSlot(itemStack);
 	}
 
 	@Override
 	protected void onContentsChanged(final int slotIndex) {
-		// Invalidate our cached weight when any contents change
-		this.cachedWeight = null;
+		if (isEmpty()) {
+			this.cachedWeight = Weight.LIGHT;
+		} else {
+			this.cachedWeight = Weight.VERY_HEAVY; // causes overburden
+		}
+
 		super.onContentsChanged(slotIndex);
+	}
+
+	private boolean isEmpty() {
+		for (int slotIndex = 0; slotIndex < getSlots(); slotIndex++) {
+			if (!stacks.get(slotIndex).isEmpty()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -65,53 +82,8 @@ public class ContainerItemHandler extends ExtendedSlotCapacityHandler {
 	 * @return The weight of the sack
 	 */
 	public Weight getWeight() {
-		if (cachedWeight != null) return cachedWeight;
-
-		cachedWeight = fixedWeight();
-		// cachedWeight = percentageBasedWeight();
+		if (cachedWeight == null) return Weight.LIGHT;
 
 		return cachedWeight;
-	}
-
-	private Weight fixedWeight() {
-		int itemsCount = 0;
-
-		for (int slotIndex = 0; slotIndex < getSlots(); slotIndex++) {
-			final ItemStack itemStack = stacks.get(slotIndex);
-			itemsCount += itemStack.getCount();
-		}
-
-		return itemsCount >= 1 ? Weight.VERY_HEAVY : Weight.VERY_LIGHT;
-	}
-
-	private Weight percentageBasedWeight() {
-		int totalItems = 0, maxCapacity = 0;
-
-		for (int slotIndex = 0; slotIndex < getSlots(); slotIndex++) {
-			final ItemStack itemStack = stacks.get(slotIndex);
-			totalItems += itemStack.getCount();
-			maxCapacity += getStackLimit(slotIndex, itemStack);
-		}
-
-		final float amountFilled = (float) totalItems / (float) maxCapacity;
-
-		// TODO Simple percentage based approuch, maybe not the best?
-		if (0.80 <= amountFilled) {
-			return Weight.VERY_HEAVY;
-		}
-
-		if (0.60 <= amountFilled) {
-			return Weight.HEAVY;
-		}
-
-		if (0.40 <= amountFilled) {
-			return Weight.MEDIUM;
-		}
-
-		if (0.20 <= amountFilled) {
-			return Weight.LIGHT;
-		}
-
-		return Weight.VERY_LIGHT;
 	}
 }
