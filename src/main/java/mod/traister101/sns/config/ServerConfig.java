@@ -27,7 +27,7 @@ public final class ServerConfig {
 
 		builder.push("Container Item Config");
 
-		strawBasket = buildContainerConfig(builder, "Straw Basket", true, true, true, 4, 32, Size.SMALL);
+		strawBasket = buildContainerConfig(builder, "Straw Basket", true, true, true, 4, 32, Size.VERY_SMALL);
 		leatherSack = buildContainerConfig(builder, "Leather Sack", false, false, true, 4, 64, Size.NORMAL);
 		burlapSack = buildContainerConfig(builder, "Burlap Sack", true, true, false, 8, 48, Size.SMALL);
 		oreSack = buildContainerConfig(builder, "Ore Sack", true, false, true, 1, 512, Size.SMALL);

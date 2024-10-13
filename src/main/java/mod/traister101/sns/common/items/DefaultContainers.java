@@ -20,7 +20,7 @@ import java.util.function.Function;
 
 public final class DefaultContainers {
 
-	public static final ContainerType STRAW_BASKET = new ContainerItemType<>("straw_basket", Size.HUGE, SNSConfig.SERVER.strawBasket,
+	public static final ContainerType STRAW_BASKET = new ContainerItemType<>("straw_basket", Size.NORMAL, SNSConfig.SERVER.strawBasket,
 			GenericHandler::new, ForgeCapabilities.ITEM_HANDLER);
 
 	public static final ContainerType LEATHER_SACK = new ContainerItemType<>("leather_sack", Size.HUGE, SNSConfig.SERVER.leatherSack,
